@@ -967,29 +967,29 @@ void Menu_Tick(void)
 				u8 icon;
 				int music;
 			} menu_options[] = {
-				//{StageId_4_4, 0xFFFC96D7, "TEST"},
+				{StageId_4_4, 0xFFFC96D7, "TEST", 1, 22},
 				{StageId_1_4, 0xFF9271FD, "TUTORIAL", 0, 0},
 				{StageId_1_1, 0xFF9271FD, "BOPEEBO", 2, 1},
 				{StageId_1_2, 0xFF9271FD, "FRESH", 2, 2},
 				{StageId_1_3, 0xFF9271FD, "DADBATTLE", 2, 3},
-				{StageId_2_1, 0xFF223344, "SPOOKEEZ", NULL, NULL},
-				{StageId_2_2, 0xFF223344, "SOUTH", NULL, NULL},
-				{StageId_2_3, 0xFF223344, "MONSTER", NULL, NULL},
-				{StageId_3_1, 0xFF941653, "PICO", NULL, NULL},
-				{StageId_3_2, 0xFF941653, "PHILLY NICE", NULL, NULL},
-				{StageId_3_3, 0xFF941653, "BLAMMED", NULL, NULL},
-				{StageId_4_1, 0xFFFC96D7, "SATIN PANTIES", NULL, NULL},
-				{StageId_4_2, 0xFFFC96D7, "HIGH", NULL, NULL},
-				{StageId_4_3, 0xFFFC96D7, "MILF", NULL, NULL},
-				{StageId_5_1, 0xFFA0D1FF, "COCOA", NULL, NULL},
-				{StageId_5_2, 0xFFA0D1FF, "EGGNOG", NULL, NULL},
-				{StageId_5_3, 0xFFA0D1FF, "WINTER HORRORLAND", NULL, NULL},
-				{StageId_6_1, 0xFFFF78BF, "SENPAI", NULL, NULL},
-				{StageId_6_2, 0xFFFF78BF, "ROSES", NULL, NULL},
-				{StageId_6_3, 0xFFFF78BF, "THORNS", NULL, NULL},
-				{StageId_7_1, 0xFFF6B604, "UGH", NULL, NULL},
-				{StageId_7_2, 0xFFF6B604, "GUNS", NULL, NULL},
-				{StageId_7_3, 0xFFF6B604, "STRESS", NULL, NULL},
+				{StageId_2_1, 0xFF223344, "SPOOKEEZ", 3, 4},
+				{StageId_2_2, 0xFF223344, "SOUTH", 3, 5},
+				{StageId_2_3, 0xFF223344, "MONSTER", 7, 6},
+				{StageId_3_1, 0xFF941653, "PICO", 4, 7},
+				{StageId_3_2, 0xFF941653, "PHILLY NICE", 4, 8},
+				{StageId_3_3, 0xFF941653, "BLAMMED", 4, 9},
+				{StageId_4_1, 0xFFFC96D7, "SATIN PANTIES", 5, 10},
+				{StageId_4_2, 0xFFFC96D7, "HIGH", 5, 11},
+				{StageId_4_3, 0xFFFC96D7, "MILF", 5, 12},
+				{StageId_5_1, 0xFFA0D1FF, "COCOA", 6, 13},
+				{StageId_5_2, 0xFFA0D1FF, "EGGNOG", 6, 14},
+				{StageId_5_3, 0xFFA0D1FF, "WINTER HORRORLAND", 7, 15},
+				{StageId_6_1, 0xFFFF78BF, "SENPAI", 9, 16},
+				{StageId_6_2, 0xFFFF78BF, "ROSES", 9, 17},
+				{StageId_6_3, 0xFFFF78BF, "THORNS", 10, 18},
+				{StageId_7_1, 0xFFF6B604, "UGH", 11, 19},
+				{StageId_7_2, 0xFFF6B604, "GUNS", 11, 20},
+				{StageId_7_3, 0xFFF6B604, "STRESS", 11, 21},
 			};
 			
 			switch (menu_options[menu.select].music)
@@ -1055,6 +1055,348 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Dadbattle, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 4:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Spookeez, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 5:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_South, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 6:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Monster, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 7:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Pico, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 8:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Philly, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 9:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Blammed, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 10:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_SatinPanties, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 11:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_High, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 12:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_MILF, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 13:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Cocoa, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 14:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Eggnog, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 15:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_WinterHorrorland, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 16:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Senpai, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 17:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Roses, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 18:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Thorns, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 19:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Ugh, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 20:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Guns, 0x40, 2, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 21:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Stress, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					if (pad_state.press & PAD_L1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+						Audio_WaitPlayXA();
+					}
+					break;
+				}
+				case 22:
+				{	
+					if (pad_state.press & PAD_R1)
+					{
+						//Play Tutorial Music
+						Audio_StopXA();
+						Audio_PlayXA_Track(XA_Test, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
 					if (pad_state.press & PAD_L1)
@@ -1302,8 +1644,8 @@ void Menu_Tick(void)
 				u32 col; 
 			} menu_options[] = {
 				{"nintendo bro", 1, 20, 0xFF51ffb3},
-				{" ", 0, 6, 0xFFf7de6b},
-				{" ", 0, 6, 0xFFf7de6b},
+				{" ", 0, 30, 0xFFf7de6b},
+				{" ", 0, 30, 0xFFf7de6b},
 				{"ckdev" , 2, 21,0xFFc5f05f},
 			};
 			switch (menu_options[menu.select].about)

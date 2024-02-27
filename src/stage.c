@@ -712,8 +712,8 @@ static void Stage_DrawHealth(s16 health, u8 i, s8 ox)
 	//Get src and dst
 	fixed_t hx = (128 << FIXED_SHIFT) * (10000 - health) / 10000;
 	RECT src = {
-		(i % 5) * 64 + dying,
-		16 + (i / 5) * 32,
+		(i % 4) * 64 + dying,
+		16 + (i / 4) * 32,
 		32,
 		32
 	};

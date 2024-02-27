@@ -358,7 +358,7 @@ Character *Char_BFWeeb_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = CHAR_SPEC_MISSANIM;
 	
-	this->character.health_i = 7;
+	this->character.health_i = 8;
 	
 	this->character.focus_x = FIXED_DEC(-34,1);
 	this->character.focus_y = FIXED_DEC(-40,1);
