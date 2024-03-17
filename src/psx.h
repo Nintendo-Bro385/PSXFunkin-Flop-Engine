@@ -55,6 +55,7 @@ extern char **my_argv;
 	#include <libcd.h>
 	#include <libsnd.h>
 	#include <libapi.h>
+	#include <libpress.h>
 
 	#include <stddef.h>
 	#include <string.h>

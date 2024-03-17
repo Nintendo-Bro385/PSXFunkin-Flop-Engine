@@ -10,6 +10,6 @@
 #include "psx.h"
 
 //Movie interface
-void Movie_Play(const char *path, u32 length);
+void Movie_Play(const char *path, u32 length); 
 
 #endif

@@ -33,9 +33,14 @@ bin/
 build/
 
 # Exclude converted assets
+iso/*.tim
+iso/*.arc
 iso/*/*.tim
 iso/*/*.arc
+iso/*/*/*.tim
+iso/*/*/*.arc
 iso/*/*.xa
 iso/*/*.cht
+iso/*/*.str
 
 # Big Chungus

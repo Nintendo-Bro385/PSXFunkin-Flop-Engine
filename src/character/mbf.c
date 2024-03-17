@@ -34,26 +34,26 @@ typedef struct
 
 //Mbf character definitions
 static const CharFrame char_mbf_frame[] = {
-	{Mbf_ArcMain_Menubf, { 83,  82,  83,  82}, { 53,  92-4}}, //idle4 4
-	{Mbf_ArcMain_Menubf, {  0,   0,  83,  82}, { 53,  92-4}}, //idle0 0
-	{Mbf_ArcMain_Menubf, { 83,   0,  83,  82}, { 53,  92-3}}, //idle1 1
-	{Mbf_ArcMain_Menubf, {165,   0,  83,  82}, { 53+1,  92}}, //idle2 2
-	{Mbf_ArcMain_Menubf, { 82,   82,  83,  82}, { 53,  92}}, //idle3 3
+	{Mbf_ArcMain_Menubf, {  0,   0,  83,  80}, { 53,  92}}, //idle0 0
+	{Mbf_ArcMain_Menubf, { 83,   0,  83,  79}, { 53,  91}}, //idle1 1
+	{Mbf_ArcMain_Menubf, {166,   0,  82,  81}, { 52,  93}}, //idle2 2
+	{Mbf_ArcMain_Menubf, {  0,  81,  84,  84}, { 52,  96}}, //idle3 3
+	{Mbf_ArcMain_Menubf, { 84,  81,  83,  84}, { 52,  96}}, //idle4 4
 
-	{Mbf_ArcMain_Menubf, { 165,  82,  83,  83}, { 53,  96}}, //peace0 5
-	{Mbf_ArcMain_Menubf, {  0, 166,  84,  82}, { 54,  95}}, //peace1 6
-	{Mbf_ArcMain_Menubf, { 84, 166,  84,  82}, { 54,  95}}, //peace2 7
+	{Mbf_ArcMain_Menubf, {167,  81,  80,  84}, { 52,  96}}, //peace0 5
+	{Mbf_ArcMain_Menubf, {  0, 165,  84,  84}, { 53,  95}}, //peace1 6
+	{Mbf_ArcMain_Menubf, { 84, 165,  85,  84}, { 53,  95}}, //peace2 7
 };
 
-static const Animation char_mbf_anim[CharAnim_Max] = {
-	{2, (const u8[]){ 0,  1,  2,  3, ASCR_BACK, 1}}, //CharAnim_Idle
-	{2, (const u8[]){ 4,  5, ASCR_BACK, 1}},         //CharAnim_Left
+static const Animation char_mbf_anim[PlayerAnim_Max] = {
+	{2, (const u8[]){ 0, 1, 2, 3, 4, ASCR_BACK, 1}}, //CharAnim_Idle
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},          //CharAnim_Left
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
-	{2, (const u8[]){ 6,  7, ASCR_BACK, 1}},         //CharAnim_Down
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Down
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
-	{2, (const u8[]){ 5, 6, 7, ASCR_BACK, 1}},         //CharAnim_Up
+	{2, (const u8[]){ 5, 6, 6, 7, 7, 7,  ASCR_BACK, 1}},        //CharAnim_Up
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
-	{2, (const u8[]){10, 11, ASCR_BACK, 1}},         //CharAnim_Right
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
 };
 

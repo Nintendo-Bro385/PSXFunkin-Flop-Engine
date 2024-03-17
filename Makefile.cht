@@ -1,8 +1,10 @@
 all: \
   $(addsuffix .cht, $(wildcard iso/chart/*.json)) \
-  iso/week7/picospeaker.json.cht
 
 iso/chart/%.json.cht: iso/chart/%.json
 	tools/funkinchartpak/funkinchartpak $<
-iso/week7/picospeaker.json.cht: iso/week7/picospeaker.json
-	tools/funkinpicopak/funkinpicopak $<
+	
+# Rule to clean all chart files
+clean:
+	echo "Cleaning .cht files:"
+	find iso -type f \( -name "*.cht" \) -print -delete

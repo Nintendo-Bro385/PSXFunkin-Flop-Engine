@@ -10,7 +10,10 @@ SRCS = src/main.c \
        src/loadscr.c \
        src/menu.c \
        src/stage.c \
+       src/save.c \
+       src/pause.c \
        src/psx/psx.c \
+       src/psx/str.c \
        src/psx/io.c \
        src/psx/gfx.c \
        src/psx/audio.c \
@@ -48,15 +51,17 @@ SRCS = src/main.c \
        src/object.c \
        src/object/combo.c \
        src/object/splash.c \
+       src/psn00b/vlc.c \
+       src/psn00b/vlc2.s \
        mips/common/crt0/crt0.s
 
 CPPFLAGS += -Wall -Wextra -pedantic -mno-check-zero-division
 LDFLAGS += -Wl,--start-group
 # TODO: remove unused libraries
 LDFLAGS += -lapi
-#LDFLAGS += -lc
+LDFLAGS += -lc
 LDFLAGS += -lc2
-#LDFLAGS += -lcard
+LDFLAGS += -lcard
 LDFLAGS += -lcd
 #LDFLAGS += -lcomb
 LDFLAGS += -lds
@@ -67,7 +72,7 @@ LDFLAGS += -lgpu
 #LDFLAGS += -lgun
 #LDFLAGS += -lhmd
 #LDFLAGS += -lmath
-#LDFLAGS += -lmcrd
+LDFLAGS += -lmcrd
 #LDFLAGS += -lmcx
 LDFLAGS += -lpad
 LDFLAGS += -lpress

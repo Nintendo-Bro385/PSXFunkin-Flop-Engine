@@ -14,7 +14,8 @@
 //GF Weeb character structure
 enum
 {
-	Mgf_ArcMain_Menugf,
+	Mgf_ArcMain_Menugf0,
+	Mgf_ArcMain_Menugf1,
 	
 	Mgf_Arc_Max,
 };
@@ -34,27 +35,32 @@ typedef struct
 
 //GF character definitions
 static const CharFrame char_mgf_frame[] = {
-	{Mgf_ArcMain_Menugf, {  0,   0, 86,  79}, { 52,  92}}, //1 left 0
-	{Mgf_ArcMain_Menugf, {  0,   79, 86,  79}, { 52,  92}}, //2 left 0
-	{Mgf_ArcMain_Menugf, {  0,   158, 86,  79}, { 52,  92}}, //3 left 0
-	{Mgf_ArcMain_Menugf, {  86,   0, 86,  79}, { 52,  92}}, //4 left 0
-	{Mgf_ArcMain_Menugf, {  86,   79, 86,  79}, { 52,  92}}, //5 left 0
-	{Mgf_ArcMain_Menugf, {  86,   158, 86,  79}, { 52,  92}}, //6 left 0
-	{Mgf_ArcMain_Menugf, {  172,   0, 86,  79}, { 52,  92}}, //7 left 0
-	{Mgf_ArcMain_Menugf, {  172,   79, 86,  79}, { 52,  92}}, //8 left 0
-	{Mgf_ArcMain_Menugf, {  172,   158, 88,  79}, { 52,  92}}, //9 left 0
+	{Mgf_ArcMain_Menugf0, {  1,   0,  86,  78}, { 37,  72}}, //0 bop left 1
+	{Mgf_ArcMain_Menugf0, { 87,   0,  86,  78}, { 37,  72}}, //1 bop left 2
+	{Mgf_ArcMain_Menugf0, {  1,  82,  86,  78}, { 37,  72}}, //2 bop left 3
+	{Mgf_ArcMain_Menugf0, { 87,  82,  86,  78}, { 37,  72}}, //3 bop left 4
+	{Mgf_ArcMain_Menugf0, {  0, 164,  86,  79}, { 37,  73}}, //4 bop left 5
+	{Mgf_ArcMain_Menugf0, { 86, 164,  86,  79}, { 37,  73}}, //5 bop left 6
+	
+	{Mgf_ArcMain_Menugf1, {  3,   1,  85,  77}, { 36,  71}}, //6 bop right 1
+	{Mgf_ArcMain_Menugf1, { 88,   1,  86,  77}, { 37,  71}}, //7 bop right 2
+	{Mgf_ArcMain_Menugf1, {  2,  80,  86,  77}, { 37,  71}}, //8 bop right 3
+	{Mgf_ArcMain_Menugf1, { 88,  80,  86,  77}, { 37,  71}}, //9 bop right 4
+	{Mgf_ArcMain_Menugf1, {  2, 159,  86,  79}, { 37,  73}}, //10 bop right 5
+	{Mgf_ArcMain_Menugf1, { 88, 160,  86,  78}, { 37,  72}}, //11 bop right 6
+	
 };
 
 static const Animation char_mgf_anim[CharAnim_Max] = {
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_Idle
-	{1, (const u8[]){ 2,  2,  3,  3,  4,  4,  5,  5,  6,  6, ASCR_BACK, 1}}, //CharAnim_Left
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_LeftAlt
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_Down
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_DownAlt
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_Up
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_UpAlt
-	{1, (const u8[]){ 7,  7,  8,  8,  0,  0,  1,  1,  ASCR_BACK, 1}}, //CharAnim_Right
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Left}},                           //CharAnim_RightAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                        //CharAnim_Idle
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                                   //CharAnim_Left
+	{1, (const u8[]){ 0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5, ASCR_BACK, 1}}, //CharAnim_LeftAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                                    //CharAnim_Down
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                          //CharAnim_DownAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                                     //CharAnim_Up
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                                     //CharAnim_UpAlt
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_LeftAlt}},                                     //CharAnim_Right
+	{1, (const u8[]){6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11,  ASCR_BACK, 1}}, //CharAnim_RightAlt
 };
 
 //GF Weeb character functions
@@ -76,18 +82,15 @@ void Char_Mgf_Tick(Character *character)
 {
 	Char_Mgf *this = (Char_Mgf*)character;
 	
-	if (stage.flag & STAGE_FLAG_JUST_STEP)
-	{
-		//Perform dance
-		if ((stage.song_step % stage.gf_speed) == 0)
-		{
-			//Switch animation
-			if (character->animatable.anim == CharAnim_Left)
-				character->set_anim(character, CharAnim_Right);
-			else
-				character->set_anim(character, CharAnim_Left);
-		}
-	}
+	if ((stage.flag & STAGE_FLAG_JUST_STEP) && (stage.song_step % stage.gf_speed) == 0)
+			{
+				//Switch animation
+				if (character->animatable.anim == CharAnim_LeftAlt)
+					character->set_anim(character, CharAnim_RightAlt);
+				else
+					character->set_anim(character, CharAnim_LeftAlt);
+				
+			}
 	
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_Mgf_SetFrame);
@@ -97,8 +100,6 @@ void Char_Mgf_Tick(Character *character)
 void Char_Mgf_SetAnim(Character *character, u8 anim)
 {
 	//Set animation
-	if (anim != CharAnim_Idle && anim != CharAnim_Left && anim != CharAnim_Right)
-		return;
 	Animatable_SetAnim(&character->animatable, anim);
 }
 
@@ -142,7 +143,8 @@ Character *Char_Mgf_New(fixed_t x, fixed_t y)
 	this->arc_main = IO_Read("\\CHAR\\MGF.ARC;1");
 	
 	const char **pathp = (const char *[]){
-		"menugf.tim",  //Mgf_ArcMain_Menugf
+		"menugf0.tim",  //Mgf_ArcMain_Menugf
+		"menugf1.tim",  //Mgf_ArcMain_Menugf
 		NULL
 	};
 	IO_Data *arc_ptr = this->arc_ptr;

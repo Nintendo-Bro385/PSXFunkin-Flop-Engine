@@ -1,4 +1,4 @@
-/*
+																																																	/*
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -15,14 +15,15 @@
 #include "character.h"
 #include "player.h"
 #include "object.h"
+#include "font.h"
 
 #include "network.h"
 
 //Stage constants
-#define INPUT_LEFT  (PAD_LEFT  | PAD_SQUARE)
-#define INPUT_DOWN  (PAD_DOWN  | PAD_CROSS)
-#define INPUT_UP    (PAD_UP    | PAD_TRIANGLE)
-#define INPUT_RIGHT (PAD_RIGHT | PAD_CIRCLE)
+#define INPUT_LEFT  (PAD_LEFT  | PAD_SQUARE | PAD_L2)
+#define INPUT_DOWN  (PAD_DOWN  | PAD_CROSS | PAD_L1)
+#define INPUT_UP    (PAD_UP    | PAD_TRIANGLE | PAD_R1)
+#define INPUT_RIGHT (PAD_RIGHT | PAD_CIRCLE | PAD_R2)
 
 #define STAGE_FLAG_JUST_STEP     (1 << 0) //Song just stepped this frame
 #define STAGE_FLAG_VOCAL_ACTIVE  (1 << 1) //Song's vocal track is currently active
@@ -68,15 +69,7 @@ typedef enum
 	StageId_7_2, //Guns
 	StageId_7_3, //Stress
 	
-	StageId_Kapi_1, //Wocky
-	StageId_Kapi_2, //Beathoven
-	StageId_Kapi_3, //Hairball
-	StageId_Kapi_4, //Nyaw
-	
-	StageId_Clwn_1, //Improbable Outset
-	StageId_Clwn_2, //Madness
-	StageId_Clwn_3, //Hellclown
-	StageId_Clwn_4, //Expurgation
+	StageId_8_1, //Still Alive
 	
 	StageId_2_4, //Clucked
 	
@@ -119,6 +112,15 @@ typedef struct StageBack
 	void (*free)(struct StageBack*);
 } StageBack;
 
+// Dialogue Struct
+typedef struct
+{
+	const char *text; //The text that is displayed
+    u8 camera; //Who the camera is pointing at, 0 for bf, 1 for dad
+    u8 portrait;
+	int diaboxes;
+} Dialogue_Struct;
+
 //Stage definitions
 typedef struct
 {
@@ -137,6 +139,9 @@ typedef struct
 	
 	u8 week, week_song;
 	u8 music_track, music_channel;
+	u8 dialogue;
+	u8 diasong, dia_channel;
+	const char* portrait_path[2];
 	
 	StageId next_stage;
 	u8 next_load;
@@ -159,6 +164,7 @@ typedef struct
 #define NOTE_FLAG_MINE        (1 << 6) //Note is a mine
 #define NOTE_FLAG_HIT         (1 << 7) //Note has been hit
 
+
 typedef struct
 {
 	u16 pos; //1/12 steps
@@ -175,22 +181,44 @@ typedef struct
 	u16 combo;
 	
 	boolean refresh_score;
+	boolean refresh_misses;
+	u8 misses;
 	s32 score, max_score;
-	char score_text[13];
+	char score_text[33];
+	char misses_text[20];
 	
 	u16 pad_held, pad_press;
 } PlayerState;
 
 typedef struct
 {
-	//Stage settings
-	boolean ghost, downscroll, expsync;
-	s32 mode;
+	struct
+	{
+		//Stage settings
+		boolean ghost, downscroll, botplay, lowquality, flashing, expsync;
+		boolean hell;
+		boolean nomissfw;
+		int menumusic;
+		
+		s32 mode;
+		s32 noteskin;
+		
+		//Achievements
+		boolean bweek_awards, mwf_awards, ms_awards, mm_awards, mfd_awards, hell_awards, lq_awards, swap_awards, two_awards, debugger_awards, no_memory_card;
+	}prefs;
+	
+	boolean loadsaveonce;
 	
 	u32 offset;
 	
+	u16 grmisses;
+	
+	u16 ssmisses;
+	
+	u16 brmisses;
+	
 	//HUD textures
-	Gfx_Tex tex_hud0, tex_hud1;
+	Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_hud3, tex_hud4, tex_dia, tex_saving;
 	
 	//Stage data
 	const StageDef *stage_def;
@@ -236,12 +264,30 @@ typedef struct
 	u16 step_base;
 	Section *section_base;
 	
+	u8 delect;
+	
+	//u8 paused;
+	
+	int cutdia;
+	
+	boolean paused;
+	
+	boolean song_completed;
+	
 	s16 song_step;
 	
 	u8 gf_speed; //Typically 4 steps, changes in Fresh
 	
 	PlayerState player_state[2];
 	s32 max_score;
+	
+	u16 misses;
+	
+	int ending;
+	
+	int pause_select, pause_scroll;
+	
+	FontData font_arial, font_cdr, font_bold;
 	
 	enum
 	{
@@ -251,12 +297,22 @@ typedef struct
 		StageState_DeadDrop,   //Mic drop
 		StageState_DeadRetry,  //Retry prompt
 		StageState_DeadDecide, //Decided
+		StageState_Dialogue,   //Dialogue
 	} state;
 	
 	u8 note_swap;
 	
 	//Object lists
 	ObjectList objlist_splash, objlist_fg, objlist_bg;
+	
+	//Portrait data
+	struct
+	{
+		int current, next;
+		u8 tex_id;
+		Gfx_Tex tex;
+		IO_Data data[2];
+	} portrait;
 } Stage;
 
 extern Stage stage;
@@ -269,6 +325,7 @@ void Stage_BlendTexArb(Gfx_Tex *tex, const RECT *src, const POINT_FIXED *p0, con
 
 //Stage functions
 void Stage_Load(StageId id, StageDiff difficulty, boolean story);
+void Stage_LoadDia();
 void Stage_Unload();
 void Stage_Tick();
 

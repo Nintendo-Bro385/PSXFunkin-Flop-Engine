@@ -1,0 +1,6 @@
+all: \
+	iso/movie/richard_intro.str \
+
+# STR converts
+iso/movie/%.str: iso/movie/%.mp4
+	tools/psxavenc/psxavenc -t str2 -r 15 -I -b 4 -c 2 -x 2 $< $@

@@ -7,6 +7,6 @@
 #ifndef PSXF_GUARD_PAUSE_H
 #define PSXF_GUARD_PAUSE_H
 
-void PauseState();
+void PausedState();
 
 #endif

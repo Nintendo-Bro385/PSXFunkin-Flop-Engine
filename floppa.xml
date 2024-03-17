@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- Defines the ISO project -->
-<iso_project image_name="funkin.bin" cue_sheet="funkin.cue" no_xa="0">
+<iso_project image_name="PSXFlopEngine.bin" cue_sheet="PSXFlopEngine.cue" no_xa="0">
 	<!-- Data track -->
 	<track type="data">
 		<!-- Identifiers -->
@@ -19,27 +19,33 @@
 		<directory_tree>
 			<!-- System -->
 			<file name = "system.cnf" type = "data" source = "iso/system.cnf"/>
-			<file name = "SCUS_000.00" type = "data" source = "funkin.ps-exe"/>
+			<file name = "SCUS_023.85" type = "data" source = "funkin.ps-exe"/>
 			
 			<!-- Menu assets -->
 			<dir name = "menu">
+				<file name = "saving.tim" type = "data" source = "iso/saving.tim"/>
 				<file name = "loading.tim" type = "data" source = "iso/menu/loading.tim"/>
 				<file name = "menu.arc" type = "data" source = "iso/menu/menu.arc"/>
+				<file name = "week.arc" type = "data" source = "iso/menu/backgrounds/week.arc"/>
 			</dir>
 			
 			<!-- Fonts -->
 			<dir name = "font">
 				<file name = "boldfont.tim" type = "data" source = "iso/font/boldfont.tim"/>
 				<file name = "arial.tim" type = "data" source = "iso/font/arial.tim"/>
-				<file name = "arialr.tim" type = "data" source = "iso/font/arialr.tim"/>
-				<file name = "arialb.tim" type = "data" source = "iso/font/arialb.tim"/>
+				<file name = "cdr.tim" type = "data" source = "iso/font/cdr.tim"/>
 			</dir>
 			
 			<!-- Stage assets -->
 			<dir name = "stage">
 				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0.tim"/>
 				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
-				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
+				<file name = "hud2.tim" type = "data" source = "iso/stage/hud2.tim"/>
+				<file name = "hud3.tim" type = "data" source = "iso/stage/hud3.tim"/>
+				<file name = "hud4.tim" type = "data" source = "iso/stage/hud4.tim"/>
+				<file name = "phud.tim" type = "data" source = "iso/stage/phud.tim"/>
+				<file name = "phud1.tim" type = "data" source = "iso/stage/phud1.tim"/>
+				<file name = "dia.tim" type = "data" source = "iso/stage/dia.tim"/>
 			</dir>
 			
 			<!-- Week 1 assets -->
@@ -183,37 +189,23 @@
 				<file name = "7.3e.cht" type = "data" source = "iso/chart/stress-easy.json.cht"/>
 				<file name = "7.3n.cht" type = "data" source = "iso/chart/stress.json.cht"/>
 				<file name = "7.3h.cht" type = "data" source = "iso/chart/stress-hard.json.cht"/>
-				<file name = "7.3p.cht" type = "data" source = "iso/week7/picospeaker.json.cht"/>
 			</dir>
 			
 			<!-- Kapi assets -->
-			<dir name = "kapi">
+			<dir name = "week8">
 				<!-- Wocky charts -->
-				<file name = "kapi.1h.cht" type = "data" source = "iso/chart/wocky-hard.json.cht"/>
-				<!-- Beathoven charts -->
-				<file name = "kapi.2h.cht" type = "data" source = "iso/chart/beathoven-hard.json.cht"/>
-				<!-- Hairball charts -->
-				<file name = "kapi.3h.cht" type = "data" source = "iso/chart/hairball-hard.json.cht"/>
-				<!-- Nyaw charts -->
-				<file name = "kapi.4h.cht" type = "data" source = "iso/chart/nyaw-hard.json.cht"/>
+				<file name = "8.1e.cht" type = "data" source = "iso/chart/still-alive-easy.json.cht"/>
+				<file name = "8.1n.cht" type = "data" source = "iso/chart/still-alive.json.cht"/>
+				<file name = "8.1h.cht" type = "data" source = "iso/chart/still-alive-hard.json.cht"/>
 			</dir>
 			
-			<!-- Tricky assets -->
-			<dir name = "clwn">
-				<!-- Improbable Outset charts -->
-				<file name = "clwn.1e.cht" type = "data" source = "iso/chart/improbable-outset-easy.json.cht"/>
-				<file name = "clwn.1n.cht" type = "data" source = "iso/chart/improbable-outset.json.cht"/>
-				<file name = "clwn.1h.cht" type = "data" source = "iso/chart/improbable-outset-hard.json.cht"/>
-				<!-- Madness charts -->
-				<file name = "clwn.2e.cht" type = "data" source = "iso/chart/madness-easy.json.cht"/>
-				<file name = "clwn.2n.cht" type = "data" source = "iso/chart/madness.json.cht"/>
-				<file name = "clwn.2h.cht" type = "data" source = "iso/chart/madness-hard.json.cht"/>
-				<!-- Hellclown charts -->
-				<file name = "clwn.3e.cht" type = "data" source = "iso/chart/hellclown-easy.json.cht"/>
-				<file name = "clwn.3n.cht" type = "data" source = "iso/chart/hellclown.json.cht"/>
-				<file name = "clwn.3h.cht" type = "data" source = "iso/chart/hellclown-hard.json.cht"/>
-				<!-- Expurgation charts -->
-				<file name = "clwn.4h.cht" type = "data" source = "iso/chart/expurgation-hard.json.cht"/>
+			<!-- Character Portrait assets -->
+			<dir name = "portrait">
+				<!-- Boyfriend assets -->
+				<file name = "bf.arc" type = "data" source = "iso/stage/portraits/bf.arc"/>
+				
+				<!-- Sky assets -->
+				<file name = "sky.arc" type = "data" source = "iso/stage/portraits/sky.arc"/>
 			</dir>
 			
 			<!-- Character assets -->
@@ -296,13 +288,7 @@
 				<dummy sectors="128"/>
 				<file name = "week7b.xa" type = "xa" source = "iso/music/week7b.xa"/>
 				<dummy sectors="128"/>
-				<file name = "kapia.xa" type = "xa" source = "iso/music/kapia.xa"/>
-				<dummy sectors="128"/>
-				<file name = "kapib.xa" type = "xa" source = "iso/music/kapib.xa"/>
-				<dummy sectors="128"/>
-				<file name = "clwna.xa" type = "xa" source = "iso/music/clwna.xa"/>
-				<dummy sectors="128"/>
-				<file name = "clwnb.xa" type = "xa" source = "iso/music/clwnb.xa"/>
+				<file name = "portala.xa" type = "xa" source = "iso/music/portala.xa"/>
 				<dummy sectors="128"/>
 			</dir>
 			

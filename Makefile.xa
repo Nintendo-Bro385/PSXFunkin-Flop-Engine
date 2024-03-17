@@ -14,10 +14,7 @@ all: \
   iso/music/week6b.xa \
   iso/music/week7a.xa \
   iso/music/week7b.xa \
-  iso/music/clwna.xa \
-  iso/music/clwnb.xa \
-  iso/music/kapia.xa \
-  iso/music/kapib.xa
+  iso/music/portala.xa 
 
 # XA converts
 iso/music/%.xa: iso/music/%.ogg
@@ -26,7 +23,7 @@ iso/music/%.xa:
 	tools/xainterleave/xainterleave $@
 
 # XA interleaves
-iso/music/menu.xa: iso/music/freaky.xa iso/music/gameover.xa
+iso/music/menu.xa: iso/music/freaky.xa iso/music/gameover.xa iso/music/freeky.xa iso/music/ludum.xa
 iso/music/week1a.xa: iso/music/bopeeboi.xa iso/music/bopeebov.xa iso/music/freshi.xa iso/music/freshv.xa
 iso/music/week1b.xa: iso/music/dadbattlei.xa iso/music/dadbattlev.xa iso/music/tutorial.xa
 iso/music/week2a.xa: iso/music/spookeezi.xa iso/music/spookeezv.xa iso/music/southi.xa iso/music/southv.xa
@@ -41,7 +38,4 @@ iso/music/week6a.xa: iso/music/senpaii.xa iso/music/senpaiv.xa iso/music/rosesi.
 iso/music/week6b.xa: iso/music/thornsi.xa iso/music/thornsv.xa
 iso/music/week7a.xa: iso/music/ughi.xa iso/music/ughv.xa iso/music/gunsi.xa iso/music/gunsv.xa
 iso/music/week7b.xa: iso/music/stressi.xa iso/music/stressv.xa
-iso/music/clwna.xa: iso/music/improbableoutseti.xa iso/music/improbableoutsetv.xa iso/music/madnessi.xa iso/music/madnessv.xa
-iso/music/clwnb.xa: iso/music/hellclowni.xa iso/music/hellclownv.xa iso/music/expurgationi.xa iso/music/expurgationv.xa
-iso/music/kapia.xa: iso/music/wockyi.xa iso/music/wockyv.xa iso/music/beathoveni.xa iso/music/beathovenv.xa
-iso/music/kapib.xa: iso/music/hairballi.xa iso/music/hairballv.xa iso/music/nyawi.xa iso/music/nyawv.xa
+iso/music/portala.xa: iso/music/stillalivei.xa iso/music/stillalivev.xa iso/music/beathoveni.xa iso/music/beathovenv.xa

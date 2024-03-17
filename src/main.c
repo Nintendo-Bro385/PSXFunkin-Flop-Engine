@@ -12,6 +12,7 @@
 #include "audio.h"
 #include "pad.h"
 #include "network.h"
+#include "str.h"
 
 #include "menu.h"
 #include "stage.h"
@@ -62,8 +63,12 @@ int main(int argc, char **argv)
 	IO_Init();
 	Audio_Init();
 	Gfx_Init();
+	InitCARD(1);
 	Pad_Init();
+	StartCARD();
+	_bu_init();
 	Network_Init();
+	Str_Init();
 	
 	Timer_Init();
 	
@@ -113,4 +118,10 @@ int main(int argc, char **argv)
 	
 	PSX_Quit();
 	return 0;
+}
+
+
+void UnlockEverything(void)
+{
+	stage.prefs.no_memory_card = true;
 }

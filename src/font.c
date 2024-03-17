@@ -92,8 +92,14 @@ void Font_Arial_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, F
 	
 	//Draw string character by character
 	u8 c;
+	s16 xhold = x;
 	while ((c = *text++) != '\0')
 	{
+		if (c == '\n')
+		{
+		x = xhold;
+		y += 12;
+		}
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
@@ -106,8 +112,10 @@ void Font_Arial_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, F
 		x += font_arialmap[c].gw;
 	}
 }
+//CD-R font
+#include "font_cdrmap.h"
 
-s32 Font_Arialr_GetWidth(struct FontData *this, const char *text)
+s32 Font_CDR_GetWidth(struct FontData *this, const char *text)
 {
 	(void)this;
 	
@@ -122,13 +130,13 @@ s32 Font_Arialr_GetWidth(struct FontData *this, const char *text)
 			continue;
 		
 		//Add width
-		width += font_arialmap[c].gw;
+		width += font_cdrmap[c].charW;
 	}
 	
 	return width;
 }
 
-void Font_Arialr_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, FontAlign align, u8 r, u8 g, u8 b)
+void Font_CDR_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, FontAlign align, u8 r, u8 g, u8 b)
 {
 	//Offset position based off alignment
 	switch (align)
@@ -136,80 +144,33 @@ void Font_Arialr_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, 
 		case FontAlign_Left:
 			break;
 		case FontAlign_Center:
-			x -= Font_Arialr_GetWidth(this, text) >> 1;
+			x -= Font_CDR_GetWidth(this, text) >> 1;
 			break;
 		case FontAlign_Right:
-			x -= Font_Arialr_GetWidth(this, text);
+			x -= Font_CDR_GetWidth(this, text);
 			break;
 	}
 	
 	//Draw string character by character
 	u8 c;
+	s16 xhold = x;
 	while ((c = *text++) != '\0')
 	{
+		if (c == '\n')
+		{
+		x = xhold;
+		y += 12;
+		}
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
 		
 		//Draw character
-		RECT src = {font_arialmap[c].ix, font_arialmap[c].iy, font_arialmap[c].iw, font_arialmap[c].ih};
-		Gfx_BlitTexCol(&this->tex, &src, x + font_arialmap[c].gx, y + font_arialmap[c].gy, r, g, b);
+		RECT src = {font_cdrmap[c].charX, font_cdrmap[c].charY, font_cdrmap[c].charW, font_cdrmap[c].charL};
+		Gfx_BlitTexCol(&this->tex, &src, x, y, r, g, b);
 		
 		//Increment X
-		x += font_arialmap[c].gw;
-	}
-}
-
-s32 Font_Arialb_GetWidth(struct FontData *this, const char *text)
-{
-	(void)this;
-	
-	//Draw string width character by character
-	s32 width = 0;
-	
-	u8 c;
-	while ((c = *text++) != '\0')
-	{
-		//Shift and validate character
-		if ((c -= 0x20) >= 0x60)
-			continue;
-		
-		//Add width
-		width += font_arialmap[c].gw;
-	}
-	
-	return width;
-}
-
-void Font_Arialb_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, FontAlign align, u8 r, u8 g, u8 b)
-{
-	//Offset position based off alignment
-	switch (align)
-	{
-		case FontAlign_Left:
-			break;
-		case FontAlign_Center:
-			x -= Font_Arialb_GetWidth(this, text) >> 1;
-			break;
-		case FontAlign_Right:
-			x -= Font_Arialb_GetWidth(this, text);
-			break;
-	}
-	
-	//Draw string character by character
-	u8 c;
-	while ((c = *text++) != '\0')
-	{
-		//Shift and validate character
-		if ((c -= 0x20) >= 0x60)
-			continue;
-		
-		//Draw character
-		RECT src = {font_arialmap[c].ix, font_arialmap[c].iy, font_arialmap[c].iw, font_arialmap[c].ih};
-		Gfx_BlitTexCol(&this->tex, &src, x + font_arialmap[c].gx, y + font_arialmap[c].gy, r, g, b);
-		
-		//Increment X
-		x += font_arialmap[c].gw;
+		x += font_cdrmap[c].charW - 1;
 	}
 }
 
@@ -237,17 +198,11 @@ void FontData_Load(FontData *this, Font font)
 			this->get_width = Font_Arial_GetWidth;
 			this->draw_col = Font_Arial_DrawCol;
 			break;
-		case Font_Arialr:
+		case Font_CDR:
 			//Load texture and set functions
-			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\ARIALR.TIM;1"), GFX_LOADTEX_FREE);
-			this->get_width = Font_Arialr_GetWidth;
-			this->draw_col = Font_Arialr_DrawCol;
-			break;
-		case Font_Arialb:
-			//Load texture and set functions
-			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\ARIALB.TIM;1"), GFX_LOADTEX_FREE);
-			this->get_width = Font_Arialb_GetWidth;
-			this->draw_col = Font_Arialb_DrawCol;
+			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\CDR.TIM;1"), GFX_LOADTEX_FREE);
+			this->get_width = Font_CDR_GetWidth;
+			this->draw_col = Font_CDR_DrawCol;
 			break;
 	}
 	this->draw = Font_Draw;
