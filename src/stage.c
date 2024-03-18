@@ -31,7 +31,7 @@ u8 cambump;
 
 const char *pausediff = "EASY";
 const char *anotherfuckingvarible = "EASY";
-const char *pausestage = "PSYCHIC";
+//const char *pausestage = "PSYCHIC";
 int pausediff2;
 int diabox;
 int unpausedelay;
@@ -1308,11 +1308,6 @@ static void Stage_LoadState(void)
 	if(stage.stage_diff == StageDiff_Normal){pausediff = "NORMAL";}
 	if(stage.stage_diff == StageDiff_Hard){pausediff = "HARD";}
 
-	if (stage.stage_id == StageId_1_1){pausestage = "WIFE FOREVER";}
-	if (stage.stage_id == StageId_1_2){pausestage = "SKY";}
-	if (stage.stage_id == StageId_1_3){pausestage = "MANIFEST";}
-	if (stage.stage_id == StageId_2_4){pausestage = "CLUCKED";}
-
 	switch(stage.stage_diff)
 	    {
 	    	case StageDiff_Easy:
@@ -1386,21 +1381,19 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     else
     {
         //Load HUD textures
-        if(stage.prefs.noteskin==1)
-        {
-            Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD2.TIM;1"), GFX_LOADTEX_FREE);
-        }
-        else if(stage.prefs.noteskin==2)
-        {
-            Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD3.TIM;1"), GFX_LOADTEX_FREE);
-        }
-        else if(stage.prefs.noteskin==3)
-        {
-            Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD4.TIM;1"), GFX_LOADTEX_FREE);
-        }
-        else
-            Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0.TIM;1"), GFX_LOADTEX_FREE);
-
+        if (id >= StageId_6_1 && id <= StageId_6_3)
+		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
+	else
+	{
+		if(stage.prefs.noteskin==1)
+		    	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD2.TIM;1"), GFX_LOADTEX_FREE);
+		else if(stage.prefs.noteskin==2)
+		   	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD3.TIM;1"), GFX_LOADTEX_FREE);
+		else if(stage.prefs.noteskin==3)
+		    	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD4.TIM;1"), GFX_LOADTEX_FREE);
+		else
+		   	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0.TIM;1"), GFX_LOADTEX_FREE);
+	}
         Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\HUD1.TIM;1"), GFX_LOADTEX_FREE);
     }
 
@@ -1740,7 +1733,7 @@ void Stage_Tick(void)
 			      };
 			 //Draw stage
 			    stage.font_bold.draw(&stage.font_bold,
-				pausestage,
+				stage.stage_def->pausestage,
 				308,
 				18,
 				FontAlign_Right

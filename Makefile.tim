@@ -8,6 +8,7 @@ all: \
 	iso/font/arial.tim \
 	iso/font/cdr.tim \
 	iso/stage/hud0.tim \
+	iso/stage/hud0weeb.tim \
 	iso/stage/hud1.tim \
 	iso/stage/hud2.tim \
 	iso/stage/hud3.tim \

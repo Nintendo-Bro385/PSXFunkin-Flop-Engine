@@ -19,7 +19,7 @@
 		<directory_tree>
 			<!-- System -->
 			<file name = "system.cnf" type = "data" source = "iso/system.cnf"/>
-			<file name = "SCUS_023.85" type = "data" source = "funkin.ps-exe"/>
+			<file name = "SCUS_213.85" type = "data" source = "funkin.ps-exe"/>
 			
 			<!-- Menu assets -->
 			<dir name = "menu">
@@ -39,6 +39,7 @@
 			<!-- Stage assets -->
 			<dir name = "stage">
 				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0.tim"/>
+				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
 				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
 				<file name = "hud2.tim" type = "data" source = "iso/stage/hud2.tim"/>
 				<file name = "hud3.tim" type = "data" source = "iso/stage/hud3.tim"/>
@@ -130,7 +131,9 @@
 				<file name = "4.3n.cht" type = "data" source = "iso/chart/milf.json.cht"/>
 				<file name = "4.3h.cht" type = "data" source = "iso/chart/milf-hard.json.cht"/>
 				<!-- Test charts -->
+				<file name = "4.4e.cht" type = "data" source = "iso/chart/test.json.cht"/>
 				<file name = "4.4n.cht" type = "data" source = "iso/chart/test.json.cht"/>
+				<file name = "4.4h.cht" type = "data" source = "iso/chart/test.json.cht"/>
 			</dir>
 			
 			<!-- Week 5 assets -->
@@ -197,6 +200,8 @@
 				<file name = "8.1e.cht" type = "data" source = "iso/chart/still-alive-easy.json.cht"/>
 				<file name = "8.1n.cht" type = "data" source = "iso/chart/still-alive.json.cht"/>
 				<file name = "8.1h.cht" type = "data" source = "iso/chart/still-alive-hard.json.cht"/>
+				
+				<file name = "8.2h.cht" type = "data" source = "iso/chart/senbonzakura-hard.json.cht"/>
 			</dir>
 			
 			<!-- Character Portrait assets -->

@@ -646,22 +646,24 @@ void Menu_Tick(void)
 				switch (beat)
 				{
 					case 3:
-						menu.font_bold.draw(&menu.font_bold, "PRESENT", SCREEN_WIDTH2, SCREEN_HEIGHT2 -64, FontAlign_Center);
-				//Fallthrough
-					case 2:
-					case 1:
-						break;
-
-					case 7:
 						menu.font_bold.draw(&menu.font_bold, "NINTENDO BRO", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 40, FontAlign_Center);
 						menu.font_bold.draw(&menu.font_bold, "CUCKYDEV",      SCREEN_WIDTH2, SCREEN_HEIGHT2  +24, FontAlign_Center);
 						Menu_DrawHealth(20, 240, SCREEN_HEIGHT2 - 42, true);
 						Menu_DrawHealth(22, 215, SCREEN_HEIGHT2 + 16, true);
 				//Fallthrough
-					case 6:
-					case 5:
+					case 2:
+					case 1:
 						menu.font_bold.draw(&menu.font_bold, "FLOP ENGINE BY", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 64, FontAlign_Center);
 						menu.font_bold.draw(&menu.font_bold, "PSX FUNKIN BY", SCREEN_WIDTH2, SCREEN_HEIGHT2, FontAlign_Center);
+						break;
+					case 7:
+						menu.font_bold.draw(&menu.font_bold, "NEWGROUNDS",    SCREEN_WIDTH2, SCREEN_HEIGHT2 - 32, FontAlign_Center);
+						Gfx_BlitTex(&menu.tex_ng, &src_ng, (SCREEN_WIDTH - 128) >> 1, SCREEN_HEIGHT2 - 16);
+				//Fallthrough
+					case 6:
+					case 5:
+						menu.font_bold.draw(&menu.font_bold, "ASSOCIATED", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 64, FontAlign_Center);
+						menu.font_bold.draw(&menu.font_bold, "WITH",           SCREEN_WIDTH2, SCREEN_HEIGHT2 - 48, FontAlign_Center);
 						break;
 
 					case 11:
@@ -860,6 +862,13 @@ void Menu_Tick(void)
 						(menu.select == i) ? 128 : 64
 					);
 				}
+				//Draw background
+				    Menu_DrawBack(
+					true,
+					8,
+					41 >> 1, 41 >> 1, 41 >> 1,
+					0, 0, 0
+				    );
 				break;
 		}
         case MenuPage_Main:
@@ -1363,7 +1372,7 @@ void Menu_Tick(void)
 				{StageId_7_2, 0xFFF6B604, "GUNS", 11, 20},
 				{StageId_7_3, 0xFFF6B604, "STRESS", 11, 21},
 			};
-
+			//Audio_SeekXA_Track(stage.stage_def[menu_options[menu.select].stage].music_track);
 			switch (menu_options[menu.select].music)
 			{
 				case 0:
@@ -1907,9 +1916,11 @@ void Menu_Tick(void)
 				StageId stage;
 				const char *text;
 				boolean difficulty;
+				u8 icon;
 			} menu_options[] = {
-				{StageId_8_1, "STILL ALIVE", true},
-				{StageId_2_4,    "CLUCKED", false},
+				{StageId_8_1, "STILL ALIVE", true, 12},
+				{StageId_8_2, "SENBONZAKURA", false, 1},
+				{StageId_2_4,    "CLUCKED", false, 22},
 			};
 
 			//Initialize page
@@ -1919,17 +1930,25 @@ void Menu_Tick(void)
 				menu.page_param.stage.diff = StageDiff_Normal;
 			}
 
+			//Draw box at the bottom
+			RECT song_box = {0, 210, 320, 30};
+			Gfx_DrawRect(&song_box, 0, 0, 0);
+
 			//Draw page label
 			menu.font_bold.draw(&menu.font_bold,
-				"MODS",
-				16,
-				SCREEN_HEIGHT - 32,
+				"mods",
+				8,
+				7,
 				FontAlign_Left
 			);
+			
+			//Draw box at the bottom
+			RECT top_box = {0, 0, 320, 30};
+			Gfx_DrawRect(&top_box, 0, 0, 0);
 
 			//Draw difficulty selector
 			if (menu_options[menu.select].difficulty)
-				Menu_DifficultySelector(SCREEN_WIDTH - 100, SCREEN_HEIGHT2 - 48);
+				Menu_DifficultySelector(SCREEN_WIDTH - 62, 74);
 
 			//Handle option and selection
 			if (menu.next_page == menu.page && Trans_Idle())
@@ -1984,12 +2003,18 @@ void Menu_Tick(void)
 				if (y >= SCREEN_HEIGHT2 + 8)
 					break;
 
+				//Draw Icon
+				Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, menu.select == i);
+
 				//Draw text
-				menu.font_bold.draw(&menu.font_bold,
-					Menu_LowerIf(menu_options[i].text, menu.select != i),
-					48 + (y >> 2),
-					SCREEN_HEIGHT2 + y - 8,
-					FontAlign_Left
+				menu.font_bold.draw_col(&menu.font_bold,
+					Menu_LowerIf(menu_options[i].text, NULL),
+					15,
+					SCREEN_HEIGHT2 + y - 10,
+					FontAlign_Left,
+					(menu.select == i) ? 128 : 64,
+					(menu.select == i) ? 128 : 64,
+					(menu.select == i) ? 128 : 64
 				);
 			}
 
@@ -2191,7 +2216,7 @@ void Menu_Tick(void)
                 if (pad_state.press & PAD_CIRCLE)
                 {
                     menu.next_page = MenuPage_Main;
-                    menu.next_select = 2; //Mods
+                    menu.next_select = 3; //Awards
                     Trans_Start();
                 }
             }
@@ -2240,14 +2265,6 @@ void Menu_Tick(void)
 			{
 				const char *bold;
 			} menu_headers[] = {
-				{"OG Sky Mod"},
-				{" "},
-				{" "},
-				{" "},
-				{"Psx Sky"},
-				{" "},
-				{" "},
-				{" "},
 				{"flop engine"},
 				{" "},
 				{" "},
@@ -2264,14 +2281,6 @@ void Menu_Tick(void)
 				u8 icon;
 				u32 col;
 			} menu_options[] = {
-				{"@alex & @dra9on", 4, 30, 0x32ccfe},
-				{"bbPanzu", 5, 30, 0x5b6ee1},
-				{" ", 0, 30, 0x5b6ee1},
-				{" ", 0, 30, 0xFF51ffb3},
-				{"nintendo bro", 6, 20, 0xFF51ffb3},
-				{"jv", 7, 23, 0x9a00ff},
-				{" ", 0, 30, 0xFF51ffb3},
-				{" ", 0, 30, 0xFF51ffb3},
 				{"nintendo bro", 1, 20, 0xFF51ffb3},
 				{"igorsou3000", 2, 21, 0xFFfb6c23},
 				{" ", 0, 30, 0xFF51ffb3},
@@ -2368,100 +2377,6 @@ void Menu_Tick(void)
                     			Menu_DrawBigCredits(4, 224, 46);
 					break;
 				}
-				case 4:
-				{
-					//Draw text
-					menu.font_arial.draw(&menu.font_arial,
-						"@Alexander0110_ &",
-						256,
-						128,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"@Dra9onSlayer5",
-						256,
-						140,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Sky Character",
-						256,
-						152,
-						FontAlign_Center
-					);
-					//Draw other about pic
-                    			Menu_DrawBigCredits(15, 224, 46);
-					break;
-				}
-				case 5:
-				{
-					//Draw text
-					menu.font_arial.draw(&menu.font_arial,
-						"bbpanzu",
-						256,
-						128,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Programmer",
-						256,
-						140,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Musician",
-						256,
-						152,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Animator and Artist",
-						256,
-						164,
-						FontAlign_Center
-					);
-					//Draw other about pic
-                    			Menu_DrawBigCredits(15, 224, 46);
-					break;
-				}
-				case 6:
-				{
-					//Draw text
-					menu.font_arial.draw(&menu.font_arial,
-						"Nintendo Bro385",
-						256,
-						128,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Psx Sky",
-						256,
-						140,
-						FontAlign_Center
-					);
-					//Draw nintendobro about pic
-                    			Menu_DrawBigCredits(0, 224, 46);
-					break;
-				}
-				case 7:
-				{
-					//Draw text
-					menu.font_arial.draw(&menu.font_arial,
-						"jv",
-						256,
-						128,
-						FontAlign_Center
-					);
-					menu.font_arial.draw(&menu.font_arial,
-						"Loading screen",
-						256,
-						140,
-						FontAlign_Center
-					);
-					//Draw jv about pic
-                    			Menu_DrawBigCredits(1, 224, 46);
-					break;
-				}
 
 			}
 			//Initialize page
@@ -2512,7 +2427,7 @@ void Menu_Tick(void)
 				if (pad_state.press & PAD_CIRCLE)
 				{
 					menu.next_page = MenuPage_Main;
-					menu.next_select = 3; //Mods
+					menu.next_select = 4; //Credits
 					menu.select = 0;
 					Trans_Start();
 				}
@@ -2689,7 +2604,7 @@ void Menu_Tick(void)
 		        if (pad_state.press & PAD_CIRCLE)
 		        {
 		            menu.next_page = MenuPage_Main;
-		            menu.next_select = 4; //Options
+		            menu.next_select = 5; //Options
 		            Trans_Start();
 		        }
 		    }
@@ -2875,7 +2790,7 @@ void Menu_Tick(void)
 		        if (pad_state.press & PAD_CIRCLE)
 		        {
 		            menu.next_page = MenuPage_Main;
-		            menu.next_select = 4; //Options
+		            menu.next_select = 5; //Options
 		            Trans_Start();
 		        }
 		    }

@@ -70,6 +70,7 @@ typedef enum
 	StageId_7_3, //Stress
 	
 	StageId_8_1, //Still Alive
+	StageId_8_2, //Senbonzakura
 	
 	StageId_2_4, //Clucked
 	
@@ -124,6 +125,8 @@ typedef struct
 //Stage definitions
 typedef struct
 {
+	//song name
+	const char *pausestage;
 	//Characters
 	struct
 	{

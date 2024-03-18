@@ -79,7 +79,7 @@ typedef enum
 	XA_Stress, //Stress
 	//PortalA.XA
 	XA_Stillalive,//Still alive
-	XA_Beathoven, //Beathoven
+	XA_Senbonzakura, //Beathoven
 
 	
 	XA_TrackMax,

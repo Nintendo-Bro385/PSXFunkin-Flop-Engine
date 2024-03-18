@@ -52,7 +52,7 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_Week7B, XA_LENGTH(12200)}, //XA_Stress
 	//KAPIA.XA
 	{XA_PortalA, XA_LENGTH(17600)}, //XA_Still alive
-	{XA_PortalA, XA_LENGTH(12000)}, //XA_Beathoven
+	{XA_PortalA, XA_LENGTH(24400)}, //XA_Senbonzakura
 
 };
 
@@ -128,7 +128,7 @@ static const XA_Mp3 xa_mp3s[] = {
 	{"stress", true}, //XA_Stress
 	//PORTALA.XA
 	{"stillalive", true},     //XA_Stillalive
-	{"beathoven", true}, //XA_Beathoven
+	{"senbonzakura", false}, //XA_Beathoven
 	
 	{NULL, false}
 };

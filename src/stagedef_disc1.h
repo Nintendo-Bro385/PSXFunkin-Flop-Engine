@@ -1,4 +1,5 @@
 		{ //StageId_1_1 (Bopeebo)
+		"BOPEEBO",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -18,6 +19,7 @@
 		StageId_1_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_1_2 (Fresh)
+		"FRESH",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -37,6 +39,7 @@
 		StageId_1_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_1_3 (Dadbattle)
+		"DADBATLLE",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -56,6 +59,7 @@
 		StageId_1_3, 0
 	},
 	{ //StageId_1_4 (Tutorial)
+		"TUTORIAL",
 		//Characters
 		{Char_BF_New, FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,  FIXED_DEC(0,1),  FIXED_DEC(-15,1)}, //TODO
@@ -76,6 +80,7 @@
 	},
 	
 	{ //StageId_2_1 (Spookeez)
+		"SPOOKEEZ",
 		//Characters
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
@@ -95,6 +100,7 @@
 		StageId_2_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_2_2 (South)
+		"SOUTH",
 		//Characters
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
@@ -114,6 +120,7 @@
 		StageId_2_3, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
 	},
 	{ //StageId_2_3 (Monster)
+		"MONSTER",
 		//Characters
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
@@ -134,6 +141,7 @@
 	},
 	
 	{ //StageId_3_1 (Pico)
+		"PICO",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
@@ -153,6 +161,7 @@
 		StageId_3_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_3_2 (Philly)
+		"PHILLY",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
@@ -172,6 +181,7 @@
 		StageId_3_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_3_3 (Blammed)
+		"BLAMMED",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
@@ -192,6 +202,7 @@
 	},
 	
 	{ //StageId_4_1 (Satin Panties)
+		"SATIN PANTIES",
 		//Characters
 		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -211,6 +222,7 @@
 		StageId_4_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_4_2 (High)
+		"HIGH",
 		//Characters
 		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -230,6 +242,7 @@
 		StageId_4_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_4_3 (MILF)
+		"MILF",
 		//Characters
 		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -249,9 +262,10 @@
 		StageId_4_3, 0
 	},
 	{ //StageId_4_4 (Test)
+		"TEST",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
-		{Char_BF_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
 		
 		//Stage background
@@ -269,6 +283,7 @@
 	},
 	
 	{ //StageId_5_1 (Cocoa)
+		"COCOA",
 		//Characters
 		{Char_XmasBF_New,  FIXED_DEC(90,1),   FIXED_DEC(85,1)},
 		{Char_XmasP_New, FIXED_DEC(-190,1),   FIXED_DEC(90,1)},
@@ -288,6 +303,7 @@
 		StageId_5_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_5_2 (Eggnog)
+		"EGGNOG",
 		//Characters
 		{Char_XmasBF_New,  FIXED_DEC(90,1),   FIXED_DEC(85,1)},
 		{Char_XmasP_New, FIXED_DEC(-190,1),   FIXED_DEC(90,1)},
@@ -307,6 +323,7 @@
 		StageId_5_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_5_3 (Winter Horrorland)
+		"WINTER HORRORLAND",
 		//Characters
 		{Char_XmasBF_New, FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New,   FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -327,6 +344,7 @@
 	},
 	
 	{ //StageId_6_1 (Senpai)
+		"SENPAI",
 		//Characters
 		{Char_BFWeeb_New,  FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_Senpai_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
@@ -346,6 +364,7 @@
 		StageId_6_2, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
 	},
 	{ //StageId_6_2 (Roses)
+		"ROSES",
 		//Characters
 		{Char_BFWeeb_New,   FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_SenpaiM_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
@@ -365,6 +384,7 @@
 		StageId_6_3, 0
 	},
 	{ //StageId_6_3 (Thorns)
+		"THORNS",
 		//Characters
 		{Char_BFWeeb_New,  FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_Spirit_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
@@ -385,6 +405,7 @@
 	},
 	
 	{ //StageId_7_1 (Ugh)
+		"UGH",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -404,6 +425,7 @@
 		StageId_7_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_7_2 (Guns)
+		"GUNS",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -423,6 +445,7 @@
 		StageId_7_3, STAGE_LOAD_FLAG | STAGE_LOAD_PLAYER | STAGE_LOAD_OPPONENT | STAGE_LOAD_GIRLFRIEND
 	},
 	{ //StageId_7_3 (Stress)
+		"STRESS",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)}, //TODO: carry gf
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -441,8 +464,8 @@
 		
 		StageId_7_3, 0
 	},
-	
-	{ //StageId_P_1 (Still Alive)
+	{ //StageId_8_1 (Still Alive)
+		"STILL ALIVE",
 		//Characters
 		{Char_BF_New,   FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
@@ -459,9 +482,30 @@
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
 		
-		StageId_8_1,
+		StageId_8_1, 0
+	},
+	{ //StageId_8_2 (Senbonzakura)
+		"SENBONZAKURA",
+		//Characters
+		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
+		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_GF_New,        FIXED_DEC(0,1),    FIXED_DEC(0,1)},
+		
+		//Stage background
+		Back_Week1_New,
+		
+		//Song info
+		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1)},
+		8, 2,
+		XA_Senbonzakura, 2,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+		
+		StageId_8_2, 0
 	},
 	{ //StageId_2_4 (Clucked)
+		"CLUCKED",
 		//Characters
 		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Clucky_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
