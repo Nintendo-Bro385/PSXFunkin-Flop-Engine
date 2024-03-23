@@ -50,23 +50,17 @@ boolean normo;
 enum
 {
 	Dialogue_BF_Normal,
-
-	Dialogue_GF_Normal,
-	Dialogue_GF_Fuck,
-
-	Dialogue_Sky_Normal,
-	Dialogue_Sky_Angy,
-
-	Dialogue_Sky_Mad,
+	
+	Dialogue_Senpai_Normal,
+	Dialogue_Angy_Senpai,
+	Dialogue_Spirit,
 
 	Dialogue_Max,
 };
 
 static const char** portrait_tims = (const char *[]){
 	"bf.tim",
-	"gf.tim",
-	"sky0.tim",
-	"sky1.tim",
+	"senpai.tim",
 	NULL,
 };
 
@@ -78,12 +72,9 @@ static const struct
 } portraits[] = {
 	{0, {  0,   0, 102,  65}, {86, 36}}, //BF normal
 
-	{1, {  0,   0, 81,  64}, {65, 35}}, //GF normal
-	{1, {  81,   0, 81,  64}, {65, 35}}, //GF fuck
-
-	{2, {  0,   0,  75,  72}, {55, 43}}, //Sky normal
-	{2, {  75,   0,  76,  72}, {54, 43}}, //Sky angy
-	{3, {  0,   0,  74,  62}, {56, 33}}, //Sky mad
+	{1, {  0,  48, 64,  58}, {65, 35}}, //Senpai normal
+	{1, { 64,  48, 64,  58}, {65, 35}}, //Angy Senpai
+	{1, {128,   0, 47, 106}, {65, 35}}, //Spirit
 };
 
 //#define STAGE_FREECAM //Freecam
@@ -148,6 +139,14 @@ static const StageDef stage_defs[StageId_Max] = {
 //Stage state
 Stage stage;
 
+//noteskins
+static const char *const noteskinPaths[] = {
+	    "\\STAGE\\HUD0.TIM;1",
+	    "\\STAGE\\HUD2.TIM;1",
+	    "\\STAGE\\HUD3.TIM;1",
+	    "\\STAGE\\HUD4.TIM;1",
+};
+	
 //Stage music functions
 static void Stage_StartVocal(void)
 {
@@ -285,34 +284,46 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
     u8 hit_type;
     if (offset > stage.late_safe * 9 / 11)
     {
+    	this->refresh_pause = true;
+    	stage.shitt++;
         hit_type = 3; //SHIT
-        this->combo =0;
-        if(stage.prefs.hell==1)
-        {
-        	this->health -= 1000;
-        }
-        else
-        {
-        	this->health -= 700;
-        }
+        this->combo=0;
+		if(stage.prefs.hell==1)
+		{
+			this->health -= 1000;
+		}
+		else
+		{
+			this->health -= 700;
+		}
     }
     else if (offset > stage.late_safe * 6 / 11)
     {
+    	this->refresh_pause = true;
+    	stage.badd++;
         hit_type = 2; //BAD
-        this->combo =0;
-        if(stage.prefs.hell==1)
-        {
-        	this->health -= 700;
-        }
-        else
-        {
-        	this->health -= 500;
-        }
+        this->combo=0;
+		if(stage.prefs.hell==1)
+		{
+			this->health -= 700;
+		}
+		else
+		{
+			this->health -= 500;
+		}
     }
     else if (offset > stage.late_safe * 3 / 11)
+    {
+    	this->refresh_pause = true;
+    	stage.goodd++;
         hit_type = 1; //GOOD
+    }
     else
+    {
+    	this->refresh_pause = true;
+    	stage.sickk++;
         hit_type = 0; //SICK
+    }
 
     //Increment combo and score
     this->combo++;
@@ -1283,9 +1294,11 @@ static void Stage_LoadState(void)
 
         stage.player_state[i].refresh_score = true;
         stage.player_state[i].refresh_misses = false;
+        stage.player_state[i].refresh_pause = true;
         stage.player_state[i].score = 0;
         strcpy(stage.player_state[i].score_text, "0");
         strcpy(stage.player_state[i].misses_text, "0");
+        strcpy(stage.player_state[i].pause_text, "0");
 
         stage.delect = 0;
 
@@ -1303,6 +1316,10 @@ static void Stage_LoadState(void)
 
     normo = false;
     stage.paused = false;
+    stage.sickk=0;
+    stage.goodd=0;
+    stage.badd=0;
+    stage.shitt=0;
 
         if(stage.stage_diff == StageDiff_Easy){pausediff = "EASY";}
 	if(stage.stage_diff == StageDiff_Normal){pausediff = "NORMAL";}
@@ -1373,6 +1390,8 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     stage.stage_diff = difficulty;
     stage.story = story;
     stage.song_completed = false;
+    
+    //Load HUD textures
     if(stage.stage_id == StageId_8_1)
     {
         Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\PHUD.TIM;1"), GFX_LOADTEX_FREE);
@@ -1380,21 +1399,11 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     }
     else
     {
-        //Load HUD textures
         if (id >= StageId_6_1 && id <= StageId_6_3)
 		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
 	else
-	{
-		if(stage.prefs.noteskin==1)
-		    	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD2.TIM;1"), GFX_LOADTEX_FREE);
-		else if(stage.prefs.noteskin==2)
-		   	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD3.TIM;1"), GFX_LOADTEX_FREE);
-		else if(stage.prefs.noteskin==3)
-		    	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD4.TIM;1"), GFX_LOADTEX_FREE);
-		else
-		   	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0.TIM;1"), GFX_LOADTEX_FREE);
-	}
-        Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\HUD1.TIM;1"), GFX_LOADTEX_FREE);
+		Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
+	Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\HUD1.TIM;1"), GFX_LOADTEX_FREE);
     }
 
     //Load stage background
@@ -1437,6 +1446,10 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     stage.offset = 0;
 
     stage.misses=0;
+    stage.sickk=0;
+    stage.goodd=0;
+    stage.badd=0;
+    stage.shitt=0;
 
     #ifdef PSXF_NETWORK
     if (stage.prefs.mode >= StageMode_Net1 && Network_IsHost())
@@ -1552,7 +1565,7 @@ void Stage_LoadDia(void)
 	for (u8 i = 0; i < COUNT_OF(stage.portrait.data); i++)
 		stage.portrait.data[i] = IO_Read(stage.stage_def->portrait_path[i]);
 
-    Gfx_LoadTex(&stage.tex_dia, IO_Read("\\STAGE\\DIA.TIM;1"), GFX_LOADTEX_FREE);
+    //Gfx_LoadTex(&stage.tex_dia, IO_Read("\\STAGE\\DIA.TIM;1"), GFX_LOADTEX_FREE);
 
 	stage.portrait.current = stage.portrait.next = 0xFF;
 	stage.portrait.tex_id = 0xFF;
@@ -1699,9 +1712,32 @@ void Stage_Tick(void)
 			    stage.paused =true;
 			}
 		}
+		for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
+			{
+				PlayerState *this = &stage.player_state[i];
+				
+				if (this->refresh_pause)
+				{
+					if((stage.sickk !=0 || stage.goodd !=0 || stage.badd != 0 || stage.shitt !=0))
+						sprintf(this->pause_text, "SICKS = %d\nGOODS = %d\nBADS = %d\nSHITS = %d", stage.sickk, stage.goodd, stage.badd, stage.shitt);
+					else
+						sprintf(this->pause_text, "SICKS = 0\nGOODS = 0\nBADS = 0\nSHITS = 0");
+					//stage.font_cdr.draw(&stage.font_cdr, stage.pause_text, 4, 18, FontAlign_Left);
+					this->refresh_pause = false;
+				}
+				if(stage.prefs.mode == StageMode_2P)
+						{	
+							if(stage.paused ==true)
+								stage.font_cdr.draw(&stage.font_cdr, this->pause_text, (i ^ (stage.prefs.mode == StageMode_Swap)) ? 170 - 80 : 170 + 80, 35, FontAlign_Center);
+						}
+						else
+						{	
+							if(stage.paused ==true)
+								stage.font_cdr.draw(&stage.font_cdr, this->pause_text, 4, 18, FontAlign_Left);
+						}
+			}
 	            if (stage.paused ==true)
 			{
-
 			    switch(pausediff2)
 			    {
 			    	case 0:
@@ -1734,14 +1770,14 @@ void Stage_Tick(void)
 			 //Draw stage
 			    stage.font_bold.draw(&stage.font_bold,
 				stage.stage_def->pausestage,
-				308,
+				316,
 				18,
 				FontAlign_Right
 			    );
 			 //Draw diff
 			    stage.font_bold.draw(&stage.font_bold,
 				pausediff,
-				308,
+				316,
 				39,
 				FontAlign_Right
 			    );
@@ -1843,7 +1879,6 @@ void Stage_Tick(void)
 					(stage.pause_select == i) ? 128 : 64
 				    );
 				}
-
 			  //50% Blend
 			  RECT screen_src = {0, 0 ,SCREEN_WIDTH, SCREEN_HEIGHT};
 
@@ -2123,8 +2158,8 @@ void Stage_Tick(void)
                 }
 
                 //M.I.L.F bumps
-                //if (stage.stage_id == StageId_4_3 && stage.song_step >= (168 << 2) && stage.song_step < (200 << 2))
-                //  is_bump_step = (stage.song_step & 0x3) == 0;
+                if (stage.stage_id == StageId_4_3 && stage.song_step >= (168 << 2) && stage.song_step < (200 << 2))
+                	is_bump_step = (stage.song_step & 0x3) == 0;
 
                 //Bump health every 4 steps
                 if (noheadbump == 1)
@@ -2442,59 +2477,29 @@ void Stage_Tick(void)
         {
             stage.cutdia=1;
             //oh boy
-            RECT dia_src = {0, 0, 256, 240};
-            RECT_FIXED dia_dst = {FIXED_DEC(-160,1), FIXED_DEC(-120,1), FIXED_DEC(322,1), FIXED_DEC(240,1)};
+            RECT dia_src = {0, 198, 205, 58};
+            RECT_FIXED dia_dst = {FIXED_DEC(-140,1), FIXED_DEC(20,1), FIXED_DEC(265,1), FIXED_DEC(88,1)};
 
 			static Dialogue_Struct* dialoguep;
 
-            static Dialogue_Struct wfdia[] = {
-                {"beep?", 0, Dialogue_BF_Normal, 0},
-                {"IT WORKED!!!", 1, Dialogue_Sky_Normal, 0},
-                {"THE SHIFT WORKED!!!", 1, Dialogue_Sky_Normal, 0},
-                {"Now we can be together forever,\nThe Boyfriend!", 1, Dialogue_Sky_Normal, 0},
-                {"bop beeop?", 0, Dialogue_BF_Normal, 0},
+            static Dialogue_Struct senpaidia[] = {
+                {"Ah, a new fair maiden has come\nin search of true love!", 1, Dialogue_Senpai_Normal, 0},
+                {"A serenade between gentlemen\nshall decide where her\nbeautiful heart shall reside.", 1, Dialogue_Senpai_Normal, 0},
+                {"Beep bo bop", 0, Dialogue_BF_Normal, 0},
             };
 
-            static Dialogue_Struct sky1dia[] = {
-                {"beep", 0, Dialogue_BF_Normal, 0},
-                {"huh?", 1, Dialogue_Sky_Angy, 0},
-                {"beep.", 0, Dialogue_BF_Normal, 0},
-                {"What do you mean\nyou don't want to date me??", 1, Dialogue_Sky_Angy, 0},
-                {"bop", 0, Dialogue_BF_Normal, 0},
-                {"What do you mean\nyou're in a committed relationship??", 1, Dialogue_Sky_Angy, 0},
-                {"bep", 0, Dialogue_BF_Normal, 0},
-                {"NO-NO NO wait!!", 1, Dialogue_Sky_Angy, 0},
-            };
-            static Dialogue_Struct sky2dia[] = {
-                {"FOR WHATT!!!", 1, Dialogue_Sky_Angy, 0},
-                {"beep oop", 0, Dialogue_BF_Normal, 0},
-                {"so...", 1, Dialogue_Sky_Angy, 0},
-                {"it's that stupid girlfriend\nthat's keeping you away from me??", 1, Dialogue_Sky_Angy, 0},
-                {"behp", 0, Dialogue_BF_Normal, 0},
-                {"...", 1, Dialogue_Sky_Angy, 0},
-                {"..", 1, Dialogue_Sky_Normal, 0},
-                {"...no matter...", 1, Dialogue_Sky_Normal, 0},
-                {"..i'll just manifest her away", 1, Dialogue_Sky_Normal, 0},
-                {"beep o poo?", 0, Dialogue_BF_Normal, 0},
-                {"IT MEANS YOUR PRECIOUS\nLITTLE GIRLFRIEND IS GOOD AS GONE.", 1, Dialogue_Sky_Normal, 0},
-                {"FOR GOOD!!!!", 1, Dialogue_Sky_Normal, 0},
+            static Dialogue_Struct rosesdia[] = {
+                {"Not bad for an ugly worm.", 1, Dialogue_Angy_Senpai, 0},
+                {"But this time I'll rip your nuts off\nright after your girlfriend\nfinishes gargling mine.", 1, Dialogue_Angy_Senpai, 0},
+                {"Bop beep be be skdoo bep", 0, Dialogue_BF_Normal, 0},
             };
 
-            static Dialogue_Struct manifestdia[] = {
-                {"you...", 1, Dialogue_Sky_Mad, 0},
-                {"I what?", 0, Dialogue_GF_Normal, 0},
-                {"you stole Boyfriend away from me..", 1, Dialogue_Sky_Mad, 0},
-                {"?", 0, Dialogue_GF_Normal, 0},
-                {"and now. you. will. PAY", 1, Dialogue_Sky_Mad, 0},
-                {"ah. Que the obligatory\nlast song transformation.", 0, Dialogue_GF_Normal, 0},
-                {"YOU SHUT UP!!", 1, Dialogue_Sky_Mad, 0},
-                {"ha. you manifest crusifixions\nbut can't manifest any guys.", 0, Dialogue_GF_Normal, 0},
-                {"I'LL MAKE YOU EAT THOSE WORDS,\nRED HEAD BITCH!", 1, Dialogue_Sky_Mad, 0},
-                {"Go shift to Danganronpa you dweeb ;P", 0, Dialogue_GF_Fuck, 0},
-                {"ok GF, i think your being\na bit mean don't you think..?", 0, Dialogue_BF_Normal, 0},
-                {"Don't you worry my sweet boyfriend.", 1, Dialogue_Sky_Mad, 0},
-                {"You won't ever have to worry\nabout her rude ass no longer", 1, Dialogue_Sky_Mad, 0},
-                {"beep?", 0, Dialogue_BF_Normal, 0},
+            static Dialogue_Struct thornsdia[] = {
+                {"Direct contact with real humans,\nafter being trapped in here\nfor so long...", 1, Dialogue_Spirit, 1},
+                {"and HER of all people.", 1, Dialogue_Spirit, 1},
+                {"I'll make her father pay\nfor what he's done to me\nand all the others....", 1, Dialogue_Spirit, 1},
+                {"I'll beat you and\nmake you take my place.", 1, Dialogue_Spirit, 1},
+                {"You don't mind your bodies\nbeing borrowed right?\nIt's only fair...", 1, Dialogue_Spirit, 1},
             };
 
             //Clear per-frame flags
@@ -2510,17 +2515,17 @@ void Stage_Tick(void)
 
 			switch (stage.stage_id)
 			{
-				case StageId_1_2:
-					dialoguep = sky1dia;
-					dialogue_final = COUNT_OF(sky1dia);
+				case StageId_6_2:
+					dialoguep = rosesdia;
+					dialogue_final = COUNT_OF(rosesdia);
 				break;
-				case StageId_1_3:
-					dialoguep = manifestdia;
-					dialogue_final = COUNT_OF(manifestdia);
+				case StageId_6_3:
+					dialoguep = thornsdia;
+					dialogue_final = COUNT_OF(thornsdia);
 				break;
 				default:
-					dialoguep = wfdia;
-					dialogue_final = COUNT_OF(wfdia);
+					dialoguep = senpaidia;
+					dialogue_final = COUNT_OF(senpaidia);
 				break;
 			}
 
@@ -2529,23 +2534,37 @@ void Stage_Tick(void)
 			if (stage.delect == dialogue_final)
 			{
 				Audio_StopXA();
-				if (stage.stage_id == StageId_1_2)
-					Stage_LoadStage();
 				stage.state = StageState_Play;
 				Stage_UnLoadDia();
 			}
 			else
 			{
-				//text drawing shit
-				stage.font_arial.draw_col(&stage.font_arial,
-					dialoguep[stage.delect].text,
-					47,
-					160,
-					FontAlign_Left,
-					0 >> 1,
-					0 >> 1,
-					0 >> 1
-				);
+				if(!(stage.stage_id == StageId_6_3))
+				{
+					//text drawing shit
+					stage.font_arial.draw_col(&stage.font_arial,
+						dialoguep[stage.delect].text,
+						47,
+						160,
+						FontAlign_Left,
+						0 >> 1,
+						0 >> 1,
+						0 >> 1
+					);
+				}
+				else
+				{
+					//text drawing shit
+					stage.font_arial.draw_col(&stage.font_arial,
+						dialoguep[stage.delect].text,
+						47,
+						160,
+						FontAlign_Left,
+						255 >> 1,
+						255 >> 1,
+						255 >> 1
+					);
+				}
 
 				if (stage.portrait.current != stage.portrait.next && stage.delect < dialogue_final)
 				{
@@ -2570,11 +2589,12 @@ void Stage_Tick(void)
 
 				if(!diabox)
 				{
-					Stage_DrawTex(&stage.tex_dia, &dia_src, &dia_dst, stage.bump);
+					Stage_DrawTex(&stage.tex_hud1, &dia_src, &dia_dst, stage.bump);
 				}
 				else
 				{
-					Stage_DrawTex(&stage.tex_dia, &dia_src, &dia_dst, stage.bump);
+					RECT coverup_bar = {57, 0, 205, 58};
+            				Gfx_DrawRect(&coverup_bar, 0, 0, 0);
 				}
 
 				int pos_x = (dialoguep[stage.delect].camera) ? SCREEN_WIDTH2 - 60 : SCREEN_WIDTH - 60;
@@ -2590,7 +2610,7 @@ void Stage_Tick(void)
 
 				Gfx_DrawTex(&stage.portrait.tex, &portraits[stage.portrait.current].src, &dst);
 			}
-            		Gfx_BlendRect(&thescreen, 152, 204, 204, 0);
+            		Gfx_BlendRect(&thescreen, 255, 255, 255, 0);
 
 
             //Draw stage foreground

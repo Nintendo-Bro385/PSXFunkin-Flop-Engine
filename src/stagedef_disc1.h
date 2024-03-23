@@ -357,9 +357,9 @@
 		{FIXED_DEC(1,1),FIXED_DEC(12,10),FIXED_DEC(13,10)},
 		6, 1,
 		XA_Senpai, 0,
-		0, //dialogue check
+		1, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
-		{NULL, NULL},
+		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_2, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
 	},
@@ -377,9 +377,9 @@
 		{FIXED_DEC(12,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		6, 2,
 		XA_Roses, 2,
-		0, //dialogue check
+		1, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
-		{NULL, NULL},
+		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_3, 0
 	},
@@ -397,9 +397,9 @@
 		{FIXED_DEC(11,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		6, 3,
 		XA_Thorns, 0,
-		0, //dialogue check
+		1, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
-		{NULL, NULL},
+		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_3, 0
 	},

@@ -210,7 +210,7 @@
 				<file name = "bf.arc" type = "data" source = "iso/stage/portraits/bf.arc"/>
 				
 				<!-- Sky assets -->
-				<file name = "sky.arc" type = "data" source = "iso/stage/portraits/sky.arc"/>
+				<file name = "senpai.arc" type = "data" source = "iso/stage/portraits/senpai.arc"/>
 			</dir>
 			
 			<!-- Character assets -->

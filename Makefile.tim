@@ -17,7 +17,7 @@ all: \
 	iso/stage/phud1.tim \
 	iso/stage/dia.tim \
 	iso/stage/portraits/bf.arc \
-	iso/stage/portraits/sky.arc \
+	iso/stage/portraits/senpai.arc \
 	iso/bf/main.arc \
 	iso/bf/dead.arc \
 	iso/bf/weeb.arc \
@@ -61,8 +61,8 @@ iso/%.arc:
 iso/menu/menu.arc: iso/menu/back.tim iso/menu/ng.tim iso/menu/story.tim iso/menu/options/options.tim iso/menu/title.tim iso/menu/hud1.tim iso/menu/hud2.tim
 
 # Character portraits
-iso/stage/portraits/bf.arc: iso/stage/portraits/bf.tim iso/stage/portraits/gf.tim
-iso/stage/portraits/sky.arc: iso/stage/portraits/sky0.tim iso/stage/portraits/sky1.tim
+iso/stage/portraits/bf.arc: iso/stage/portraits/bf.tim
+iso/stage/portraits/senpai.arc: iso/stage/portraits/senpai.tim
 
 iso/menu/backgrounds/week.arc: iso/menu/backgrounds/week0.tim iso/menu/backgrounds/week1.tim iso/menu/backgrounds/week2.tim iso/menu/backgrounds/week3.tim iso/menu/backgrounds/week4.tim iso/menu/backgrounds/week5.tim iso/menu/backgrounds/week6.tim iso/menu/backgrounds/week7.tim
 

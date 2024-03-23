@@ -185,10 +185,12 @@ typedef struct
 	
 	boolean refresh_score;
 	boolean refresh_misses;
+	boolean refresh_pause;
 	u8 misses;
 	s32 score, max_score;
 	char score_text[33];
 	char misses_text[20];
+	char pause_text[50];
 	
 	u16 pad_held, pad_press;
 } PlayerState;
@@ -219,6 +221,8 @@ typedef struct
 	u16 ssmisses;
 	
 	u16 brmisses;
+	
+	u16 sickk, goodd, badd, shitt;
 	
 	//HUD textures
 	Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_hud3, tex_hud4, tex_dia, tex_saving;
