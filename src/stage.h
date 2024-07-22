@@ -202,15 +202,18 @@ typedef struct
 		//Stage settings
 		boolean ghost, downscroll, botplay, lowquality, flashing, expsync;
 		boolean hell;
-		boolean nomissfw;
 		int menumusic;
 		
 		s32 mode;
 		s32 noteskin;
 		
 		//Achievements
-		boolean bweek_awards, mwf_awards, ms_awards, mm_awards, mfd_awards, hell_awards, lq_awards, swap_awards, two_awards, debugger_awards, no_memory_card;
+		boolean bweek_awards, mwf_awards, ms_awards, mm_awards, fcs_awards, hell_awards, lq_awards, swap_awards, two_awards, debugger_awards, no_memory_card;
 	}prefs;
+	
+	char Results_text1[20];
+	char Results_text2[20];
+	char Results_text3[30];
 	
 	boolean loadsaveonce;
 	
@@ -218,14 +221,22 @@ typedef struct
 	
 	u16 grmisses;
 	
+	const char *storyname;
+	
+	int pixelmode;
+	
 	u16 ssmisses;
 	
 	u16 brmisses;
 	
 	u16 sickk, goodd, badd, shitt;
 	
+	u8 hud1shit;
+	u8 hud1shit2;
+	u8 iconshit;
+	
 	//HUD textures
-	Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_hud3, tex_hud4, tex_dia, tex_saving;
+	Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_results, tex_sprites, tex_saving;
 	
 	//Stage data
 	const StageDef *stage_def;
@@ -305,6 +316,7 @@ typedef struct
 		StageState_DeadRetry,  //Retry prompt
 		StageState_DeadDecide, //Decided
 		StageState_Dialogue,   //Dialogue
+		StageState_Results,
 	} state;
 	
 	u8 note_swap;

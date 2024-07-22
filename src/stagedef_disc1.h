@@ -204,7 +204,7 @@
 	{ //StageId_4_1 (Satin Panties)
 		"SATIN PANTIES",
 		//Characters
-		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
+		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
 		
@@ -224,7 +224,7 @@
 	{ //StageId_4_2 (High)
 		"HIGH",
 		//Characters
-		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
+		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
 		
@@ -244,7 +244,7 @@
 	{ //StageId_4_3 (MILF)
 		"MILF",
 		//Characters
-		{Char_BF_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
+		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
 		
@@ -264,8 +264,8 @@
 	{ //StageId_4_4 (Test)
 		"TEST",
 		//Characters
-		{Char_BF_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_Dad_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
+		{Char_BFWeeb_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
 		
 		//Stage background
@@ -358,7 +358,7 @@
 		6, 1,
 		XA_Senpai, 0,
 		1, //dialogue check
-		XA_Clucked, 1, //dialogue song and it's channel
+		XA_Lunchbox1, 1, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_2, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
@@ -378,7 +378,7 @@
 		6, 2,
 		XA_Roses, 2,
 		1, //dialogue check
-		XA_Clucked, 1, //dialogue song and it's channel
+		XA_Clucked, 2, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_3, 0
@@ -398,7 +398,7 @@
 		6, 3,
 		XA_Thorns, 0,
 		1, //dialogue check
-		XA_Clucked, 1, //dialogue song and it's channel
+		XA_Lunchbox2, 2, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
 		
 		StageId_6_3, 0
@@ -489,7 +489,7 @@
 		//Characters
 		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
-		{Char_GF_New,        FIXED_DEC(0,1),    FIXED_DEC(0,1)},
+		{NULL},
 		
 		//Stage background
 		Back_Week1_New,

@@ -36,11 +36,12 @@ void Back_Week7_DrawBG(StageBack *back)
 		FIXED_DEC(340,1),
 		FIXED_DEC(170,1)
 	};
-
-	Stage_DrawTex(&this->tex_back0, &fg_src, &fg_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &fg_src, &fg_dst, stage.camera.bzoom);
 	fg_dst.x += fg_dst.w;
 	fg_src.y += 128;
-	Stage_DrawTex(&this->tex_back0, &fg_src, &fg_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &fg_src, &fg_dst, stage.camera.bzoom);
 
 	//Move tank
 	this->tank_timer -= timer_dt;
@@ -98,8 +99,8 @@ void Back_Week7_DrawBG(StageBack *back)
 		this->tank_x + ((fixed_t)tank_p3.x << FIXED_SHIFT) - fx,
 		      tank_y + ((fixed_t)tank_p3.y << FIXED_SHIFT) - fy
 	};
-
-	Stage_DrawTexArb(&this->tex_back2, &tank_src, &tank_d0, &tank_d1, &tank_d2, &tank_d3, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTexArb(&this->tex_back2, &tank_src, &tank_d0, &tank_d1, &tank_d2, &tank_d3, stage.camera.bzoom);
 
 	//Draw sniper
 	fx = stage.camera.x >> 1;
@@ -123,8 +124,8 @@ void Back_Week7_DrawBG(StageBack *back)
 	snipe_dst.y += snipe_bop << 2;
 	snipe_dst.w += snipe_bop << 2;
 	snipe_dst.h -= snipe_bop << 2;
-
-	Stage_DrawTex(&this->tex_back2, &snipe_src, &snipe_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back2, &snipe_src, &snipe_dst, stage.camera.bzoom);
 
 	//Draw ruins
 	fx = stage.camera.x >> 2;
@@ -137,8 +138,8 @@ void Back_Week7_DrawBG(StageBack *back)
 		FIXED_DEC(480,1),
 		FIXED_DEC(135,1)
 	};
-
-	Stage_DrawTex(&this->tex_back1, &ruinsf_src, &ruinsf_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &ruinsf_src, &ruinsf_dst, stage.camera.bzoom);
 
 	fx = stage.camera.x / 6;
 	fy = stage.camera.y / 6;
@@ -150,8 +151,8 @@ void Back_Week7_DrawBG(StageBack *back)
 		FIXED_DEC(480,1),
 		FIXED_DEC(135,1)
 	};
-
-	Stage_DrawTex(&this->tex_back1, &ruinsb_src, &ruinsb_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &ruinsb_src, &ruinsb_dst, stage.camera.bzoom);
 
 	//Draw clouds
 	fx = stage.camera.x / 7;
@@ -164,13 +165,14 @@ void Back_Week7_DrawBG(StageBack *back)
 		FIXED_DEC(260,1),
 		FIXED_DEC(260,1) * 53 / 256
 	};
-
-	Stage_DrawTex(&this->tex_back1, &cloud_src, &cloud_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &cloud_src, &cloud_dst, stage.camera.bzoom);
 	cloud_dst.x += cloud_dst.w;
 	cloud_dst.h = cloud_dst.w * 83 / 256;
 	cloud_src.y = 173;
 	cloud_src.h = 83;
-	Stage_DrawTex(&this->tex_back1, &cloud_src, &cloud_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &cloud_src, &cloud_dst, stage.camera.bzoom);
 
 	//Draw mountains
 	fx = stage.camera.x >> 3;
@@ -183,11 +185,14 @@ void Back_Week7_DrawBG(StageBack *back)
 		FIXED_DEC(260,1),
 		FIXED_DEC(130,1)
 	};
-
-	Stage_DrawTex(&this->tex_back3, &mountain_src, &mountain_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back3, &mountain_src, &mountain_dst, stage.camera.bzoom);
 	mountain_dst.x += mountain_dst.w;
 	mountain_src.y += 128;
-	Stage_DrawTex(&this->tex_back3, &mountain_src, &mountain_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back3, &mountain_src, &mountain_dst, stage.camera.bzoom);
+	else
+		Gfx_SetClear(239, 157, 3);
 }
 
 void Back_Week7_Free(StageBack *back)

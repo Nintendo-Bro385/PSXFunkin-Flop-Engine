@@ -13,7 +13,7 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_Menu, XA_LENGTH(11295)}, //XA_Freeky
 	{XA_Menu, XA_LENGTH(3700)}, //XA_Ludum
 	//WEEK1A.XA
-	{XA_Week1A, XA_LENGTH(7685)}, //XA_Bopeebo
+	{XA_Week1A, XA_LENGTH(7685)}, //XA_Bopeebo7685
 	{XA_Week1A, XA_LENGTH(8000)}, //XA_Fresh
 	//WEEK1B.XA
 	{XA_Week1B, XA_LENGTH(8667)}, //XA_Dadbattle
@@ -29,6 +29,7 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_Week3A, XA_LENGTH(10000)}, //XA_Philly
 	//WEEK3B.XA
 	{XA_Week3B, XA_LENGTH(10700)}, //XA_Blammed
+	{XA_Week3B, XA_LENGTH(4400)}, //XA_Results
 	//WEEK4A.XA
 	{XA_Week4A, XA_LENGTH(9300)},  //XA_SatinPanties
 	{XA_Week4A, XA_LENGTH(10300)}, //XA_High
@@ -45,6 +46,10 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_Week6A, XA_LENGTH(8928)}, //XA_Roses
 	//WEEK6B.XA
 	{XA_Week6B, XA_LENGTH(10298)}, //XA_Thorns
+	//WEEK6C.XA
+	{XA_Week6C, XA_LENGTH(7600)}, //XA_Gameoverpixel
+	{XA_Week6C, XA_LENGTH(2900)}, //XA_Lunchbox1
+	{XA_Week6C, XA_LENGTH(1100)}, //XA_Lunchbox2
 	//WEEK7A.XA
 	{XA_Week7A, XA_LENGTH(8493)},  //XA_Ugh
 	{XA_Week7A, XA_LENGTH(13866)}, //XA_Guns
@@ -70,6 +75,7 @@ static const char *xa_paths[] = {
 	"\\MUSIC\\WEEK5B.XA;1", //XA_Week5B
 	"\\MUSIC\\WEEK6A.XA;1", //XA_Week6A
 	"\\MUSIC\\WEEK6B.XA;1", //XA_Week6B
+	"\\MUSIC\\WEEK6C.XA;1", //XA_Week6C
 	"\\MUSIC\\WEEK7A.XA;1", //XA_Week7A
 	"\\MUSIC\\WEEK7B.XA;1", //XA_Week7B
 	"\\MUSIC\\PORTALA.XA;1",  //XA_PortalA
@@ -105,6 +111,7 @@ static const XA_Mp3 xa_mp3s[] = {
 	{"philly", true}, //XA_Philly
 	//WEEK3B.XA
 	{"blammed", true}, //XA_Blammed
+	{"results", false}, //XA_Blammed
 	//WEEK4A.XA
 	{"satinpanties", true}, //XA_SatinPanties
 	{"high", true},         //XA_High
@@ -121,6 +128,10 @@ static const XA_Mp3 xa_mp3s[] = {
 	{"roses", true},  //XA_Roses
 	//WEEK6B.XA
 	{"thorns", true}, //XA_Thorns
+	//WEEK6C.XA
+	{"gameoverpixel", false}, //XA_Gameoverpixel
+	{"lunchbox1", false}, //XA_Lunchbox1
+	{"lunchbox2", false}, //XA_Lunchbox2
 	//WEEK7A.XA
 	{"ugh", true},  //XA_Ugh
 	{"guns", true}, //XA_Guns

@@ -1,0 +1,4 @@
+1 xa gameoverpixel.xa 1 0
+1 xa lunchbox1.xa 1 1
+1 xa lunchbox2.xa 1 2
+1 null

@@ -97,10 +97,12 @@ void Back_Week6_DrawBG(StageBack *back)
 		}
 	}
 	Animatable_Animate(&this->freaks_animatable, (void*)this, Week6_Freaks_SetFrame);
-	
-	Week6_Freaks_Draw(this, FIXED_DEC(-110,1) - fx, FIXED_DEC(44,1) - fy, false);
-	Week6_Freaks_Draw(this,  FIXED_DEC(-20,1) - fx, FIXED_DEC(44,1) - fy, true);
-	Week6_Freaks_Draw(this,   FIXED_DEC(70,1) - fx, FIXED_DEC(44,1) - fy, false);
+	if(stage.prefs.lowquality ==false)
+	{
+		Week6_Freaks_Draw(this, FIXED_DEC(-110,1) - fx, FIXED_DEC(44,1) - fy, false);
+		Week6_Freaks_Draw(this,  FIXED_DEC(-20,1) - fx, FIXED_DEC(44,1) - fy, true);
+		Week6_Freaks_Draw(this,   FIXED_DEC(70,1) - fx, FIXED_DEC(44,1) - fy, false);
+	}
 	
 	//Draw foreground trees
 	fx = stage.camera.x >> 1;
@@ -131,8 +133,8 @@ void Back_Week6_DrawBG(StageBack *back)
 			treep[j].x += ((MUtil_Cos(FIXED_MUL(animf_count, fg_tree_p->off[j])) * FIXED_DEC(3,1)) >> 8) - fx;
 			treep[j].y += ((MUtil_Sin(FIXED_MUL(animf_count, fg_tree_p->off[j])) * FIXED_DEC(3,1)) >> 8) - fy;
 		}
-		
-		Stage_DrawTexArb(&this->tex_back1, &fg_tree_p->src, &treep[0], &treep[1], &treep[2], &treep[3], stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTexArb(&this->tex_back1, &fg_tree_p->src, &treep[0], &treep[1], &treep[2], &treep[3], stage.camera.bzoom);
 	}
 	
 	//Draw background trees
@@ -151,9 +153,11 @@ void Back_Week6_DrawBG(StageBack *back)
 		FIXED_DEC(61,1),
 		FIXED_DEC(50,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back1, &bg_tree_l_src, &bg_tree_l_dst, stage.camera.bzoom);
-	Stage_DrawTex(&this->tex_back1, &bg_tree_r_src, &bg_tree_r_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+	{
+		Stage_DrawTex(&this->tex_back1, &bg_tree_l_src, &bg_tree_l_dst, stage.camera.bzoom);
+		Stage_DrawTex(&this->tex_back1, &bg_tree_r_src, &bg_tree_r_dst, stage.camera.bzoom);
+	}
 	
 	//Draw school
 	fx = stage.camera.x >> 3;
@@ -166,8 +170,8 @@ void Back_Week6_DrawBG(StageBack *back)
 		FIXED_DEC(255,1),
 		FIXED_DEC(75,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back0, &school_src, &school_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &school_src, &school_dst, stage.camera.bzoom);
 	
 	//Draw street
 	//fx = stage.camera.x >> 3;
@@ -195,8 +199,8 @@ void Back_Week6_DrawBG(StageBack *back)
 	};
 	
 	RECT street_src = {0, 75, 255, 54};
-	
-	Stage_DrawTexArb(&this->tex_back0, &street_src, &street_d0, &street_d1, &street_d2, &street_d3, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTexArb(&this->tex_back0, &street_src, &street_d0, &street_d1, &street_d2, &street_d3, stage.camera.bzoom);
 	
 	//Draw sky
 	fx = stage.camera.x >> 4;
@@ -209,8 +213,10 @@ void Back_Week6_DrawBG(StageBack *back)
 		FIXED_DEC(255,1),
 		FIXED_DEC(125,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back0, &sky_src, &sky_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &sky_src, &sky_dst, stage.camera.bzoom);
+	else
+		Gfx_SetClear(213, 241, 246);
 }
 
 static fixed_t week6_back_paraly[] = {
@@ -272,11 +278,14 @@ void Back_Week6_DrawBG3(StageBack *back)
 		for (int x = 0; x < 8; x++)
 		{
 			//Draw quad and increment source rect
-			Stage_DrawTexArb(&this->tex_back0, &back_src, &back_dst[y][x], &back_dst[y][x + 1], &back_dst[y + 1][x], &back_dst[y + 1][x + 1], stage.camera.bzoom);
+			if(stage.prefs.lowquality ==false)
+				Stage_DrawTexArb(&this->tex_back0, &back_src, &back_dst[y][x], &back_dst[y][x + 1], &back_dst[y + 1][x], &back_dst[y + 1][x + 1], stage.camera.bzoom);
 			if ((back_src.x += 32) >= 0xE0)
 				back_src.w--;
 		}
 	}
+	if(stage.prefs.lowquality ==true)
+		Gfx_SetClear(48, 6, 107);
 }
 
 void Back_Week6_Free(StageBack *back)

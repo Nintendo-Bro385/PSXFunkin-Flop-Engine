@@ -41,12 +41,16 @@
 				<file name = "hud0.tim" type = "data" source = "iso/stage/hud0.tim"/>
 				<file name = "hud0weeb.tim" type = "data" source = "iso/stage/hud0weeb.tim"/>
 				<file name = "hud1.tim" type = "data" source = "iso/stage/hud1.tim"/>
+				<file name = "hud1ddr.tim" type = "data" source = "iso/stage/hud1ddr.tim"/>
+				<file name = "hudc.tim" type = "data" source = "iso/stage/hudc.tim"/>
+				<file name = "pixelhud.tim" type = "data" source = "iso/stage/pixelhud.tim"/>
 				<file name = "hud2.tim" type = "data" source = "iso/stage/hud2.tim"/>
 				<file name = "hud3.tim" type = "data" source = "iso/stage/hud3.tim"/>
 				<file name = "hud4.tim" type = "data" source = "iso/stage/hud4.tim"/>
 				<file name = "phud.tim" type = "data" source = "iso/stage/phud.tim"/>
 				<file name = "phud1.tim" type = "data" source = "iso/stage/phud1.tim"/>
-				<file name = "dia.tim" type = "data" source = "iso/stage/dia.tim"/>
+				<file name = "results.tim" type = "data" source = "iso/stage/results/results.tim"/>
+				<file name = "sprites.tim" type = "data" source = "iso/stage/results/sprites.tim"/>
 			</dir>
 			
 			<!-- Week 1 assets -->
@@ -217,6 +221,7 @@
 			<dir name = "char">
 				<!-- Boyfriend assets -->
 				<file name = "bf.arc" type = "data" source = "iso/bf/main.arc"/>
+				<file name = "bfcar.arc" type = "data" source = "iso/bf/car.arc"/>
 				<file name = "bfdead.arc" type = "data" source = "iso/bf/dead.arc"/>
 				<file name = "bfweeb.arc" type = "data" source = "iso/bf/weeb.arc"/>
 				
@@ -259,6 +264,9 @@
 				<!-- menu character assets -->
 				<file name = "Mbf.arc" type = "data" source = "iso/menu/characters/mbf.arc"/>
 				<file name = "Mgf.arc" type = "data" source = "iso/menu/characters/mgf.arc"/>
+				<file name = "Djbf.arc" type = "data" source = "iso/menu/characters/djbf/djbf.arc"/>
+				
+				<file name = "ddr.arc" type = "data" source = "iso/ddrarrows/ddr.arc"/>
 			</dir>
 			
 			<!-- Music -->
@@ -288,6 +296,8 @@
 				<file name = "week6a.xa" type = "xa" source = "iso/music/week6a.xa"/>
 				<dummy sectors="128"/>
 				<file name = "week6b.xa" type = "xa" source = "iso/music/week6b.xa"/>
+				<dummy sectors="128"/>
+				<file name = "week6c.xa" type = "xa" source = "iso/music/week6c.xa"/>
 				<dummy sectors="128"/>
 				<file name = "week7a.xa" type = "xa" source = "iso/music/week7a.xa"/>
 				<dummy sectors="128"/>

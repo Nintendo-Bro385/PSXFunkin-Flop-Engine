@@ -43,8 +43,6 @@ typedef struct
 	//Speaker
 	Speaker speaker;
 	
-	//Pico test
-	u16 *pico_p;
 } Char_GF;
 
 //GF character definitions
@@ -116,27 +114,6 @@ void Char_GF_Tick(Character *character)
 {
 	Char_GF *this = (Char_GF*)character;
 	
-	//Initialize Pico test
-	if (stage.stage_id == StageId_7_3 && stage.back != NULL && this->pico_p == NULL)
-		this->pico_p = ((Back_Week7*)stage.back)->pico_chart;
-	
-	if (this->pico_p != NULL)
-	{
-		if (stage.note_scroll >= 0)
-		{
-			//Scroll through Pico chart
-			u16 substep = stage.note_scroll >> FIXED_SHIFT;
-			while (substep >= ((*this->pico_p) & 0x7FFF))
-			{
-				//Play animation and bump speakers
-				character->set_anim(character, ((*this->pico_p) & 0x8000) ? CharAnim_RightAlt : CharAnim_LeftAlt);
-				Speaker_Bump(&this->speaker);
-				this->pico_p++;
-			}
-		}
-	}
-	else
-	{
 		if (stage.flag & STAGE_FLAG_JUST_STEP)
 		{
 			//Stage specific animations
@@ -166,14 +143,11 @@ void Char_GF_Tick(Character *character)
 				Speaker_Bump(&this->speaker);
 			}
 		}
-	}
 	
 	//Get parallax
 	fixed_t parallax;
-	if (stage.stage_id >= StageId_1_1 && stage.stage_id <= StageId_1_4)
-		parallax = FIXED_DEC(7,10);
-	else
-		parallax = FIXED_UNIT;
+	
+	parallax = FIXED_UNIT;
 	
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_GF_SetFrame);
@@ -268,12 +242,6 @@ Character *Char_GF_New(fixed_t x, fixed_t y)
 	
 	//Initialize speaker
 	Speaker_Init(&this->speaker);
-	
-	//Initialize Pico test
-	if (stage.stage_id == StageId_7_3 && stage.back != NULL)
-		this->pico_p = ((Back_Week7*)stage.back)->pico_chart;
-	else
-		this->pico_p = NULL;
 	
 	return (Character*)this;
 }

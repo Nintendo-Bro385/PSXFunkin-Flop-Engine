@@ -25,6 +25,7 @@ typedef enum
 	XA_Week5B, //WEEK5B.XA
 	XA_Week6A, //WEEK6A.XA
 	XA_Week6B, //WEEK6B.XA
+	XA_Week6C, //WEEK6C.XA
 	XA_Week7A, //WEEK7A.XA
 	XA_Week7B, //WEEK7B.XA
 	XA_PortalA,  //PortalA.XA
@@ -56,6 +57,7 @@ typedef enum
 	XA_Philly, //Philly
 	//WEEK3B.XA
 	XA_Blammed, //Blammed
+	XA_Results, //Blammed
 	//WEEK4A.XA
 	XA_SatinPanties, //Satin Panties
 	XA_High,         //High
@@ -72,6 +74,10 @@ typedef enum
 	XA_Roses,  //Roses
 	//WEEK6B.XA
 	XA_Thorns, //Thorns
+	//WEEK6C.XA
+	XA_Gameoverpixel, //Game over pixel
+	XA_Lunchbox1, //Lunchbox
+	XA_Lunchbox2, //Lunchbox scary
 	//WEEK7A.XA
 	XA_Ugh,  //Ugh
 	XA_Guns, //Guns

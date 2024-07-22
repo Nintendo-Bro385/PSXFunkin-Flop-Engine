@@ -12,6 +12,7 @@ all: \
   iso/music/week5b.xa \
   iso/music/week6a.xa \
   iso/music/week6b.xa \
+  iso/music/week6c.xa \
   iso/music/week7a.xa \
   iso/music/week7b.xa \
   iso/music/portala.xa 
@@ -29,13 +30,14 @@ iso/music/week1b.xa: iso/music/dadbattlei.xa iso/music/dadbattlev.xa iso/music/t
 iso/music/week2a.xa: iso/music/spookeezi.xa iso/music/spookeezv.xa iso/music/southi.xa iso/music/southv.xa
 iso/music/week2b.xa: iso/music/monsteri.xa iso/music/monsterv.xa iso/music/cluckedi.xa iso/music/cluckedv.xa
 iso/music/week3a.xa: iso/music/picoi.xa iso/music/picov.xa iso/music/phillyi.xa iso/music/phillyv.xa
-iso/music/week3b.xa: iso/music/blammedi.xa iso/music/blammedv.xa
+iso/music/week3b.xa: iso/music/blammedi.xa iso/music/blammedv.xa iso/music/results.xa
 iso/music/week4a.xa: iso/music/satinpantiesi.xa iso/music/satinpantiesv.xa iso/music/highi.xa iso/music/highv.xa
 iso/music/week4b.xa: iso/music/milfi.xa iso/music/milfv.xa iso/music/testi.xa iso/music/testv.xa
 iso/music/week5a.xa: iso/music/cocoai.xa iso/music/cocoav.xa iso/music/eggnogi.xa iso/music/eggnogv.xa
 iso/music/week5b.xa: iso/music/winterhorrorlandi.xa iso/music/winterhorrorlandv.xa
 iso/music/week6a.xa: iso/music/senpaii.xa iso/music/senpaiv.xa iso/music/rosesi.xa iso/music/rosesv.xa
 iso/music/week6b.xa: iso/music/thornsi.xa iso/music/thornsv.xa
+iso/music/week6c.xa: iso/music/gameoverpixel.xa iso/music/lunchbox1.xa iso/music/lunchbox2.xa
 iso/music/week7a.xa: iso/music/ughi.xa iso/music/ughv.xa iso/music/gunsi.xa iso/music/gunsv.xa
 iso/music/week7b.xa: iso/music/stressi.xa iso/music/stressv.xa
 iso/music/portala.xa: iso/music/stillalivei.xa iso/music/stillalivev.xa iso/music/senbonzakura.xa

@@ -50,12 +50,13 @@ void Back_Week5_DrawBG(StageBack *back)
 		FIXED_DEC(570,1),
 		FIXED_DEC(27,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back2, &snow_src, &snow_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back2, &snow_src, &snow_dst, stage.camera.bzoom);
 	snow_src.y = 255; snow_src.h = 0;
 	snow_dst.y += snow_dst.h - FIXED_UNIT;
 	snow_dst.h *= 3;
-	Stage_DrawTex(&this->tex_back2, &snow_src, &snow_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back2, &snow_src, &snow_dst, stage.camera.bzoom);
 	
 	//Draw boppers
 	static const struct Back_Week5_LowerBop
@@ -80,7 +81,8 @@ void Back_Week5_DrawBG(StageBack *back)
 			lbop_p->dst.w + (beat_bop << 2),
 			lbop_p->dst.h - (beat_bop << 3),
 		};
-		Stage_DrawTex(&this->tex_back2, &lbop_p->src, &lbop_dst, stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTex(&this->tex_back2, &lbop_p->src, &lbop_dst, stage.camera.bzoom);
 	}
 	
 	//Draw tree
@@ -94,8 +96,8 @@ void Back_Week5_DrawBG(StageBack *back)
 		FIXED_DEC(174,1),
 		FIXED_DEC(210,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back5, &tree_src, &tree_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back5, &tree_src, &tree_dst, stage.camera.bzoom);
 	
 	//Draw second floor
 	fx = stage.camera.x >> 2;
@@ -122,7 +124,8 @@ void Back_Week5_DrawBG(StageBack *back)
 	for (size_t i = 0; i < COUNT_OF(floor_piece); i++, floor_p++)
 	{
 		floor_dst.w = floor_p->src.w ? (floor_p->src.w * floor_p->scale) : floor_p->scale;
-		Stage_DrawTex(&this->tex_back1, &floor_p->src, &floor_dst, stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTex(&this->tex_back1, &floor_p->src, &floor_dst, stage.camera.bzoom);
 		floor_dst.x += floor_dst.w;
 	}
 	
@@ -145,7 +148,8 @@ void Back_Week5_DrawBG(StageBack *back)
 			ubop_p->dst.w,
 			ubop_p->dst.h - (beat_bop << 2),
 		};
-		Stage_DrawTex(&this->tex_back4, &ubop_p->src, &ubop_dst, stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTex(&this->tex_back4, &ubop_p->src, &ubop_dst, stage.camera.bzoom);
 	}
 	
 	//Draw back wall
@@ -175,15 +179,19 @@ void Back_Week5_DrawBG(StageBack *back)
 	wall_fill.y = wall_dst.y + wall_dst.h - FIXED_UNIT;
 	wall_fill.w = FIXED_DEC(500,1);
 	wall_fill.h = FIXED_DEC(100,1);
-	Stage_DrawTex(&this->tex_back0, &wall_src, &wall_fill, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &wall_src, &wall_fill, stage.camera.bzoom);
 	
 	const struct Back_Week5_WallPiece *wall_p = wall_piece;
 	for (size_t i = 0; i < COUNT_OF(wall_piece); i++, wall_p++)
 	{
 		wall_dst.w = wall_p->src.w ? (wall_p->src.w * wall_p->scale) : wall_p->scale;
-		Stage_DrawTex(&this->tex_back0, &wall_p->src, &wall_dst, stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTex(&this->tex_back0, &wall_p->src, &wall_dst, stage.camera.bzoom);
 		wall_dst.x += wall_dst.w;
 	}
+	if(stage.prefs.lowquality ==true)
+		Gfx_SetClear(149, 224, 255);
 }
 
 void Back_Week5_Free(StageBack *back)

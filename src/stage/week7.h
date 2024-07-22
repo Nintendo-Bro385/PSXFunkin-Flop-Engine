@@ -26,9 +26,7 @@ typedef struct
 	Gfx_Tex tex_back1; //Background
 	Gfx_Tex tex_back2; //Sniper and Tank
 	Gfx_Tex tex_back3; //Background mountains
-	
-	//Pico chart
-	u16 *pico_chart;
+
 } Back_Week7;
 
 //Week 7 functions

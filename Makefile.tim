@@ -10,15 +10,20 @@ all: \
 	iso/stage/hud0.tim \
 	iso/stage/hud0weeb.tim \
 	iso/stage/hud1.tim \
+	iso/stage/hud1ddr.tim \
+	iso/stage/hudc.tim \
+	iso/stage/pixelhud.tim \
 	iso/stage/hud2.tim \
 	iso/stage/hud3.tim \
 	iso/stage/hud4.tim \
 	iso/stage/phud.tim \
 	iso/stage/phud1.tim \
-	iso/stage/dia.tim \
 	iso/stage/portraits/bf.arc \
 	iso/stage/portraits/senpai.arc \
+	iso/stage/results/results.tim \
+	iso/stage/results/sprites.tim \
 	iso/bf/main.arc \
+	iso/bf/car.arc \
 	iso/bf/dead.arc \
 	iso/bf/weeb.arc \
 	iso/dad/main.arc \
@@ -41,6 +46,8 @@ all: \
 	iso/clucky/main.arc \
 	iso/menu/characters/mbf.arc \
 	iso/menu/characters/mgf.arc \
+	iso/menu/characters/djbf/djbf.arc \
+	iso/ddrarrows/ddr.arc \
 	iso/week1/back.arc \
 	iso/week2/back.arc \
 	iso/week3/back.arc \
@@ -69,7 +76,10 @@ iso/menu/backgrounds/week.arc: iso/menu/backgrounds/week0.tim iso/menu/backgroun
 # BF
 iso/bf/main.arc: iso/bf/bf0.tim iso/bf/bf1.tim iso/bf/bf2.tim iso/bf/bf3.tim iso/bf/bf4.tim iso/bf/bf5.tim iso/bf/bf6.tim iso/bf/dead0.tim
 iso/bf/dead.arc: iso/bf/dead1.tim iso/bf/dead2.tim iso/bf/retry.tim
-iso/bf/weeb.arc: iso/bf/weeb0.tim iso/bf/weeb1.tim
+iso/bf/weeb.arc: iso/bf/weeb0.tim iso/bf/weeb1.tim iso/bf/weeb2.tim iso/bf/weeb3.tim iso/bf/weeb4.tim iso/bf/weeb5.tim
+
+# BF Car
+iso/bf/car.arc: iso/bf/bfcar0.tim iso/bf/bfcar1.tim iso/bf/bfcar2.tim iso/bf/bfcar3.tim iso/bf/bfcar4.tim iso/bf/bfcar5.tim iso/bf/bfcar6.tim iso/bf/bfcar7.tim iso/bf/bf5.tim iso/bf/bf6.tim iso/bf/dead0.tim iso/bf/dead1.tim iso/bf/dead2.tim iso/bf/retry.tim
 
 # Dad
 iso/dad/main.arc: iso/dad/idle0.tim iso/dad/idle1.tim iso/dad/left.tim iso/dad/down.tim iso/dad/up.tim iso/dad/right.tim
@@ -114,6 +124,12 @@ iso/menu/characters/mbf.arc: iso/menu/characters/menubf.tim
 
 # Menu GF
 iso/menu/characters/mgf.arc: iso/menu/characters/menugf0.tim iso/menu/characters/menugf1.tim
+
+# Freeplay BF/DJ BF
+iso/menu/characters/djbf/djbf.arc: iso/menu/characters/djbf/idle0.tim iso/menu/characters/djbf/idle1.tim iso/menu/characters/djbf/spin0.tim iso/menu/characters/djbf/spin1.tim iso/menu/characters/djbf/select0.tim
+
+# DDR
+iso/ddrarrows/ddr.arc: iso/ddrarrows/hud4.tim iso/ddrarrows/hud41.tim iso/ddrarrows/hud42.tim iso/ddrarrows/hud43.tim 
 
 # Week 1
 iso/week1/back.arc: iso/week1/back0.tim iso/week1/back1.tim

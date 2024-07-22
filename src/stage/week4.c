@@ -83,7 +83,8 @@ void Week4_Henchmen_Draw(Back_Week4 *this, fixed_t x, fixed_t y)
 	
 	RECT src = {cframe->src[0], cframe->src[1], cframe->src[2], cframe->src[3]};
 	RECT_FIXED dst = {ox, oy, src.w << FIXED_SHIFT, src.h << FIXED_SHIFT};
-	Stage_DrawTex(&this->tex_hench, &src, &dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_hench, &src, &dst, stage.camera.bzoom);
 }
 
 //Week 4 background functions
@@ -120,8 +121,8 @@ void Back_Week4_DrawFG(StageBack *back)
 		FIXED_DEC(400,1),
 		FIXED_DEC(200,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back3, &car_src, &car_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back3, &car_src, &car_dst, stage.camera.bzoom);
 }
 
 void Back_Week4_DrawMD(StageBack *back)
@@ -141,12 +142,13 @@ void Back_Week4_DrawMD(StageBack *back)
 		FIXED_DEC(256,1),
 		FIXED_DEC(128,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back0, &fglimo_src, &fglimo_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &fglimo_src, &fglimo_dst, stage.camera.bzoom);
 	fglimo_dst.x += fglimo_dst.w;
 	fglimo_dst.y -= (fglimo_dst.h * 22) >> 7;
 	fglimo_src.y += 128;
-	Stage_DrawTex(&this->tex_back0, &fglimo_src, &fglimo_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &fglimo_src, &fglimo_dst, stage.camera.bzoom);
 }
 
 void Back_Week4_DrawBG(StageBack *back)
@@ -172,11 +174,13 @@ void Back_Week4_DrawBG(StageBack *back)
 		}
 	}
 	Animatable_Animate(&this->hench_animatable, (void*)this, Week4_Henchmen_SetFrame);
-	
-	Week4_Henchmen_Draw(this, FIXED_DEC(-50,1) - fx, FIXED_DEC(30,1) - fy);
-	Week4_Henchmen_Draw(this,  FIXED_DEC(50,1) - fx, FIXED_DEC(30,1) - fy);
-	Week4_Henchmen_Draw(this, FIXED_DEC(150,1) - fx, FIXED_DEC(30,1) - fy);
-	Week4_Henchmen_Draw(this, FIXED_DEC(250,1) - fx, FIXED_DEC(30,1) - fy);
+	if(stage.prefs.lowquality ==false)
+	{
+		Week4_Henchmen_Draw(this, FIXED_DEC(-50,1) - fx, FIXED_DEC(30,1) - fy);
+		Week4_Henchmen_Draw(this,  FIXED_DEC(50,1) - fx, FIXED_DEC(30,1) - fy);
+		Week4_Henchmen_Draw(this, FIXED_DEC(150,1) - fx, FIXED_DEC(30,1) - fy);
+		Week4_Henchmen_Draw(this, FIXED_DEC(250,1) - fx, FIXED_DEC(30,1) - fy);
+	}
 	
 	//Draw background limo
 	//Use same scroll as henchmen
@@ -187,11 +191,12 @@ void Back_Week4_DrawBG(StageBack *back)
 		FIXED_DEC(256,1),
 		FIXED_DEC(128,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back1, &bglimo_src, &bglimo_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &bglimo_src, &bglimo_dst, stage.camera.bzoom);
 	bglimo_dst.x += bglimo_dst.w;
 	bglimo_src.y += 128;
-	Stage_DrawTex(&this->tex_back1, &bglimo_src, &bglimo_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back1, &bglimo_src, &bglimo_dst, stage.camera.bzoom);
 	
 	//Draw sunset
 	fx = stage.camera.x >> 4;
@@ -204,8 +209,10 @@ void Back_Week4_DrawBG(StageBack *back)
 		FIXED_DEC(340 + SCREEN_WIDEOADD,1),
 		FIXED_DEC(260,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back2, &sunset_src, &sunset_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back2, &sunset_src, &sunset_dst, stage.camera.bzoom);
+	else
+		Gfx_SetClear(252, 168, 240);
 }
 
 void Back_Week4_Free(StageBack *back)

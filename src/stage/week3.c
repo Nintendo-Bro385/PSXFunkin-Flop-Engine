@@ -100,13 +100,15 @@ void Back_Week3_DrawBG(StageBack *back)
 	for (size_t i = 0; i < COUNT_OF(roof_piece); i++, roof_p++)
 	{
 		roof_dst.w = roof_p->src.w ? (roof_p->src.w * roof_p->scale) : roof_p->scale;
-		Stage_DrawTex(&this->tex_back2, &roof_p->src, &roof_dst, stage.camera.bzoom);
+		if(stage.prefs.lowquality ==false)
+			Stage_DrawTex(&this->tex_back2, &roof_p->src, &roof_dst, stage.camera.bzoom);
 		roof_dst.x += roof_dst.w;
 	}
 	
 	RECT roof_fillsrc = {0, 254, 1, 0};
 	RECT roof_fill = {0, SCREEN_HEIGHT * 2 / 3, SCREEN_WIDTH, SCREEN_HEIGHT * 1 / 3};
-	Gfx_DrawTex(&this->tex_back2, &roof_fillsrc, &roof_fill);
+	if(stage.prefs.lowquality ==false)
+		Gfx_DrawTex(&this->tex_back2, &roof_fillsrc, &roof_fill);
 	
 	//Move train
 	if (this->train_x <= TRAIN_END_X)
@@ -139,7 +141,8 @@ void Back_Week3_DrawBG(StageBack *back)
 		{
 			if (train_dst.x >= (SCREEN_WIDTH2 << FIXED_SHIFT) || train_dst.x <= -(train_dst.w + (SCREEN_WIDTH2 << FIXED_SHIFT)))
 				continue;
-			Stage_DrawTex(&this->tex_back4, &train_src, &train_dst, stage.camera.bzoom);
+			if(stage.prefs.lowquality ==false)
+				Stage_DrawTex(&this->tex_back4, &train_src, &train_dst, stage.camera.bzoom);
 		}
 	}
 	
@@ -159,9 +162,11 @@ void Back_Week3_DrawBG(StageBack *back)
 		FIXED_DEC(39,1),
 		FIXED_DEC(121,1)
 	};
-	
-	Stage_DrawTex(&this->tex_back3, &arcl_src, &arcl_dst, stage.camera.bzoom);
-	Stage_DrawTex(&this->tex_back3, &arcr_src, &arcr_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+	{
+		Stage_DrawTex(&this->tex_back3, &arcl_src, &arcl_dst, stage.camera.bzoom);
+		Stage_DrawTex(&this->tex_back3, &arcr_src, &arcr_dst, stage.camera.bzoom);
+	}
 	
 	//Draw lights
 	fx = stage.camera.x >> 1;
@@ -188,9 +193,11 @@ void Back_Week3_DrawBG(StageBack *back)
 		u8 win_r = (((fixed_t)this->win_r * this->win_time) >> FIXED_SHIFT) / 6;
 		u8 win_g = (((fixed_t)this->win_g * this->win_time) >> FIXED_SHIFT) / 6;
 		u8 win_b = (((fixed_t)this->win_b * this->win_time) >> FIXED_SHIFT) / 6;
-		
-		Stage_DrawTexCol(&this->tex_back1, &lightl_src, &lightl_dst, stage.camera.bzoom, win_r, win_g, win_b);
-		Stage_DrawTexCol(&this->tex_back1, &lightr_src, &lightr_dst, stage.camera.bzoom, win_r, win_g, win_b);
+		if(stage.prefs.lowquality ==false)
+		{
+			Stage_DrawTexCol(&this->tex_back1, &lightl_src, &lightl_dst, stage.camera.bzoom, win_r, win_g, win_b);
+			Stage_DrawTexCol(&this->tex_back1, &lightr_src, &lightr_dst, stage.camera.bzoom, win_r, win_g, win_b);
+		}
 	}
 	
 	//Draw buildings
@@ -202,14 +209,17 @@ void Back_Week3_DrawBG(StageBack *back)
 		FIXED_DEC(120,1)
 	};
 	
-	Stage_DrawTex(&this->tex_back0, &building_src, &building_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &building_src, &building_dst, stage.camera.bzoom);
 	building_dst.x += building_dst.w;
 	building_src.y += building_src.h;
-	Stage_DrawTex(&this->tex_back0, &building_src, &building_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back0, &building_src, &building_dst, stage.camera.bzoom);
 	
 	RECT building_fillsrc = {0, 255, 1, 0};
 	RECT building_fill = {0, SCREEN_HEIGHT * 3 / 7, SCREEN_WIDTH, SCREEN_HEIGHT * 4 / 7};
-	Gfx_DrawTex(&this->tex_back0, &building_fillsrc, &building_fill);
+	if(stage.prefs.lowquality ==false)
+		Gfx_DrawTex(&this->tex_back0, &building_fillsrc, &building_fill);
 	
 	//Draw sky
 	fx = stage.camera.x >> 3;
@@ -222,11 +232,14 @@ void Back_Week3_DrawBG(StageBack *back)
 		FIXED_DEC(172,1) + FIXED_DEC(SCREEN_WIDEOADD,1),
 		FIXED_DEC(110,1) + FIXED_DEC(SCREEN_WIDEOADD,2)
 	};
-	
-	Stage_DrawTex(&this->tex_back5, &sky_src, &sky_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back5, &sky_src, &sky_dst, stage.camera.bzoom);
 	sky_dst.x += sky_dst.w;
 	sky_src.y += sky_src.h;
-	Stage_DrawTex(&this->tex_back5, &sky_src, &sky_dst, stage.camera.bzoom);
+	if(stage.prefs.lowquality ==false)
+		Stage_DrawTex(&this->tex_back5, &sky_src, &sky_dst, stage.camera.bzoom);
+	else
+		Gfx_SetClear(157, 22, 84);
 }
 
 void Back_Week3_Free(StageBack *back)

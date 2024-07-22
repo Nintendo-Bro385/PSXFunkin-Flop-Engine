@@ -30,6 +30,7 @@
 #include "character/gf.h"
 #include "character/mbf.h"
 #include "character/mgf.h"
+#include "character/djbf.h"
 
 const char *fwt = "??????";
 const char *nmwft = "??????";
@@ -41,19 +42,20 @@ const char *swapt = "??????";
 const char *twot = "??????";
 const char *lqt = "??????";
 const char *dbt = "??????";
-int wicon =5;
-int nmwficon =5;
-int nmsicon =5;
-int nmmicon =5;
-int mfdicon =5;
-int hellicon =5;
-int swapicon =5;
-int twoicon =5;
-int lqicon =5;
-int dbicon =5;
+int wicon =30;
+int nmwficon =30;
+int nmsicon =30;
+int nmmicon =30;
+int mfdicon =30;
+int hellicon =30;
+int swapicon =30;
+int twoicon =30;
+int lqicon =30;
+int dbicon =30;
 boolean up;
 boolean down;
 boolean nomem;
+boolean switchscreen;
 
 //Menu messages
 static const char *funny_messages[][2] = {
@@ -169,6 +171,7 @@ static struct
     Character *gf; //Title Girlfriend
     Character *mbf; //Menu Bf
     Character *mgf; //Menu Gf
+    Character *djbf; //Freeplay bf / Dj bf
 } menu;
 
 /*static void ButtonStr buttons[] = {
@@ -495,6 +498,7 @@ static void Menu_DrawHealth(u8 i, s16 x, s16 y, boolean is_selected)
 //Menu functions
 void Menu_Load(MenuPage page)
 {
+	switchscreen = false;
     stage.cutdia=0;
     stage.paused = false;
     if (stage.loadsaveonce == false)
@@ -523,6 +527,8 @@ void Menu_Load(MenuPage page)
     menu.gf = Char_GF_New(FIXED_DEC(62,1), FIXED_DEC(-12,1));
     menu.mbf = Char_Mbf_New(FIXED_DEC(11,1), FIXED_DEC(40,1));
     menu.mgf = Char_Mgf_New(FIXED_DEC(91,1), FIXED_DEC(13,1));
+    menu.djbf = Char_Djbf_New(FIXED_DEC(102,1), FIXED_DEC(76,1));
+    
     stage.camera.x = stage.camera.y = FIXED_DEC(0,1);
     stage.camera.bzoom = FIXED_UNIT;
     stage.gf_speed = 4;
@@ -583,6 +589,7 @@ void Menu_Unload(void)
     Character_Free(menu.gf);
     Character_Free(menu.mgf);
     Character_Free(menu.mbf);
+    Character_Free(menu.djbf);
     Mem_Free(menu.weeks);
 }
 
@@ -649,7 +656,7 @@ void Menu_Tick(void)
 						menu.font_bold.draw(&menu.font_bold, "NINTENDO BRO", SCREEN_WIDTH2, SCREEN_HEIGHT2 - 40, FontAlign_Center);
 						menu.font_bold.draw(&menu.font_bold, "CUCKYDEV",      SCREEN_WIDTH2, SCREEN_HEIGHT2  +24, FontAlign_Center);
 						Menu_DrawHealth(20, 240, SCREEN_HEIGHT2 - 42, true);
-						Menu_DrawHealth(22, 215, SCREEN_HEIGHT2 + 16, true);
+						Menu_DrawHealth(23, 215, SCREEN_HEIGHT2 + 16, true);
 				//Fallthrough
 					case 2:
 					case 1:
@@ -800,7 +807,7 @@ void Menu_Tick(void)
 						stage.prefs.mwf_awards = true;
 						stage.prefs.ms_awards = true;
 						stage.prefs.mm_awards = true;
-						stage.prefs.mfd_awards = true;
+						stage.prefs.fcs_awards = true;
 						stage.prefs.hell_awards = true;
 						stage.prefs.swap_awards = true;
 						stage.prefs.two_awards = true;
@@ -906,7 +913,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				wicon=5;
+				wicon=30;
 				fwt="?";
 			    }
 			    if (stage.prefs.mwf_awards == true)
@@ -916,7 +923,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				nmwficon=5;
+				nmwficon=30;
 				nmwft="?";
 			    }
 			    if (stage.prefs.ms_awards == true)
@@ -926,7 +933,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				nmsicon=5;
+				nmsicon=30;
 				nmst="?";
 			    }
 			    if (stage.prefs.mm_awards == true)
@@ -936,17 +943,17 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				nmmicon=5;
+				nmmicon=30;
 				nmmt="?";
 			    }
-			    if (stage.prefs.mfd_awards == true)
+			    if (stage.prefs.fcs_awards == true)
 			    {
 				mfdicon=8;
-				mfdt="Manifested get the bad ending";
+				mfdt="HOLY SHIT, YOU FC'D SENBONZAKURA??";
 			    }
 		    	    else
 			    {
-				mfdicon=5;
+				mfdicon=30;
 				mfdt="?";
 			    }
 			    if (stage.prefs.hell_awards == true)
@@ -958,7 +965,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				hellicon=5;
+				hellicon=30;
 				hellt="?";
 			    }
 			    if (stage.prefs.lq_awards == true)
@@ -968,7 +975,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				lqicon=5;
+				lqicon=30;
 				lqt="?";
 			    }
 			    if (stage.prefs.swap_awards == true)
@@ -978,7 +985,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				swapicon=5;
+				swapicon=30;
 				swapt="?";
 			    }
 			    if (stage.prefs.two_awards == true)
@@ -988,7 +995,7 @@ void Menu_Tick(void)
 			    }
 		    	    else
 			    {
-				twoicon=5;
+				twoicon=30;
 				twot="?";
 			    }
 			    if (stage.prefs.debugger_awards == true)
@@ -999,17 +1006,17 @@ void Menu_Tick(void)
 
 		    	    else
 			    {
-				dbicon=5;
+				dbicon=30;
 				dbt="?";
 			    }
-			    if(stage.prefs.nomissfw == true)
+			    if(stage.prefs.fcs_awards == true)
 		            {
 		            Menu_DrawHealth(4, 181, 8, true);
 		            }
 
             //Draw version identification
             menu.font_arial.draw(&menu.font_arial,
-                "Flop Engine v0.1",
+                "Flop Engine v1",
                 8,
                 SCREEN_HEIGHT - 32,
                 FontAlign_Left
@@ -1216,6 +1223,8 @@ void Menu_Tick(void)
 		        menu.page_state.title.fade -= FIXED_MUL(menu.page_state.title.fadespd, timer_dt);
                 }
             }
+            
+            stage.storyname = menu_options[menu.select].name;
 
             //Draw difficulty selector
             Menu_DifficultySelector(SCREEN_WIDTH - 55, 176);
@@ -1384,13 +1393,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Tutorial, 0x40, 3, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 1:
@@ -1400,13 +1402,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Bopeebo, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1420,13 +1415,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Fresh, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 3:
@@ -1436,13 +1424,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Dadbattle, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1456,13 +1437,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Spookeez, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 5:
@@ -1472,13 +1446,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_South, 0x40, 2, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1492,13 +1459,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Monster, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 7:
@@ -1508,13 +1468,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Pico, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1528,13 +1481,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Philly, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 9:
@@ -1544,13 +1490,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Blammed, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1564,13 +1503,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_SatinPanties, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 11:
@@ -1580,13 +1512,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_High, 0x40, 2, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1600,13 +1525,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_MILF, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 13:
@@ -1616,13 +1534,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Cocoa, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1636,13 +1547,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Eggnog, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 15:
@@ -1652,13 +1556,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_WinterHorrorland, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1672,13 +1569,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Senpai, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 17:
@@ -1688,13 +1578,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Roses, 0x40, 2, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1708,13 +1591,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Thorns, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 19:
@@ -1724,13 +1600,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Ugh, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1744,13 +1613,6 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Guns, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
 				case 21:
@@ -1760,13 +1622,6 @@ void Menu_Tick(void)
 						//Play Tutorial Music
 						Audio_StopXA();
 						Audio_PlayXA_Track(XA_Stress, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 						Audio_WaitPlayXA();
 					}
 					break;
@@ -1780,15 +1635,15 @@ void Menu_Tick(void)
 						Audio_PlayXA_Track(XA_Test, 0x40, 2, 1);
 						Audio_WaitPlayXA();
 					}
-					if (pad_state.press & PAD_L1)
-					{
-						//Play Tutorial Music
-						Audio_StopXA();
-						Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-						Audio_WaitPlayXA();
-					}
 					break;
 				}
+			}
+			if (pad_state.press & PAD_L1)
+			{
+				//Play Tutorial Music
+				Audio_StopXA();
+				Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+				Audio_WaitPlayXA();
 			}
 			//Initialize page
 			if (menu.page_swap)
@@ -1831,12 +1686,19 @@ void Menu_Tick(void)
 				}
 
 				//Select option if cross is pressed
-				if (pad_state.press & (PAD_START | PAD_CROSS))
+				if (pad_state.press & (PAD_START | PAD_CROSS) && !switchscreen)
+				{
+					menu.djbf->set_anim(menu.djbf, CharAnim_Up);
+					switchscreen = true;
+				}
+				
+				if (switchscreen && Animatable_Ended(&menu.djbf->animatable))
 				{
 					menu.next_page = MenuPage_Stage;
 					menu.page_param.stage.id = menu_options[menu.select].stage;
 					menu.page_param.stage.story = false;
 					Trans_Start();
+					switchscreen = false;
 				}
 
 				//Return to main menu if circle is pressed
@@ -1862,7 +1724,7 @@ void Menu_Tick(void)
 			//Draw box at the bottom
 			RECT top_box = {0, 0, 320, 30};
 			Gfx_DrawRect(&top_box, 0, 0, 0);
-
+            		
 			//Draw options
 			s32 next_scroll = menu.select * FIXED_DEC(32,1);
 			menu.scroll += (next_scroll - menu.scroll) >> 4;
@@ -1889,6 +1751,12 @@ void Menu_Tick(void)
 					(menu.select == i) ? 128 : 64
 				);
 			}
+			//dj bf spin record
+			if (pad_state.press & (PAD_R1 | PAD_L1))
+				menu.djbf->set_anim(menu.djbf, CharAnim_Left);
+				
+			//Draw dj bf
+            		menu.djbf->tick(menu.djbf);
 
 			//Draw background
 			fixed_t tgt_r = (fixed_t)((menu_options[menu.select].col >> 16) & 0xFF) << FIXED_SHIFT;
@@ -1920,7 +1788,7 @@ void Menu_Tick(void)
 			} menu_options[] = {
 				{StageId_8_1, "STILL ALIVE", true, 12},
 				{StageId_8_2, "SENBONZAKURA", false, 1},
-				{StageId_2_4,    "CLUCKED", false, 22},
+				{StageId_2_4,    "CLUCKED", false, 23},
 			};
 
 			//Initialize page
@@ -1974,7 +1842,7 @@ void Menu_Tick(void)
 				{
 					menu.next_page = MenuPage_Stage;
 					menu.page_param.stage.id = menu_options[menu.select].stage;
-					menu.page_param.stage.story = true;
+					menu.page_param.stage.story = false;
 					if (!menu_options[menu.select].difficulty)
 						menu.page_param.stage.diff = StageDiff_Hard;
 					Trans_Start();
@@ -1990,6 +1858,9 @@ void Menu_Tick(void)
 				}
 			}
 
+			//Draw dj bf
+            		menu.djbf->tick(menu.djbf);
+            		
 			//Draw options
 			s32 next_scroll = menu.select * FIXED_DEC(24,1);
 			menu.scroll += (next_scroll - menu.scroll) >> 4;
@@ -2017,7 +1888,7 @@ void Menu_Tick(void)
 					(menu.select == i) ? 128 : 64
 				);
 			}
-
+            		
 			//Draw background
 			Menu_DrawBack(
 				true,
@@ -2034,133 +1905,26 @@ void Menu_Tick(void)
             	u8 icon;
                 u8 achievement;
                 const char *text;
+                const char *achievementtext;
             } menu_options[] = {
-                {wicon, 0, fwt},
-                {nmwficon, 1,nmwft},
-                {nmsicon, 2,nmst},
-                {nmmicon, 3,nmmt},
-                {mfdicon, 4,mfdt},
-                {hellicon, 5,hellt},
-                {lqicon, 6,lqt},
-                {swapicon, 7,swapt},
-                {twoicon, 8,twot},
-                {dbicon, 9,dbt},
+                {wicon, 0, fwt, "Beat Sky week"},
+                {nmwficon, 1,nmwft, "No miss wife forever"},
+                {nmsicon, 2,nmst, "No miss sky"},
+                {nmmicon, 3,nmmt, "No miss manifest"},
+                {mfdicon, 4,mfdt, "Full Combo Senbonzakura (In Mods)"},
+                {hellicon, 5,hellt, "Beat Sky week in hell mode"},
+                {lqicon, 6,lqt, "3ds user? turn on low quality mode"},
+                {swapicon, 7,swapt, "You're sky? Play swapped mode"},
+                {twoicon, 8,twot, "Play with a friend"},
+                {dbicon, 9,dbt, "Debugger enter the debug menu"},
             };
-
-            switch (menu_options[menu.select].achievement)
-		    {
-		    	case 0:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"Beat Sky week",
-				16,
-				217,
-				FontAlign_Left
-			    );
-
-			    break;
-            		}
-            		case 1:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"No miss wife forever",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 2:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"No miss sky",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 3:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"No miss manifest",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 4:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"Manifest get bad ending",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 5:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"Beat Sky week in hell mode",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 6:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"3ds user? turn on low quality mode",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 7:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"You're sky? Play swapped mode",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 8:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"Play with a friend",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-            		case 9:
-		    	{
-		    	//Draw page label
-			    menu.font_arial.draw(&menu.font_arial,
-				"Debugger enter the debug menu",
-				16,
-				217,
-				FontAlign_Left
-			    );
-			    break;
-            		}
-		    }
+	    //Draw page label
+	    menu.font_arial.draw(&menu.font_arial,
+		menu_options[menu.select].achievementtext,
+		16,
+		217,
+		FontAlign_Left
+	    );
             //Initialize page
             if (menu.page_swap)
             {
@@ -2269,6 +2033,7 @@ void Menu_Tick(void)
 				{" "},
 				{" "},
 				{" "},
+				{" "},
 				{"psxfunkin"},
 				{" "},
 				{" "},
@@ -2283,9 +2048,10 @@ void Menu_Tick(void)
 			} menu_options[] = {
 				{"nintendo bro", 1, 20, 0xFF51ffb3},
 				{"igorsou3000", 2, 21, 0xFFfb6c23},
+				{"luka", 3, 22, 0xe7ce00},
 				{" ", 0, 30, 0xFF51ffb3},
 				{" ", 0, 30, 0xFFc5f05f},
-				{"ckdev" , 3, 22,0xFFc5f05f},
+				{"ckdev" , 4, 23,0xFFc5f05f},
 			};
 			switch (menu_options[menu.select].about)
 			{
@@ -2360,6 +2126,32 @@ void Menu_Tick(void)
 				}
 				case 3:
 				{
+					//Draw text
+					menu.font_arial.draw(&menu.font_arial,
+						"Luka",
+						256,
+						128,
+						FontAlign_Center
+					);
+					menu.font_arial.draw(&menu.font_arial,
+						"Results Screen Music",
+						256,
+						140,
+						FontAlign_Center
+					);
+					//Draw ckdev about pic
+                    			Menu_DrawBigCredits(1, 224, 46);
+					break;
+				}
+				case 4:
+				{
+					if (pad_state.press & (PAD_START | PAD_CROSS))
+					{
+					    menu.next_page = MenuPage_Stage;
+					    menu.page_param.stage.id = StageId_1_4;
+					    menu.page_param.stage.story = false;
+					    Trans_Start();
+					}
 					//Draw text
 					menu.font_arial.draw(&menu.font_arial,
 						"CKDEV",
