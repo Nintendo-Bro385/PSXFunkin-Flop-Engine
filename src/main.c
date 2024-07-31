@@ -69,11 +69,11 @@ int main(int argc, char **argv)
 	_bu_init();
 	Network_Init();
 	Str_Init();
-	
 	Timer_Init();
 	
 	//Start game
 	gameloop = GameLoop_Menu;
+	Achievement_Init();
 	Menu_Load(MenuPage_Opening);
 	
 	//Game loop
@@ -118,10 +118,4 @@ int main(int argc, char **argv)
 	
 	PSX_Quit();
 	return 0;
-}
-
-
-void UnlockEverything(void)
-{
-	stage.prefs.no_memory_card = true;
 }

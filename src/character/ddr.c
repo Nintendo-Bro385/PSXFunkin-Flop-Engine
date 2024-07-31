@@ -44,7 +44,7 @@ static const CharFrame char_ddr_frame[] = {
 };
 
 static const Animation char_ddr_anim[CharAnim_Max] = {
-	{3, (const u8[]){ 0, 0, 1, 1, 2, 2, 3, 3, ASCR_CHGANI, CharAnim_Idle}}, //CharAnim_Idle
+	{3, (const u8[]){ 3, 3, 0, 0, 1, 1, 2, 2, ASCR_CHGANI, CharAnim_Idle}}, //CharAnim_Idle
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Left
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},         //CharAnim_Down

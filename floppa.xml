@@ -307,6 +307,13 @@
 				<dummy sectors="128"/>
 			</dir>
 			
+			<!-- Chungus -->
+			<dir name = "str">
+			    <file name = "ughc.str" type = "str" source = "iso/movie/ughCutscene.str"/>
+			    <file name = "gunsc.str" type = "str" source = "iso/movie/gunsCutscene.str"/>
+			    <file name = "stressc.str" type = "str" source = "iso/movie/ughCutscene.str"/>
+			</dir>
+			
 			<!-- Dummy sectors -->
 			<dummy sectors="1024"/>
 		</directory_tree>

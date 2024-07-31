@@ -1,10 +1,14 @@
 Achievements list
-1: Beat Sky week
-2: No miss wife forever
-3: No miss sky
-4: No miss manifest
-5: Manifested get bad ending
-6: 3ds user? turn on low quality mode
-7: Play swapped mode
-8: Play with a friend
-9: Debugger enter the debug menu
+1: Full Combo Week 1
+2: Full Combo Week 2
+3: Full Combo Week 3
+4: Full Combo Week 4
+5: Full Combo Week 5
+6: Full Combo Week 6
+7: Full Combo Week 7
+8: Full Combo Senbonzakura
+9: Perfect Any Song In Nightmare Difficulty
+10: 3ds User? Turn On Low Quality Mode
+11: Play Swapped Mode
+12: Play With A Friend
+13: Debugger Enter The Debug Menu
