@@ -60,7 +60,7 @@ Character *ddr; //DDR arrows
 enum
 {
 	Dialogue_BF_Normal,
-	
+
 	Dialogue_Angy_Senpai,
 	Dialogue_Senpai_Normal,
 	Dialogue_Spirit,
@@ -119,15 +119,18 @@ static const u8 note_anims[4][3] = {
 #include "character/bfweeb.h"
 #include "character/dad.h"
 #include "character/spook.h"
+#include "character/monster.h"
 #include "character/pico.h"
 #include "character/mom.h"
 #include "character/xmasbf.h"
 #include "character/xmasp.h"
+#include "character/monsterx.h"
 #include "character/senpai.h"
 #include "character/senpaim.h"
 #include "character/spirit.h"
 #include "character/tank.h"
 #include "character/gf.h"
+#include "character/xmasgf.h"
 #include "character/gfweeb.h"
 #include "character/clucky.h"
 #include "character/mbf.h"
@@ -150,7 +153,7 @@ static const StageDef stage_defs[StageId_Max] = {
 //Stage state
 Stage stage;
 //sick 0 good 1 bad 2 shit 3 misses 4 score 5 highcombo 6
-static int StoreResults[7];
+static int storeresults[7];
 
 //noteskins
 static const char *const noteskinPaths[] = {
@@ -166,7 +169,7 @@ static const char *const skinshudPaths[] = {
 	    "\\STAGE\\HUDC.TIM;1",
 	    "\\STAGE\\HUD1DDR.TIM;1",
 };
-	
+
 //Stage music functions
 static void Stage_StartVocal(void)
 {
@@ -302,48 +305,72 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
         offset = -offset;
 
     u8 hit_type;
-    if (offset > stage.late_safe * 9 / 11)
+    if(stage.prefs.hell)
     {
-    	this->refresh_pause = true;
-    	stage.shitt++;
-        hit_type = 3; //SHIT
-        this->combo=0;
-		if(stage.prefs.hell==1)
-		{
-			this->health -= 1000;
-		}
-		else
-		{
-			this->health -= 700;
-		}
-    }
-    else if (offset > stage.late_safe * 6 / 11)
-    {
-    	this->refresh_pause = true;
-    	stage.badd++;
-        hit_type = 2; //BAD
-        this->combo=0;
-		if(stage.prefs.hell==1)
-		{
-			this->health -= 700;
-		}
-		else
-		{
-			this->health -= 500;
-		}
-    }
-    else if (offset > stage.late_safe * 3 / 11)
-    {
-    	this->refresh_pause = true;
-    	stage.goodd++;
-        hit_type = 1; //GOOD
+            if (offset > stage.late_safe * 6 / 11)
+            {
+                this->refresh_pause = true;
+                stage.shitt++;
+                hit_type = 3; //SHIT
+                this->combo=0;
+                this->health -= 1000;
+            }
+            else if (offset > stage.late_safe * 4 / 11)
+            {
+                this->refresh_pause = true;
+                stage.badd++;
+                hit_type = 2; //BAD
+                this->combo=0;
+                if(stage.prefs.hell==1)
+                this->health -= 700;
+            }
+            else if (offset > stage.late_safe * 2 / 11)
+            {
+                this->refresh_pause = true;
+                stage.goodd++;
+                hit_type = 1; //GOOD
+            }
+            else
+            {
+                this->refresh_pause = true;
+                stage.sickk++;
+                hit_type = 0; //SICK
+            }
     }
     else
     {
-    	this->refresh_pause = true;
-    	stage.sickk++;
-        hit_type = 0; //SICK
+        if (offset > stage.late_safe * 9 / 11)
+        {
+            this->refresh_pause = true;
+            stage.shitt++;
+            hit_type = 3; //SHIT
+            this->combo=0;
+            if(stage.prefs.hell==1)
+            this->health -= 700;
+        }
+        else if (offset > stage.late_safe * 6 / 11)
+        {
+            this->refresh_pause = true;
+            stage.badd++;
+            hit_type = 2; //BAD
+            this->combo=0;
+            if(stage.prefs.hell==1)
+            this->health -= 500;
+        }
+        else if (offset > stage.late_safe * 3 / 11)
+        {
+            this->refresh_pause = true;
+            stage.goodd++;
+            hit_type = 1; //GOOD
+        }
+        else
+        {
+            this->refresh_pause = true;
+            stage.sickk++;
+            hit_type = 0; //SICK
+        }
     }
+
 
     //Increment combo and score
     this->combo++;
@@ -361,13 +388,16 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
 
     //Restore vocals and health
     Stage_StartVocal();
-    if(stage.prefs.hell==1)
-    {
-    	this->health += 200;
-    }
-    else
-    {
-    	this->health += 400;
+    if(!(hit_type == 3 || hit_type == 2))
+	    {
+	    if(stage.prefs.hell==1)
+	    {
+	    		this->health += 200;
+	    }
+	    else
+	    {
+	    		this->health += 400;
+	    }
     }
 
     //Create combo object telling of our combo
@@ -381,66 +411,42 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
         ObjectList_Add(&stage.objlist_fg, (Object*)combo);
 
     //Create note splashes if SICK
-    	if (hit_type == 0)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			//Create splash object
-			Obj_Splash *splash = Obj_Splash_New(
+    if(!stage.prefs.onlyarrows)
+    {
+        if (hit_type == 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                //Create splash object
+                Obj_Splash *splash = Obj_Splash_New(
 
-				note_x[type ^ stage.note_swap],
-				note_y * (stage.prefs.downscroll ? -1 : 1),
-				type & 0x3
-			);
-			if (splash != NULL)
-				ObjectList_Add(&stage.objlist_splash, (Object*)splash);
-		}
-	}
-	if (hit_type == 1)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			//Create splash object
-			Obj_Good *splash = Obj_Good_New(
+                    note_x[type ^ stage.note_swap],
+                    note_y * (stage.prefs.downscroll ? -1 : 1),
+                    type & 0x3
+                );
+                if (splash != NULL)
+                    ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+            }
+        }
+    }
+    else
+    {
+        if ((hit_type == 0 || hit_type == 1 || hit_type == 2 || hit_type == 3))
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                //Create splash object
+                Obj_Splash *splash = Obj_Splash_New(
 
-				note_x[type ^ stage.note_swap],
-				note_y * (stage.prefs.downscroll ? -1 : 1),
-				type & 0x3
-			);
-			if (splash != NULL)
-				ObjectList_Add(&stage.objlist_splash, (Object*)splash);
-		}
-	}
-	if (hit_type == 2)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			//Create splash object
-			Obj_Bad *splash = Obj_Bad_New(
-
-				note_x[type ^ stage.note_swap],
-				note_y * (stage.prefs.downscroll ? -1 : 1),
-				type & 0x3
-			);
-			if (splash != NULL)
-				ObjectList_Add(&stage.objlist_splash, (Object*)splash);
-		}
-	}
-	if (hit_type == 3)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			//Create splash object
-			Obj_Shit *splash = Obj_Shit_New(
-
-				note_x[type ^ stage.note_swap],
-				note_y * (stage.prefs.downscroll ? -1 : 1),
-				type & 0x3
-			);
-			if (splash != NULL)
-				ObjectList_Add(&stage.objlist_splash, (Object*)splash);
-		}
-	}
+                    note_x[type ^ stage.note_swap],
+                    note_y * (stage.prefs.downscroll ? -1 : 1),
+                    type & 0x3
+                );
+                if (splash != NULL)
+                    ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+            }
+        }
+    }
 
 
 	return hit_type;
@@ -565,12 +571,12 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
     {
             this->character->set_anim(this->character, note_anims[type & 0x3][2]);
             this->score -= 1;
-            	if(stage.prefs.hell==1)
+        /*if(stage.prefs.hell==1)
 		{
 			this->health -=1000;
-		}
+		}*/
             this->refresh_score = true;
-           }
+    }
 
 
     //Missed a note
@@ -615,14 +621,16 @@ static void Stage_SustainCheck(PlayerState *this, u8 type)
         this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
 
         Stage_StartVocal();
-        if(stage.prefs.hell==1)
+        this->score += 20;
+        this->refresh_score = true;
+        /*if(stage.prefs.hell==1)
         {
         	this->health += 200;
         }
         else
         {
         	this->health += 400;
-        }
+        }*/
         this->arrow_hitan[type & 0x3] = stage.step_time;
 
         #ifdef PSXF_NETWORK
@@ -837,7 +845,7 @@ static void Stage_DrawHealth(s16 health, u8 i, s8 ox)
         dying = (health >= 18000) * 32;
     else
         dying = (health <= 2000) * 32;
-    
+
     //Get src and dst
     fixed_t hx = (128 << FIXED_SHIFT) * (10000 - health) / 10000;
     RECT src = {
@@ -879,7 +887,7 @@ static void Result_DisplayComboNumber(int number, int x, int y)
 	    32,
 	    32
 	};
-	
+
 	RECT num_dst = {
 	    x,
 	    y,
@@ -893,7 +901,7 @@ static void Result_DisplayComboNumber(int number, int x, int y)
 	    11,
 	    12
 	};
-	
+
 	RECT pixelnum_dst = {
 	    x,
 	    y,
@@ -904,40 +912,40 @@ static void Result_DisplayComboNumber(int number, int x, int y)
 		Gfx_DrawTex(&stage.tex_hud0, &pixelnum_src, &pixelnum_dst);
 	else
 		Gfx_DrawTex(&stage.tex_hud0, &num_src, &num_dst);
-}		
+}
 static void Rating_DisplayComboHits()
 {
 		//Display First Column
 		if(sickmove ==40)
 		{
-			Result_DisplayComboNumber((StoreResults[0] / 1000) % 10, 112, 40);
-			Result_DisplayComboNumber((StoreResults[1] / 1000) % 10, 112, 72);
-			Result_DisplayComboNumber((StoreResults[2] / 1000) % 10, 112, 104);
-			Result_DisplayComboNumber((StoreResults[3] / 1000) % 10, 112, 136);
+			Result_DisplayComboNumber((storeresults[0] / 1000) % 10, 112, 40);
+			Result_DisplayComboNumber((storeresults[1] / 1000) % 10, 112, 72);
+			Result_DisplayComboNumber((storeresults[2] / 1000) % 10, 112, 104);
+			Result_DisplayComboNumber((storeresults[3] / 1000) % 10, 112, 136);
 		}
 		//Display Second Column
 		if(goodmove ==72)
 		{
-			Result_DisplayComboNumber((StoreResults[0] / 100) % 10, 144, 40);
-			Result_DisplayComboNumber((StoreResults[1] / 100) % 10, 144, 72);
-			Result_DisplayComboNumber((StoreResults[2] / 100) % 10, 144, 104);
-			Result_DisplayComboNumber((StoreResults[3] / 100) % 10, 144, 136);
+			Result_DisplayComboNumber((storeresults[0] / 100) % 10, 144, 40);
+			Result_DisplayComboNumber((storeresults[1] / 100) % 10, 144, 72);
+			Result_DisplayComboNumber((storeresults[2] / 100) % 10, 144, 104);
+			Result_DisplayComboNumber((storeresults[3] / 100) % 10, 144, 136);
 		}
 		//Display Third Column
 		if(badmove ==104)
 		{
-			Result_DisplayComboNumber((StoreResults[0] / 10) % 10, 176, 40);
-			Result_DisplayComboNumber((StoreResults[1] / 10) % 10, 176, 72);
-			Result_DisplayComboNumber((StoreResults[2] / 10) % 10, 176, 104);
-			Result_DisplayComboNumber((StoreResults[3] / 10) % 10, 176, 136);
+			Result_DisplayComboNumber((storeresults[0] / 10) % 10, 176, 40);
+			Result_DisplayComboNumber((storeresults[1] / 10) % 10, 176, 72);
+			Result_DisplayComboNumber((storeresults[2] / 10) % 10, 176, 104);
+			Result_DisplayComboNumber((storeresults[3] / 10) % 10, 176, 136);
 		}
 		//Display Forth Column
 		if(shitmove ==136)
 		{
-			Result_DisplayComboNumber(StoreResults[0] % 10, 208, 40);
-			Result_DisplayComboNumber(StoreResults[1] % 10, 208, 72);
-			Result_DisplayComboNumber(StoreResults[2] % 10, 208, 104);
-			Result_DisplayComboNumber(StoreResults[3] % 10, 208, 136);
+			Result_DisplayComboNumber(storeresults[0] % 10, 208, 40);
+			Result_DisplayComboNumber(storeresults[1] % 10, 208, 72);
+			Result_DisplayComboNumber(storeresults[2] % 10, 208, 104);
+			Result_DisplayComboNumber(storeresults[3] % 10, 208, 136);
 		}
 }
 static void Stage_DrawStrum(u8 i, RECT *note_src, RECT_FIXED *note_dst)
@@ -1118,7 +1126,10 @@ static void Stage_DrawNotes(void)
 							note_dst.y = -note_dst.y;
 							note_dst.h = -note_dst.h;
 						}
-						Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+						if(stage.bluenotes)
+							Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+						else
+							Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 					}
 				}
 				else
@@ -1142,7 +1153,10 @@ static void Stage_DrawNotes(void)
 
 						if (stage.prefs.downscroll)
 							note_dst.y = -note_dst.y - note_dst.h;
-						Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+						if(stage.bluenotes)
+							Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+						else
+							Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 					}
 				}
 			}
@@ -1167,7 +1181,10 @@ static void Stage_DrawNotes(void)
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
 
-				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+				if(stage.bluenotes)
+					Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+				else
+					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 
 				//Draw note body
 				note_src.x = 192 + ((note->type & 0x1) << 5);
@@ -1182,7 +1199,10 @@ static void Stage_DrawNotes(void)
 
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
-				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+				if(stage.bluenotes)
+					Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+				else
+					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 			}
 			else
 			{
@@ -1203,7 +1223,10 @@ static void Stage_DrawNotes(void)
 
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
-				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+				if(stage.bluenotes)
+					Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+				else
+					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 			}
 
 		}
@@ -1428,7 +1451,7 @@ static void Stage_LoadState(void)
         memset(stage.player_state[i].arrow_hitan, 0, sizeof(stage.player_state[i].arrow_hitan));
 
         stage.player_state[i].health = 10000;
-        
+
 	stage.player_state[i].refresh_score = true;
 	stage.player_state[i].refresh_misses = false;
 	stage.player_state[i].refresh_pause = true;
@@ -1458,23 +1481,23 @@ static void Stage_LoadState(void)
     stage.goodd=0;
     stage.badd=0;
     stage.shitt=0;
-    
+
     if(!stage.story)
     {
     	for (int i = 0; i < 7; i++)
-        	StoreResults[i] =0;
+        	storeresults[i] =0;
     }
-    
+
     //reset results screen movement
     sickmove = 304;
     goodmove = 352;
     badmove = 400;
     shitmove =448;
     bffall = -144;
-    if(!stage.story)
-    {
-    	highcombo =0;
-    }
+    highcombo =0;
+    stage.bluenotes=0;
+    //stage.nohud=1;
+
 	if(stage.stage_diff == StageDiff_Easy){pausediff = "EASY";}
 	if(stage.stage_diff == StageDiff_Normal){pausediff = "NORMAL";}
 	if(stage.stage_diff == StageDiff_Hard){pausediff = "HARD";}
@@ -1518,7 +1541,7 @@ static void Stage_DrawSickForResults(s32 x, s32 y)
     //Draw Track
     RECT res_src = {0, 128, 80, 32};
     RECT pres_src = {0, 128, 64, 24};
-    
+
     if(stage.pixelmode == 1)
     	Gfx_BlitTex(&stage.tex_hud0, &pres_src, x, y);
     else
@@ -1529,7 +1552,7 @@ static void Stage_DrawGoodForResults(s32 x, s32 y)
     //Draw Track
     RECT res1_src = {0, 160, 80, 32};
     RECT pres1_src = {0, 152, 64, 24};
-    
+
     if(stage.pixelmode == 1)
     	Gfx_BlitTex(&stage.tex_hud0, &pres1_src, x, y);
     else
@@ -1540,7 +1563,7 @@ static void Stage_DrawBadForResults(s32 x, s32 y)
     //Draw Track
     RECT res2_src = {0, 192, 80, 32};
     RECT pres2_src = {0, 176, 64, 24};
-    
+
     if(stage.pixelmode == 1)
     	Gfx_BlitTex(&stage.tex_hud0, &pres2_src, x, y);
     else
@@ -1551,7 +1574,7 @@ static void Stage_DrawShitForResults(s32 x, s32 y)
     //Draw Track
     RECT res3_src = {0, 224, 80, 32};
     RECT pres3_src = {0, 200, 64, 24};
-    
+
     if(stage.pixelmode == 1)
     	Gfx_BlitTex(&stage.tex_hud0, &pres3_src, x, y);
     else
@@ -1583,58 +1606,77 @@ static void Stage_DrawSavingIcon(u8 i, s16 x, s16 y)
 //Stage functions
 void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 {
-    ddr = Char_DDR_New(FIXED_DEC(500,1), FIXED_DEC(500,1));
     //Get stage definition
     stage.stage_def = &stage_defs[stage.stage_id = id];
     stage.stage_diff = difficulty;
     stage.story = story;
     stage.song_completed = false;
-    
     //Load HUD textures
-    if(stage.stage_id == StageId_8_1)
+    if(stage.stage_id == StageId_8_3)
     {
-        Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\PHUD.TIM;1"), GFX_LOADTEX_FREE);
-        Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PHUD1.TIM;1"), GFX_LOADTEX_FREE);
-        stage.hud1shit =8;
-	stage.hud1shit2 =0;
-	stage.iconshit =16;
+    	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\SILYHUD0.TIM;1"), GFX_LOADTEX_FREE);
+    	Gfx_LoadTex(&stage.tex_blue, IO_Read("\\STAGE\\BLUEHUD.TIM;1"), GFX_LOADTEX_FREE);
+	Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\SILYHUD1.TIM;1"), GFX_LOADTEX_FREE);
+	stage.hud1shit =50;
+	stage.hud1shit2 =21;
+	stage.hud1shit3 =160;
+	stage.iconshit =160;
 	stage.pixelmode =0;
 	ddrmode=0;
+
     }
     else
     {
-        if (id >= StageId_6_1 && id <= StageId_6_3)
-        {
-		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
-		Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PIXELHUD.TIM;1"), GFX_LOADTEX_FREE);
+	    if(stage.stage_id == StageId_8_1)
+	    {
+		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\PHUD.TIM;1"), GFX_LOADTEX_FREE);
+		Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PHUD1.TIM;1"), GFX_LOADTEX_FREE);
 		stage.hud1shit =8;
 		stage.hud1shit2 =0;
+		stage.hud1shit3 =256;
 		stage.iconshit =16;
-		stage.pixelmode =1;
-		ddrmode=0;
-	}
-	else
-	{
 		stage.pixelmode =0;
-		if(!(stage.prefs.noteskin ==3))
+		ddrmode=0;
+	    }
+	    else
+	    {
+		if (id >= StageId_6_1 && id <= StageId_6_3)
 		{
-			ddrmode=0;
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
+			Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PIXELHUD.TIM;1"), GFX_LOADTEX_FREE);
 			stage.hud1shit =8;
 			stage.hud1shit2 =0;
+			stage.hud1shit3 =256;
 			stage.iconshit =16;
+			stage.pixelmode =1;
+			ddrmode=0;
 		}
 		else
 		{
-			stage.hud1shit =20;
-			stage.hud1shit2 =6;
-			stage.iconshit =48;
-			ddrmode=1;
+			stage.pixelmode =0;
+			if(!(stage.prefs.noteskin ==3))
+			{
+				ddrmode=0;
+				stage.hud1shit =8;
+				stage.hud1shit2 =0;
+				stage.hud1shit3 =256;
+				stage.iconshit =16;
+			}
+			else
+			{
+                ddr = Char_DDR_New(FIXED_DEC(500,1), FIXED_DEC(500,1));
+				stage.hud1shit =20;
+				stage.hud1shit2 =6;
+				stage.hud1shit3 =256;
+				stage.iconshit =48;
+				ddrmode=1;
+			}
+			Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
+			Gfx_LoadTex(&stage.tex_hud1, IO_Read(skinshudPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
 		}
-		Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
-		Gfx_LoadTex(&stage.tex_hud1, IO_Read(skinshudPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
-	}
+	    }
     }
-    
+
     // Dont play str if song has been reloaded
     if (stage.trans != StageTrans_Reload)
     {
@@ -1739,9 +1781,9 @@ static boolean Stage_NextLoad(void)
     {
         //Get stage definition
         stage.stage_def = &stage_defs[stage.stage_id = stage.stage_def->next_stage];
-	
+
 	Str_CanPlayBegin();
-	
+
         stage.song_completed = false;
 
         //Load stage background
@@ -1932,13 +1974,14 @@ void Stage_Tick(void)
 			//Draw ddr arrows
 		    	ddr->tick(ddr);
             	}
-            	
+            	//printf(stage.song_step);
+
             	//Two Player Achievement
         	if(stage.prefs.mode == StageMode_2P && pad_state_2.press & PAD_CROSS)
 					Achievement_Unlock(Play_With_A_Friend);
         	stage.cutdia=0;
 
-        	if(stage.paused == false)
+        	if(stage.paused == false && Audio_PlayingXA())
         	{
 			if (pad_state.press & PAD_START)
 			{
@@ -1951,15 +1994,15 @@ void Stage_Tick(void)
 		for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
 			{
 				PlayerState *this = &stage.player_state[i];
-				
+
 				if(stage.prefs.mode == StageMode_2P)
-						{	
-							if(stage.paused ==true)
+						{
+							if(stage.paused ==true && !stage.prefs.onlyarrows)
 								stage.font_cdr.draw(&stage.font_cdr, this->pause_text, (i ^ (stage.prefs.mode == StageMode_Swap)) ? 170 - 80 : 170 + 80, 35, FontAlign_Center);
 						}
 						else
-						{	
-							if(stage.paused ==true)
+						{
+							if(stage.paused ==true && !stage.prefs.onlyarrows)
 								stage.font_cdr.draw(&stage.font_cdr, this->pause_text, 4, 18, FontAlign_Left);
 						}
 			}
@@ -2026,7 +2069,7 @@ void Stage_Tick(void)
 			    switch (stage.pause_select)
 			    {
 			      case 0: //Resume
-			        if (pad_state.press & (PAD_START | PAD_CROSS))
+			        if (pad_state.press & (PAD_START | PAD_CIRCLE))
 			  	{
 					unpausedelay=5;
 				}
@@ -2041,10 +2084,12 @@ void Stage_Tick(void)
 				    }
 				break;
 			      case 1: //Retry
-			        if (pad_state.press & (PAD_START | PAD_CROSS))
+			        if (pad_state.press & (PAD_START | PAD_CIRCLE))
 			  	{
 					stage.trans = StageTrans_Reload;
 					Trans_Start();
+					for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 				}
 				break;
 			      case 2: //Change difficulty
@@ -2062,7 +2107,7 @@ void Stage_Tick(void)
 				    else
 					pausediff2 = 0;
 				}
-				if (pad_state.press & (PAD_START | PAD_CROSS))
+				if (pad_state.press & (PAD_START | PAD_CIRCLE))
 			  	{
 			  		if(pausediff2==0)
 			  			stage.stage_diff = StageDiff_Easy;
@@ -2072,6 +2117,8 @@ void Stage_Tick(void)
 			  			stage.stage_diff = StageDiff_Hard;
 			  		stage.trans = StageTrans_Reload;
 					Trans_Start();
+					for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 			  	}
 			  	//Draw stage
 				    stage.font_bold.draw(&stage.font_bold,
@@ -2082,10 +2129,12 @@ void Stage_Tick(void)
 				    );
 				break;
 			      case 3: //Quit
-			        if (pad_state.press & (PAD_START | PAD_CROSS))
+			        if (pad_state.press & (PAD_START | PAD_CIRCLE))
 			  	{
 					stage.trans = StageTrans_Menu;
 					Trans_Start();
+					for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 				}
 				break;
 			    }
@@ -2231,19 +2280,19 @@ void Stage_Tick(void)
 
                     //Update scroll
                     next_scroll = ((fixed_t)stage.step_base << FIXED_SHIFT) + FIXED_MUL(stage.song_time - stage.time_base, stage.step_crochet);
-                    
-				StoreResults[0] += stage.sickk;
-				StoreResults[1] += stage.goodd;
-				StoreResults[2] += stage.badd;
-				StoreResults[3] += stage.shitt;
-				StoreResults[4] += stage.misses;
+
+				storeresults[0] += stage.sickk;
+				storeresults[1] += stage.goodd;
+				storeresults[2] += stage.badd;
+				storeresults[3] += stage.shitt;
+				storeresults[4] += stage.misses;
 				for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
 				{
 					PlayerState *this = &stage.player_state[i];
-					StoreResults[5] += (this->score * stage.max_score / this->max_score);
+					storeresults[5] += (this->score * stage.max_score / this->max_score);
 				}
-				StoreResults[6] += highcombo;
-				
+				storeresults[6] += highcombo;
+
 			    if(!stage.story)
 			    {
 				    Stage_LoadResults();
@@ -2443,12 +2492,18 @@ void Stage_Tick(void)
 			//BF
 			note_dst.x = note_x[i ^ stage.note_swap] - FIXED_DEC(16,1);
 			Stage_DrawStrum(i, &note_src, &note_dst);
-			Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+			if(stage.bluenotes)
+				Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+			else
+				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 
 			//Opponent
 			note_dst.x = note_x[(i | 0x4) ^ stage.note_swap] - FIXED_DEC(16,1);
 			Stage_DrawStrum(i | 4, &note_src, &note_dst);
-			Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+			if(stage.bluenotes)
+					Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+				else
+					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 		}
 
             //Draw score
@@ -2483,7 +2538,7 @@ void Stage_Tick(void)
 					this->refresh_score = false;
 					this->refresh_misses = false;
 				}
-				if(stage.nohud==0)
+				if(!stage.nohud && !stage.prefs.onlyarrows)
 				{
 					if(stage.prefs.mode == StageMode_2P)
 					{
@@ -2524,20 +2579,25 @@ void Stage_Tick(void)
 					stage.player_state[0].health = 20000;
 
 				//Draw health heads
-				Stage_DrawHealth(stage.player_state[0].health, stage.player->health_i,    1);
-				Stage_DrawHealth(stage.player_state[0].health, stage.opponent->health_i, -1);
-				
+				if(!stage.prefs.onlyarrows)
+				{
+					Stage_DrawHealth(stage.player_state[0].health, stage.player->health_i,    1);
+					Stage_DrawHealth(stage.player_state[0].health, stage.opponent->health_i, -1);
+				}
+
 				//Draw health bar
-				RECT health_fill = {0, 0, 256 - (256 * stage.player_state[0].health / 20000), stage.hud1shit};
+				RECT health_fill = {0, 0, stage.hud1shit3 - (stage.hud1shit3 * stage.player_state[0].health / 20000), stage.hud1shit};
 				RECT health_back = {0, stage.hud1shit, 256, stage.hud1shit};
 				RECT_FIXED health_dst = {FIXED_DEC(-128,1), (SCREEN_HEIGHT2 - 32 - stage.hud1shit2) << FIXED_SHIFT, 0, FIXED_DEC(stage.hud1shit,1)};
 				if (stage.prefs.downscroll)
 						health_dst.y = -health_dst.y - health_dst.h;
 
 				health_dst.w = health_fill.w << FIXED_SHIFT;
-				Stage_DrawTex(&stage.tex_hud1, &health_fill, &health_dst, stage.bump);
+				if(!stage.prefs.onlyarrows)
+					Stage_DrawTex(&stage.tex_hud1, &health_fill, &health_dst, stage.bump);
 				health_dst.w = health_back.w << FIXED_SHIFT;
-				Stage_DrawTex(&stage.tex_hud1, &health_back, &health_dst, stage.bump);
+				if(!stage.prefs.onlyarrows)
+					Stage_DrawTex(&stage.tex_hud1, &health_back, &health_dst, stage.bump);
 			}
 
             //Draw stage foreground
@@ -2604,6 +2664,18 @@ void Stage_Tick(void)
             Stage_FocusCharacter(stage.player, 0);
             stage.song_time = 0;
 
+            storeresults[0] += stage.sickk;
+            storeresults[1] += stage.goodd;
+            storeresults[2] += stage.badd;
+            storeresults[3] += stage.shitt;
+            storeresults[4] += stage.misses;
+            for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
+            {
+                PlayerState *this = &stage.player_state[i];
+                storeresults[5] += (this->score * stage.max_score / this->max_score);
+            }
+            storeresults[6] += highcombo;
+
             stage.state = StageState_DeadLoad;
         }
     //Fallthrough
@@ -2645,13 +2717,37 @@ void Stage_Tick(void)
         }
         case StageState_DeadRetry:
         {
+            for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
+			{
+				PlayerState *this = &stage.player_state[i];
 
-            if (pad_state.press & (PAD_START | PAD_CROSS))
+				stage.font_cdr.draw(&stage.font_cdr, this->pause_text, 4, 18, FontAlign_Left);
+			}
+
+			sprintf(stage.Results_text1, "MAX COMBO %d", storeresults[6]);
+			//Draw mind games port version identification
+			    stage.font_cdr.draw(&stage.font_cdr,
+				stage.Results_text1,
+				80,
+				230,
+				FontAlign_Center
+			    );
+
+			sprintf(stage.Results_text2, "Notes Missed: %d", storeresults[4]);
+			//Draw mind games port version identification
+			    stage.font_cdr.draw(&stage.font_cdr,
+				stage.Results_text2,
+				240,
+				230,
+				FontAlign_Center
+			    );
+
+            if (pad_state.press & (PAD_START | PAD_CIRCLE))
 		{
 		    stage.trans = StageTrans_Reload;
 		    Trans_Start();
 		}
-	    if (pad_state.press & PAD_CIRCLE)
+	    if (pad_state.press & PAD_CROSS)
 		{
 		    stage.trans = StageTrans_Menu;
 		    Trans_Start();
@@ -2884,12 +2980,12 @@ void Stage_Tick(void)
 			20,
 			FontAlign_Right
 		    );
-		    
+
 		Stage_DrawSickForResults(16,sickmove);
 		Stage_DrawGoodForResults(16,goodmove);//72
 		Stage_DrawBadForResults(16,badmove);//104
 		Stage_DrawShitForResults(16,shitmove);//136
-        	
+
         	if(sickmove !=40)
         	{
         		sickmove-=4;
@@ -2915,10 +3011,20 @@ void Stage_Tick(void)
 				168,
 				FontAlign_Center
 			    );
-			
-			int maxcombo = StoreResults[0] + StoreResults[1] + StoreResults[2] + StoreResults[3] + StoreResults[4];
-				
-			sprintf(stage.Results_text1, "%d / %d", StoreResults[6], maxcombo);
+
+			if(stage.nohud==1)
+			{
+				//Draw mind games port version identification
+				    stage.font_cdr.draw(&stage.font_cdr,
+					"HUD DISABLED MODE",
+					160,
+					2,
+					FontAlign_Center
+				    );
+			}
+			int maxcombo = storeresults[0] + storeresults[1] + storeresults[2] + storeresults[3] + storeresults[4];
+
+			sprintf(stage.Results_text1, "%d / %d", storeresults[6], maxcombo);
 			//Draw mind games port version identification
 			    stage.font_cdr.draw(&stage.font_cdr,
 				stage.Results_text1,
@@ -2926,9 +3032,9 @@ void Stage_Tick(void)
 				186,
 				FontAlign_Center
 			    );
-			int hitnotes = StoreResults[0] + StoreResults[1] + StoreResults[2] + StoreResults[3];
-			
-			sprintf(stage.Results_text2, "%d / %d Notes Missed: %d", hitnotes, maxcombo, StoreResults[4]);
+			int hitnotes = storeresults[0] + storeresults[1] + storeresults[2] + storeresults[3];
+
+			sprintf(stage.Results_text2, "%d / %d Notes Missed: %d", hitnotes, maxcombo, storeresults[4]);
 			//Draw mind games port version identification
 			    stage.font_cdr.draw(&stage.font_cdr,
 				stage.Results_text2,
@@ -2950,8 +3056,8 @@ void Stage_Tick(void)
 				200,
 				FontAlign_Center
 			    );
-			sprintf(stage.Results_text3, "%d0", StoreResults[5]);
-				
+			sprintf(stage.Results_text3, "%d0", storeresults[5]);
+
 			//Draw mind games port version identification
 			stage.font_cdr.draw(&stage.font_cdr,
 				stage.Results_text3,
@@ -2959,15 +3065,23 @@ void Stage_Tick(void)
 				218,
 				FontAlign_Center
 		        );
-			
+
 			//     achievement shit    //
-			
+
+			//No Hud achievement
+			if(stage.nohud==1 && !stage.prefs.botplay && stage.stage_diff == StageDiff_Hard && !stage.prefs.unlockedAchievements[Beat_Any_Song_With_No_Hud])
+			{
+				Achievement_Unlock(Beat_Any_Song_With_No_Hud);
+				stage.prefs.nohudsong = stage.stage_def->pausestage;
+			}
+
+
 			//Swap Mode achievement
-			if(stage.prefs.mode != StageMode_Swap)
+			if(stage.prefs.mode == StageMode_Swap)
 				Achievement_Unlock(Play_Swapped_Mode);
-				
+
 			//Full Combo Achievements
-			if(stage.story &&  StoreResults[6] == maxcombo && !stage.prefs.botplay && stage.stage_diff == StageDiff_Hard && stage.prefs.mode != StageMode_Swap && stage.prefs.mode != StageMode_2P)
+			if(stage.story && storeresults[6] == maxcombo && storeresults[6] !=0 && !stage.prefs.botplay && stage.stage_diff == StageDiff_Hard && stage.prefs.mode != StageMode_Swap && stage.prefs.mode != StageMode_2P)
 	    		{
 		    		switch(stage.stage_id)
 		  		{
@@ -2996,10 +3110,10 @@ void Stage_Tick(void)
 		  				break;
 		  		}
 	  		}
-	  		if(StoreResults[6] == maxcombo && stage.stage_id == StageId_8_2 && !stage.prefs.botplay && stage.stage_diff == StageDiff_Hard && stage.prefs.mode != StageMode_Swap && stage.prefs.mode != StageMode_2P)
+	  		if(storeresults[6] == maxcombo && storeresults[6] !=0 && stage.stage_id == StageId_8_2 && !stage.prefs.botplay && stage.stage_diff == StageDiff_Hard && stage.prefs.mode != StageMode_Swap && stage.prefs.mode != StageMode_2P)
 	  			Achievement_Unlock(Full_Combo_Senbonzakura);
-	  			
-			
+
+
 			//inputs to make it not a softlock
 			if (pad_state.press & PAD_CROSS)
 		  	{
@@ -3007,15 +3121,16 @@ void Stage_Tick(void)
 				stage.trans = StageTrans_Menu;
 				Trans_Start();
 				for (int i = 0; i < 7; i++)
-		  			StoreResults[i] =0;
+		  			storeresults[i] =0;
 			}
 			if(!stage.story)
 			{
 				if (pad_state.press & PAD_SQUARE)
 			  	{
-			  		WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
 					stage.trans = StageTrans_Reload;
 					Trans_Start();
+					for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 				}
 			}
 			else
@@ -3051,13 +3166,14 @@ void Stage_Tick(void)
 			  			default:
 			  				break;
 			  		}
-			  		WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
+			  		for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 			  		Stage_Load(stage.stage_id, stage.stage_diff, true);
 				}
 			}
-			
+
 		}//fall 25
-        	
+
         	Rating_DisplayComboHits();
         	if(bffall !=96 && sickmove <=240)
         	{
@@ -3093,7 +3209,7 @@ void Stage_Tick(void)
 				16
 			};
 			Gfx_DrawTex(&stage.tex_sprites, &resx_src, &resx_dst);
-			
+
 			if(!stage.story)
 			{
 				//replay song button
@@ -3118,7 +3234,7 @@ void Stage_Tick(void)
 				};
 				Gfx_DrawTex(&stage.tex_sprites, &resw_src, &resw_dst);
 			}
-			
+
 			RECT resbfI_src = {0, 0, 159, 130};
 			RECT resbfI_dst = {
 				161,
@@ -3128,7 +3244,7 @@ void Stage_Tick(void)
 			};
 			Gfx_DrawTex(&stage.tex_sprites, &resbfI_src, &resbfI_dst);
 		}
-		
+
 		RECT sidel_src = {0, 0, 120, 240};
 		RECT sidel_dst = {
 			0,
@@ -3137,7 +3253,7 @@ void Stage_Tick(void)
 			240
 		};
 		Gfx_DrawTex(&stage.tex_results, &sidel_src, &sidel_dst);
-        	
+
         	RECT sider_src = {135, 0, 120, 240};
 		RECT sider_dst = {
 			200,
@@ -3146,7 +3262,7 @@ void Stage_Tick(void)
 			240
 		};
 		Gfx_DrawTex(&stage.tex_results, &sider_src, &sider_dst);
-        	
+
         	Gfx_SetClear(254, 200, 92);
         }
         default:

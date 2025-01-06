@@ -4,18 +4,12 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-#include "boot/character.h"
-#include "boot/mem.h"
-#include "boot/archive.h"
-#include "boot/stage.h"
-#include "boot/main.h"
+#include "monster.h"
 
-//Monster PSX by Lord Scout
-
-//Monster character assets
-static u8 char_monster_arc_main[] = {
-	#include "iso/monster/main.arc.h"
-};
+#include "../mem.h"
+#include "../archive.h"
+#include "../stage.h"
+#include "../main.h"
 
 //Monster character structure
 enum
@@ -79,7 +73,7 @@ static const Animation char_monster_anim[CharAnim_Max] = {
 };
 
 //Monster character functions
-static void Char_Monster_SetFrame(void *user, u8 frame)
+void Char_Monster_SetFrame(void *user, u8 frame)
 {
 	Char_Monster *this = (Char_Monster*)user;
 	
@@ -93,7 +87,7 @@ static void Char_Monster_SetFrame(void *user, u8 frame)
 	}
 }
 
-static void Char_Monster_Tick(Character *character)
+void Char_Monster_Tick(Character *character)
 {
 	Char_Monster *this = (Char_Monster*)character;
 	
@@ -106,19 +100,22 @@ static void Char_Monster_Tick(Character *character)
 	Character_Draw(character, &this->tex, &char_monster_frame[this->frame]);
 }
 
-static void Char_Monster_SetAnim(Character *character, u8 anim)
+void Char_Monster_SetAnim(Character *character, u8 anim)
 {
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
 	Character_CheckStartSing(character);
 }
 
-static void Char_Monster_Free(Character *character)
+void Char_Monster_Free(Character *character)
 {
-	(void)character;
+	Char_Monster *this = (Char_Monster*)character;
+	
+	//Free art
+	Mem_Free(this->arc_main);
 }
 
-static Character *Char_Monster_New(fixed_t x, fixed_t y)
+Character *Char_Monster_New(fixed_t x, fixed_t y)
 {
 	//Allocate monster object
 	Char_Monster *this = Mem_Alloc(sizeof(Char_Monster));
@@ -140,14 +137,15 @@ static Character *Char_Monster_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	this->character.health_b = 0xFFe9f36b;
-	this->character.health_i = 2;
+	this->character.health_i = 7;
 	
 	this->character.focus_x = FIXED_DEC(65,1);
 	this->character.focus_y = FIXED_DEC(-90,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
 	
 	//Load art
+	this->arc_main = IO_Read("\\CHAR\\MONSTER.ARC;1");
+	
 	const char **pathp = (const char *[]){
 		"idle0.tim", //Monster_ArcMain_Idle0
 		"idle1.tim", //Monster_ArcMain_Idle1
@@ -160,7 +158,7 @@ static Character *Char_Monster_New(fixed_t x, fixed_t y)
 	};
 	IO_Data *arc_ptr = this->arc_ptr;
 	for (; *pathp != NULL; pathp++)
-		*arc_ptr++ = Archive_Find((IO_Data)char_monster_arc_main, *pathp);
+		*arc_ptr++ = Archive_Find(this->arc_main, *pathp);
 	
 	//Initialize render state
 	this->tex_id = this->frame = 0xFF;

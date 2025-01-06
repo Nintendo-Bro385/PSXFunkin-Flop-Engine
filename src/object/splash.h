@@ -15,47 +15,14 @@ typedef struct
 {
 	//Object base structure
 	Object obj;
-	
+
 	//Splash state
 	u8 colour;
-	
+
 	fixed_t x, y, xsp, ysp, size, sin, cos;
 } Obj_Splash;
-typedef struct
-{
-	//Object base structure
-	Object obj;
-	
-	//Splash state
-	u8 colour;
-	
-	fixed_t x, y, xsp, ysp, size, sin, cos;
-} Obj_Good;
-typedef struct
-{
-	//Object base structure
-	Object obj;
-	
-	//Splash state
-	u8 colour;
-	
-	fixed_t x, y, xsp, ysp, size, sin, cos;
-} Obj_Bad;
-typedef struct
-{
-	//Object base structure
-	Object obj;
-	
-	//Splash state
-	u8 colour;
-	
-	fixed_t x, y, xsp, ysp, size, sin, cos;
-} Obj_Shit;
 
 //Splash object functions
 Obj_Splash *Obj_Splash_New(fixed_t x, fixed_t y, u8 colour);
-Obj_Good *Obj_Good_New(fixed_t x, fixed_t y, u8 colour);
-Obj_Bad *Obj_Bad_New(fixed_t x, fixed_t y, u8 colour);
-Obj_Shit *Obj_Shit_New(fixed_t x, fixed_t y, u8 colour);
 
 #endif

@@ -4,10 +4,10 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(13,10)},
 		1, 1,
@@ -15,7 +15,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_1_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_1_2 (Fresh)
@@ -24,10 +24,10 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(18,10)},
 		1, 2,
@@ -35,7 +35,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_1_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_1_3 (Dadbattle)
@@ -44,10 +44,10 @@
 		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(15,10),FIXED_DEC(23,10)},
 		1, 3,
@@ -55,7 +55,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_1_3, 0
 	},
 	{ //StageId_1_4 (Tutorial)
@@ -64,10 +64,10 @@
 		{Char_BF_New, FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,  FIXED_DEC(0,1),  FIXED_DEC(-15,1)}, //TODO
 		{NULL,           FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(1,1)},
 		1, 4,
@@ -75,20 +75,20 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_1_4, 0
 	},
-	
+
 	{ //StageId_2_1 (Spookeez)
 		"SPOOKEEZ",
 		//Characters
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week2_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(17,10),FIXED_DEC(24,10)},
 		2, 1,
@@ -96,7 +96,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_2_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_2_2 (South)
@@ -105,10 +105,10 @@
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week2_New,
-		
+
 		//Song info
 		{FIXED_DEC(11,10),FIXED_DEC(15,10),FIXED_DEC(22,10)},
 		2, 2,
@@ -116,19 +116,19 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_2_3, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
 	},
 	{ //StageId_2_3 (Monster)
 		"MONSTER",
 		//Characters
 		{Char_BF_New,      FIXED_DEC(56,1),   FIXED_DEC(85,1)},
-		{Char_Spook_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
+		{Char_Monster_New,  FIXED_DEC(-90,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week2_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(16,10)},
 		2, 3,
@@ -136,20 +136,20 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_2_3, 0
 	},
-	
+
 	{ //StageId_3_1 (Pico)
 		"PICO",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week3_New,
-		
+
 		//Song info
 		{FIXED_DEC(12,10),FIXED_DEC(14,10),FIXED_DEC(16,10)},
 		3, 1,
@@ -157,7 +157,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_3_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_3_2 (Philly)
@@ -166,10 +166,10 @@
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week3_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(2,1)},
 		3, 2,
@@ -177,7 +177,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_3_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_3_3 (Blammed)
@@ -186,10 +186,10 @@
 		{Char_BF_New,     FIXED_DEC(56,1),   FIXED_DEC(85,1)},
 		{Char_Pico_New, FIXED_DEC(-105,1),   FIXED_DEC(85,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week3_New,
-		
+
 		//Song info
 		{FIXED_DEC(12,10),FIXED_DEC(15,10),FIXED_DEC(23,10)},
 		3, 3,
@@ -197,20 +197,20 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_3_3, 0
 	},
-	
+
 	{ //StageId_4_1 (Satin Panties)
 		"SATIN PANTIES",
 		//Characters
 		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
-		
+
 		//Stage background
 		Back_Week4_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(16,10),FIXED_DEC(18,10)},
 		4, 1,
@@ -218,7 +218,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_4_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_4_2 (High)
@@ -227,10 +227,10 @@
 		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
-		
+
 		//Stage background
 		Back_Week4_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(18,10),FIXED_DEC(2,1)},
 		4, 2,
@@ -238,7 +238,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_4_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_4_3 (MILF)
@@ -247,10 +247,10 @@
 		{Char_BFCar_New,   FIXED_DEC(120,1),   FIXED_DEC(40,1)},
 		{Char_Mom_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,    FIXED_DEC(-6,1),   FIXED_DEC(-5,1)},
-		
+
 		//Stage background
 		Back_Week4_New,
-		
+
 		//Song info
 		{FIXED_DEC(14,10),FIXED_DEC(17,10),FIXED_DEC(26,10)},
 		4, 3,
@@ -258,19 +258,19 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_4_3, 0
 	},
 	{ //StageId_4_4 (Test)
 		"TEST",
 		//Characters
-		{Char_Dad_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
-		{Char_BFWeeb_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_BF_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
+		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
-		Back_Dummy_New,
-		
+		Back_Week1_New,
+
 		//Song info
 		{FIXED_DEC(16,10),FIXED_DEC(16,10),FIXED_DEC(16,10)},
 		4, 4,
@@ -278,20 +278,20 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_4_4, 0
 	},
-	
+
 	{ //StageId_5_1 (Cocoa)
 		"COCOA",
 		//Characters
 		{Char_XmasBF_New,  FIXED_DEC(90,1),   FIXED_DEC(85,1)},
-		{Char_XmasP_New, FIXED_DEC(-190,1),   FIXED_DEC(90,1)},
-		{NULL,              FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+		{Char_XmasP_New, FIXED_DEC(-190,1), FIXED_DEC(85,1)},
+		{Char_XmasGF_New,    FIXED_DEC(0,1), FIXED_DEC(-15,1)},
+
 		//Stage background
 		Back_Week5_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(13,10)},
 		5, 1,
@@ -299,19 +299,19 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_5_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_5_2 (Eggnog)
 		"EGGNOG",
 		//Characters
-		{Char_XmasBF_New,  FIXED_DEC(90,1),   FIXED_DEC(85,1)},
-		{Char_XmasP_New, FIXED_DEC(-190,1),   FIXED_DEC(90,1)},
-		{NULL,              FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+		{Char_XmasBF_New,  FIXED_DEC(90,1), FIXED_DEC(85,1)},
+		{Char_XmasP_New, FIXED_DEC(-190,1), FIXED_DEC(85,1)},
+		{Char_XmasGF_New,    FIXED_DEC(0,1), FIXED_DEC(-15,1)},
+
 		//Stage background
 		Back_Week5_New,
-		
+
 		//Song info
 		{FIXED_DEC(14,10),FIXED_DEC(16,10),FIXED_DEC(19,10)},
 		5, 2,
@@ -319,19 +319,19 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_5_3, STAGE_LOAD_FLAG
 	},
 	{ //StageId_5_3 (Winter Horrorland)
 		"WINTER HORRORLAND",
 		//Characters
-		{Char_XmasBF_New, FIXED_DEC(105,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New,   FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
-		{NULL,              FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+		{Char_XmasBF_New, FIXED_DEC(90,1), FIXED_DEC(85,1)},
+		{Char_Monsterx_New,   FIXED_DEC(-125,1), FIXED_DEC(70,1)},
+		{NULL},
+
 		//Stage background
 		Back_Dummy_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(11,10),FIXED_DEC(13,10)},
 		5, 3,
@@ -339,20 +339,20 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_5_3, 0
 	},
-	
+
 	{ //StageId_6_1 (Senpai)
 		"SENPAI",
 		//Characters
 		{Char_BFWeeb_New,  FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_Senpai_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
 		{Char_GFWeeb_New,   FIXED_DEC(0,1),  FIXED_DEC(45,1)},
-		
+
 		//Stage background
 		Back_Week6_New,
-		
+
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(12,10),FIXED_DEC(13,10)},
 		6, 1,
@@ -360,7 +360,7 @@
 		1, //dialogue check
 		XA_Lunchbox1, 1, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
-		
+
 		StageId_6_2, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
 	},
 	{ //StageId_6_2 (Roses)
@@ -369,10 +369,10 @@
 		{Char_BFWeeb_New,   FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_SenpaiM_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
 		{Char_GFWeeb_New,    FIXED_DEC(0,1),  FIXED_DEC(45,1)},
-		
+
 		//Stage background
 		Back_Week6_New,
-		
+
 		//Song info
 		{FIXED_DEC(12,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		6, 2,
@@ -380,7 +380,7 @@
 		1, //dialogue check
 		XA_Clucked, 2, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
-		
+
 		StageId_6_3, 0
 	},
 	{ //StageId_6_3 (Thorns)
@@ -389,10 +389,10 @@
 		{Char_BFWeeb_New,  FIXED_DEC(52,1),  FIXED_DEC(50,1)},
 		{Char_Spirit_New, FIXED_DEC(-60,1),  FIXED_DEC(50,1)},
 		{Char_GFWeeb_New,   FIXED_DEC(0,1),  FIXED_DEC(45,1)},
-		
+
 		//Stage background
 		Back_Week6_New,
-		
+
 		//Song info
 		{FIXED_DEC(11,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		6, 3,
@@ -400,20 +400,20 @@
 		1, //dialogue check
 		XA_Lunchbox2, 2, //dialogue song and it's channel
 		{"\\PORTRAIT\\BF.ARC;1", "\\PORTRAIT\\SENPAI.ARC;1"},
-		
+
 		StageId_6_3, 0
 	},
-	
+
 	{ //StageId_7_1 (Ugh)
 		"UGH",
 		//Characters
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week7_New,
-		
+
 		//Song info
 		{FIXED_DEC(125,100),FIXED_DEC(18,10),FIXED_DEC(23,10)},
 		7, 1,
@@ -421,7 +421,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_7_2, STAGE_LOAD_FLAG
 	},
 	{ //StageId_7_2 (Guns)
@@ -430,10 +430,10 @@
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
-		
+
 		//Stage background
 		Back_Week7_New,
-		
+
 		//Song info
 		{FIXED_DEC(14,10),FIXED_DEC(2,1),FIXED_DEC(25,10)},
 		7, 2,
@@ -441,7 +441,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_7_3, STAGE_LOAD_FLAG | STAGE_LOAD_PLAYER | STAGE_LOAD_OPPONENT | STAGE_LOAD_GIRLFRIEND
 	},
 	{ //StageId_7_3 (Stress)
@@ -450,10 +450,10 @@
 		{Char_BF_New,    FIXED_DEC(105,1),  FIXED_DEC(100,1)}, //TODO: carry gf
 		{Char_Tank_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,      FIXED_DEC(0,1),  FIXED_DEC(-15,1)}, //TODO: pico funny
-		
+
 		//Stage background
 		Back_Week7_New,
-		
+
 		//Song info
 		{FIXED_DEC(175,100),FIXED_DEC(22,10),FIXED_DEC(26,10)},
 		7, 3,
@@ -461,7 +461,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_7_3, 0
 	},
 	{ //StageId_8_1 (Still Alive)
@@ -470,10 +470,10 @@
 		{Char_BF_New,   FIXED_DEC(105,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0,1),    FIXED_DEC(0,1)},
-		
+
 		//Stage background
 		Back_Dummy_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(17,10)},
 		8, 1,
@@ -481,7 +481,7 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_8_1, 0
 	},
 	{ //StageId_8_2 (Senbonzakura)
@@ -490,10 +490,10 @@
 		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{NULL},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1)},
 		8, 2,
@@ -501,8 +501,28 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_8_2, 0
+	},
+	{ //StageId_8_3 (silly billy)
+		"SILLY BILLY",
+		//Characters
+		{Char_BF_New,       FIXED_DEC(125,1),  FIXED_DEC(110,1)},
+		{Char_Clucky_New, FIXED_DEC(-25,1),  FIXED_DEC(83,1)},
+		{NULL},
+
+		//Stage background
+		Back_Week1_New,
+
+		//Song info
+		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1)},
+		8, 3,
+		XA_Sillybilly, 0,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+
+		StageId_8_3, 0
 	},
 	{ //StageId_2_4 (Clucked)
 		"CLUCKED",
@@ -510,10 +530,10 @@
 		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
 		{Char_Clucky_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,        FIXED_DEC(0,1),    FIXED_DEC(0,1)},
-		
+
 		//Stage background
 		Back_Week1_New,
-		
+
 		//Song info
 		{FIXED_DEC(25,10),FIXED_DEC(25,10),FIXED_DEC(25,10)},
 		2, 4,
@@ -521,6 +541,6 @@
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
-		
+
 		StageId_2_4, 0
 	},

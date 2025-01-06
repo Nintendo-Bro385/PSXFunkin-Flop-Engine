@@ -4,23 +4,14 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-#include "boot/character.h"
-#include "boot/mem.h"
-#include "boot/archive.h"
-#include "boot/stage.h"
-#include "boot/main.h"
+#include "xmasgf.h"
 
-#include "speakerxmas.c"
+#include "../mem.h"
+#include "../archive.h"
+#include "../stage.h"
+#include "../main.h"
 
-//XmasGF assets
-static u8 char_xmasgf_arc_main[] = {
-	#include "iso/gf/xmas.arc.h"
-};
-#ifdef CHAR_XmasGF_TUTORIAL
-static u8 char_xmasgf_arc_tut[] = {
-	#include "iso/gf/tut.arc.h"
-};
-#endif
+#include "speaker.h"
 
 //XmasGF character structure
 enum
@@ -38,6 +29,7 @@ typedef struct
 	Character character;
 	
 	//Render data and state
+	IO_Data arc_main;
 	IO_Data arc_ptr[XmasGF_Arc_Max];
 	
 	Gfx_Tex tex;
@@ -46,8 +38,6 @@ typedef struct
 	//Speaker
 	Speaker speaker;
 	
-	//Pico test
-	u16 *pico_p;
 } Char_XmasGF;
 
 //XmasGF character definitions
@@ -86,7 +76,7 @@ static const Animation char_xmasgf_anim[CharAnim_Max] = {
 };
 
 //XmasGF character functions
-static void Char_XmasGF_SetFrame(void *user, u8 frame)
+void Char_XmasGF_SetFrame(void *user, u8 frame)
 {
 	Char_XmasGF *this = (Char_XmasGF*)user;
 	
@@ -100,19 +90,31 @@ static void Char_XmasGF_SetFrame(void *user, u8 frame)
 	}
 }
 
-static fixed_t Char_XmasGF_GetParallax(Char_XmasGF *this);
-
-static void Char_XmasGF_Tick(Character *character)
+void Char_XmasGF_Tick(Character *character)
 {
 	Char_XmasGF *this = (Char_XmasGF*)character;
 	
-		//Dance to the beat
-		if (stage.note_scroll >= character->sing_end)
+		if (stage.flag & STAGE_FLAG_JUST_STEP)
 		{
-			if ((stage.flag & STAGE_FLAG_JUST_STEP) && (stage.song_step % stage.gf_speed) == 0)
+			//Stage specific animations
+			if (stage.note_scroll >= 0)
+			{
+				switch (stage.stage_id)
+				{
+					case StageId_1_4: //Tutorial cheer
+						if (stage.song_step > 64 && stage.song_step < 192 && (stage.song_step & 0x3F) == 60)
+							character->set_anim(character, CharAnim_UpAlt);
+						break;
+					default:
+						break;
+				}
+			}
+			
+			//Perform dance
+			if (stage.note_scroll >= character->sing_end && (stage.song_step % stage.gf_speed) == 0)
 			{
 				//Switch animation
-				if (character->animatable.anim == CharAnim_LeftAlt)
+				if (character->animatable.anim == CharAnim_LeftAlt || character->animatable.anim == CharAnim_Right)
 					character->set_anim(character, CharAnim_RightAlt);
 				else
 					character->set_anim(character, CharAnim_LeftAlt);
@@ -122,25 +124,36 @@ static void Char_XmasGF_Tick(Character *character)
 			}
 		}
 	
+	//Get parallax
+	fixed_t parallax;
+	
+	parallax = FIXED_UNIT;
+	
 	//Animate and draw
-	fixed_t parallax = Char_XmasGF_GetParallax(this);
 	Animatable_Animate(&character->animatable, (void*)this, Char_XmasGF_SetFrame);
 	Character_DrawParallax(character, &this->tex, &char_xmasgf_frame[this->frame], parallax);
+	
+	//Tick speakers
 	Speaker_Tick(&this->speaker, character->x, character->y, parallax);
 }
 
-static void Char_XmasGF_SetAnim(Character *character, u8 anim)
+void Char_XmasGF_SetAnim(Character *character, u8 anim)
 {
 	//Set animation
+	if (anim == CharAnim_Left || anim == CharAnim_Down || anim == CharAnim_Up || anim == CharAnim_Right || anim == CharAnim_UpAlt)
+		character->sing_end = stage.note_scroll + FIXED_DEC(22,1); //Nearly 2 steps
 	Animatable_SetAnim(&character->animatable, anim);
 }
 
-static void Char_XmasGF_Free(Character *character)
+void Char_XmasGF_Free(Character *character)
 {
-	(void)character;
+	Char_XmasGF *this = (Char_XmasGF*)character;
+	
+	//Free art
+	Mem_Free(this->arc_main);
 }
 
-static Character *Char_XmasGF_New(fixed_t x, fixed_t y)
+Character *Char_XmasGF_New(fixed_t x, fixed_t y)
 {
 	//Allocate xmasgf object
 	Char_XmasGF *this = Mem_Alloc(sizeof(Char_XmasGF));
@@ -162,13 +175,15 @@ static Character *Char_XmasGF_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	this->character.health_i = 1;
+	this->character.health_i = 0;
 	
 	this->character.focus_x = FIXED_DEC(2,1);
 	this->character.focus_y = FIXED_DEC(-40,1);
 	this->character.focus_zoom = FIXED_DEC(2,1);
 	
 	//Load art
+	this->arc_main = IO_Read("\\CHAR\\XMASGF.ARC;1");
+	
 	const char **pathp = (const char *[]){
 		"xmasgf0.tim", //XmasGF_ArcMain_XmasGF0
 		"xmasgf1.tim", //XmasGF_ArcMain_XmasGF1
@@ -177,7 +192,7 @@ static Character *Char_XmasGF_New(fixed_t x, fixed_t y)
 	};
 	IO_Data *arc_ptr = this->arc_ptr;
 	for (; *pathp != NULL; pathp++)
-		*arc_ptr++ = Archive_Find((IO_Data)char_xmasgf_arc_main, *pathp);
+		*arc_ptr++ = Archive_Find(this->arc_main, *pathp);
 	
 	//Initialize render state
 	this->tex_id = this->frame = 0xFF;

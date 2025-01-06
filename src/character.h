@@ -25,7 +25,9 @@ typedef enum
 	CharAnim_Down,  CharAnim_DownAlt,
 	CharAnim_Up,    CharAnim_UpAlt,
 	CharAnim_Right, CharAnim_RightAlt,
-	
+	CharAnim_UnGrow, CharAnim_UnShrink,
+	CharAnim_Sing,
+
 	CharAnim_Max //Max standard/shared animation
 } CharAnim;
 
@@ -43,15 +45,15 @@ typedef struct Character
 	void (*tick)(struct Character*);
 	void (*set_anim)(struct Character*, u8);
 	void (*free)(struct Character*);
-	
+
 	//Position
 	fixed_t x, y;
-	
+
 	//Character information
 	CharSpec spec;
 	u8 health_i; //hud1.tim
 	fixed_t focus_x, focus_y, focus_zoom;
-	
+
 	//Animation state
 	Animatable animatable;
 	Animatable animatable2;

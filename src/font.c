@@ -31,11 +31,11 @@ void Font_Bold_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fo
 			x -= Font_Bold_GetWidth(this, text);
 			break;
 	}
-	
+
 	//Get animation offsets
 	u32 v0 = 0;
 	u8 v1 = (animf_count >> 1) & 1;
-	
+
 	//Draw string character by character
 	u8 c;
 	while ((c = *text++) != '\0')
@@ -57,21 +57,21 @@ void Font_Bold_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fo
 s32 Font_Arial_GetWidth(struct FontData *this, const char *text)
 {
 	(void)this;
-	
+
 	//Draw string width character by character
 	s32 width = 0;
-	
+
 	u8 c;
 	while ((c = *text++) != '\0')
 	{
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
-		
+
 		//Add width
 		width += font_arialmap[c].gw;
 	}
-	
+
 	return width;
 }
 
@@ -89,7 +89,7 @@ void Font_Arial_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, F
 			x -= Font_Arial_GetWidth(this, text);
 			break;
 	}
-	
+
 	//Draw string character by character
 	u8 c;
 	s16 xhold = x;
@@ -103,11 +103,11 @@ void Font_Arial_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, F
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
-		
+
 		//Draw character
 		RECT src = {font_arialmap[c].ix, font_arialmap[c].iy, font_arialmap[c].iw, font_arialmap[c].ih};
 		Gfx_BlitTexCol(&this->tex, &src, x + font_arialmap[c].gx, y + font_arialmap[c].gy, r, g, b);
-		
+
 		//Increment X
 		x += font_arialmap[c].gw;
 	}
@@ -118,21 +118,21 @@ void Font_Arial_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, F
 s32 Font_CDR_GetWidth(struct FontData *this, const char *text)
 {
 	(void)this;
-	
+
 	//Draw string width character by character
 	s32 width = 0;
-	
+
 	u8 c;
 	while ((c = *text++) != '\0')
 	{
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
-		
+
 		//Add width
 		width += font_cdrmap[c].charW;
 	}
-	
+
 	return width;
 }
 
@@ -150,7 +150,7 @@ void Font_CDR_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fon
 			x -= Font_CDR_GetWidth(this, text);
 			break;
 	}
-	
+
 	//Draw string character by character
 	u8 c;
 	s16 xhold = x;
@@ -164,13 +164,75 @@ void Font_CDR_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, Fon
 		//Shift and validate character
 		if ((c -= 0x20) >= 0x60)
 			continue;
-		
+
 		//Draw character
 		RECT src = {font_cdrmap[c].charX, font_cdrmap[c].charY, font_cdrmap[c].charW, font_cdrmap[c].charL};
 		Gfx_BlitTexCol(&this->tex, &src, x, y, r, g, b);
-		
+
 		//Increment X
 		x += font_cdrmap[c].charW - 1;
+	}
+}
+
+//Font_Arial
+#include "font_kata.h"
+
+s32 Font_KATA_GetWidth(struct FontData *this, const char *text)
+{
+	(void)this;
+
+	//Draw string width character by character
+	s32 width = 0;
+
+	u8 c;
+	while ((c = *text++) != '\0')
+	{
+		//Shift and validate character
+		if ((c -= 0x20) >= 0x60)
+			continue;
+
+		//Add width
+		width += font_kata[c].charW;
+	}
+
+	return width;
+}
+
+void Font_KATA_DrawCol(struct FontData *this, const char *text, s32 x, s32 y, FontAlign align, u8 r, u8 g, u8 b)
+{
+	//Offset position based off alignment
+	switch (align)
+	{
+		case FontAlign_Left:
+			break;
+		case FontAlign_Center:
+			x -= Font_KATA_GetWidth(this, text) >> 1;
+			break;
+		case FontAlign_Right:
+			x -= Font_KATA_GetWidth(this, text);
+			break;
+	}
+
+	//Draw string character by character
+	u8 c;
+	s16 xhold = x;
+	while ((c = *text++) != '\0')
+	{
+		if (c == '\n')
+		{
+		x = xhold;
+		y += 12;
+		}
+		//Shift and validate character
+		if ((c -= 0x20) >= 0x60)
+			continue;
+
+		//Draw character
+		RECT src = {font_kata[c].charX, font_kata[c].charY, font_kata[c].charW, font_kata[c].charL};
+		Gfx_BlitTexCol(&this->tex, &src, x, y, r, g, b);
+
+		//Increment X
+		x += font_kata[c].charW - 1;
 	}
 }
 
@@ -203,6 +265,12 @@ void FontData_Load(FontData *this, Font font)
 			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\CDR.TIM;1"), GFX_LOADTEX_FREE);
 			this->get_width = Font_CDR_GetWidth;
 			this->draw_col = Font_CDR_DrawCol;
+			break;
+        case Font_KATA:
+			//Load texture and set functions
+			Gfx_LoadTex(&this->tex, IO_Read("\\FONT\\KATA.TIM;1"), GFX_LOADTEX_FREE);
+			this->get_width = Font_KATA_GetWidth;
+			this->draw_col = Font_KATA_DrawCol;
 			break;
 	}
 	this->draw = Font_Draw;

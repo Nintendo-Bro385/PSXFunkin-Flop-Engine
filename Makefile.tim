@@ -7,6 +7,7 @@ all: \
 	iso/font/boldfont.tim \
 	iso/font/arial.tim \
 	iso/font/cdr.tim \
+	iso/font/kata.tim \
 	iso/stage/hud0.tim \
 	iso/stage/hud0weeb.tim \
 	iso/stage/hud1.tim \
@@ -18,6 +19,9 @@ all: \
 	iso/stage/hud4.tim \
 	iso/stage/phud.tim \
 	iso/stage/phud1.tim \
+	iso/stage/sillyhud0.tim \
+	iso/stage/sillyhud1.tim \
+	iso/stage/bluehud.tim \
 	iso/stage/portraits/bf.arc \
 	iso/stage/portraits/senpai.arc \
 	iso/stage/results/results.tim \
@@ -28,11 +32,15 @@ all: \
 	iso/bf/weeb.arc \
 	iso/dad/main.arc \
 	iso/spook/main.arc \
+	iso/monster/main.arc \
 	iso/pico/main.arc \
 	iso/mom/main.arc \
 	iso/mom/hair.tim \
 	iso/bf/xmas.arc \
+	iso/gf/xmas.arc \
+	iso/gf/light.arc \
 	iso/xmasp/main.arc \
+	iso/monsterx/main.arc \
 	iso/senpai/main.arc \
 	iso/senpaim/main.arc \
 	iso/spirit/main.arc \
@@ -56,7 +64,7 @@ all: \
 	iso/week5/back.arc \
 	iso/week6/back.arc \
 	iso/week6/back3.tim \
-	iso/week7/back.arc
+	iso/week7/back.arc \
 
 iso/%.tim: iso/%.png
 	tools/funkintimconv/funkintimconv $@ $<
@@ -87,6 +95,12 @@ iso/dad/main.arc: iso/dad/idle0.tim iso/dad/idle1.tim iso/dad/left.tim iso/dad/d
 # Spook
 iso/spook/main.arc: iso/spook/idle0.tim iso/spook/idle1.tim iso/spook/idle2.tim iso/spook/left.tim iso/spook/down.tim iso/spook/up.tim iso/spook/right.tim
 
+# Monster
+iso/monster/main.arc: iso/monster/idle0.tim iso/monster/idle1.tim iso/monster/idle2.tim iso/monster/left.tim iso/monster/down.tim iso/monster/up.tim iso/monster/right.tim
+
+# Monster Christimas
+iso/monsterx/main.arc: iso/monsterx/idle0.tim iso/monsterx/idle1.tim iso/monsterx/idle2.tim iso/monsterx/left.tim iso/monsterx/down.tim iso/monsterx/up.tim iso/monsterx/right.tim
+
 # Pico
 iso/pico/main.arc: iso/pico/idle.tim iso/pico/hit0.tim iso/pico/hit1.tim
 
@@ -94,7 +108,11 @@ iso/pico/main.arc: iso/pico/idle.tim iso/pico/hit0.tim iso/pico/hit1.tim
 iso/mom/main.arc: iso/mom/idle0.tim iso/mom/idle1.tim iso/mom/left.tim iso/mom/down.tim iso/mom/up.tim iso/mom/right.tim
 
 # Xmas BF
-iso/bf/xmas.arc: iso/bf/xmasbf0.tim iso/bf/xmasbf1.tim iso/bf/xmasbf2.tim iso/bf/xmasbf3.tim iso/bf/dead0.tim
+iso/bf/xmas.arc: iso/bf/xmasbf0.tim iso/bf/xmasbf1.tim iso/bf/xmasbf2.tim iso/bf/xmasbf3.tim iso/bf/xmasbf4.tim iso/bf/xmasbf5.tim iso/bf/dead0.tim iso/bf/dead1.tim iso/bf/dead2.tim iso/bf/retry.tim
+
+# Xmas GF
+iso/gf/xmas.arc: iso/gf/xmasgf0.tim iso/gf/xmasgf1.tim iso/gf/xmasgf2.tim
+iso/gf/light.arc: iso/gf/light0.tim iso/gf/light1.tim
 
 # Xmas Parents
 iso/xmasp/main.arc: iso/xmasp/idle0.tim iso/xmasp/idle1.tim iso/xmasp/idle2.tim iso/xmasp/idle3.tim iso/xmasp/lefta0.tim iso/xmasp/lefta1.tim iso/xmasp/leftb0.tim iso/xmasp/leftb1.tim iso/xmasp/downa0.tim iso/xmasp/downa1.tim iso/xmasp/downb0.tim iso/xmasp/downb1.tim iso/xmasp/upa0.tim iso/xmasp/upa1.tim iso/xmasp/upb0.tim iso/xmasp/upb1.tim iso/xmasp/righta0.tim iso/xmasp/righta1.tim iso/xmasp/rightb0.tim iso/xmasp/rightb1.tim

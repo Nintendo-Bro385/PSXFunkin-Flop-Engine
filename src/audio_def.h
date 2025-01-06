@@ -58,6 +58,8 @@ static const XA_TrackDef xa_tracks[] = {
 	//KAPIA.XA
 	{XA_PortalA, XA_LENGTH(17600)}, //XA_Still alive
 	{XA_PortalA, XA_LENGTH(24400)}, //XA_Senbonzakura
+	//Billy.xa
+	{XA_Billy, XA_LENGTH(37500)}, //XA_Sillybilly
 
 };
 
@@ -79,6 +81,7 @@ static const char *xa_paths[] = {
 	"\\MUSIC\\WEEK7A.XA;1", //XA_Week7A
 	"\\MUSIC\\WEEK7B.XA;1", //XA_Week7B
 	"\\MUSIC\\PORTALA.XA;1",  //XA_PortalA
+	"\\MUSIC\\BILLY.XA;1",  //XA_Billy
 	NULL,
 };
 
@@ -140,6 +143,8 @@ static const XA_Mp3 xa_mp3s[] = {
 	//PORTALA.XA
 	{"stillalive", true},     //XA_Stillalive
 	{"senbonzakura", false}, //XA_Beathoven
+	//Billy.xa
+	{"sillybilly", true}, //XA_Beathoven
 	
 	{NULL, false}
 };

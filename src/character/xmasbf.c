@@ -41,6 +41,9 @@ enum
 	XmasBF_ArcMain_XmasBF1,
 	XmasBF_ArcMain_XmasBF2,
 	XmasBF_ArcMain_XmasBF3,
+	XmasBF_ArcMain_XmasBF4,
+	XmasBF_ArcMain_XmasBF5,
+	XmasBF_ArcMain_XmasBF6,
 	XmasBF_ArcMain_Dead0, //BREAK
 	
 	XmasBF_ArcMain_Max,
@@ -78,44 +81,50 @@ typedef struct
 
 //Boyfriend player definitions
 static const CharFrame char_xmasbf_frame[] = {
-	{XmasBF_ArcMain_XmasBF0, {  0,   0, 102,  99}, { 53,  91}}, //0 idle 1
-	{XmasBF_ArcMain_XmasBF0, {103,   0, 102,  99}, { 53,  91}}, //1 idle 2
+	{XmasBF_ArcMain_XmasBF0, {  0,   0, 102, 100}, { 53,  91}}, //0 idle 1
+	{XmasBF_ArcMain_XmasBF0, {103,   0, 102, 100}, { 53,  91}}, //1 idle 2
 	{XmasBF_ArcMain_XmasBF0, {  0, 100, 102, 102}, { 53,  93}}, //2 idle 3
 	{XmasBF_ArcMain_XmasBF0, {103, 100, 102, 105}, { 53,  97}}, //3 idle 4
 	{XmasBF_ArcMain_XmasBF1, {  0,   0, 103, 105}, { 52,  97}}, //4 idle 5
 	
 	{XmasBF_ArcMain_XmasBF1, {104,   0,  96, 102}, { 56,  95}}, //5 left 1
-	{XmasBF_ArcMain_XmasBF1, {  0, 105,  94, 102}, { 54,  95}}, //6 left 2
+	{XmasBF_ArcMain_XmasBF1, {  0, 106,  94, 104}, { 54,  95}}, //6 left 2
 	
-	{XmasBF_ArcMain_XmasBF1, { 95, 103,  94,  89}, { 52,  82}}, //7 down 1
-	{XmasBF_ArcMain_XmasBF2, {  0,   0,  94,  90}, { 52,  83}}, //8 down 2
+	{XmasBF_ArcMain_XmasBF1, { 95, 103,  97,  94}, { 52,  82}}, //7 down 1
+	{XmasBF_ArcMain_XmasBF2, {  0,   0,  94,  92}, { 52,  83}}, //8 down 2
 	
-	{XmasBF_ArcMain_XmasBF2, { 95,   0,  93, 112}, { 41, 104}}, //9 up 1
-	{XmasBF_ArcMain_XmasBF2, {  0,  91,  94, 111}, { 42, 103}}, //10 up 2
+	{XmasBF_ArcMain_XmasBF2, { 95,   0,  93, 112}, { 41, 102}}, //9 up 1
+	{XmasBF_ArcMain_XmasBF2, {  0,  92,  94, 112}, { 42, 103}}, //10 up 2
 	
 	{XmasBF_ArcMain_XmasBF2, { 95, 113, 102, 102}, { 41,  95}}, //11 right 1
 	{XmasBF_ArcMain_XmasBF3, {  0,   0, 102, 102}, { 41,  95}}, //12 right 2
 	
-	{XmasBF_ArcMain_XmasBF3, {103,   0,  99, 105}, { 54,  98}}, //13 peace 1
-	{XmasBF_ArcMain_XmasBF3, {  0, 103, 104, 103}, { 54,  96}}, //14 peace 2
-	{XmasBF_ArcMain_XmasBF3, {105, 106, 104, 104}, { 54,  97}}, //15 peace 3
+	{XmasBF_ArcMain_XmasBF4, {  0,   0,  93, 108}, { 52, 101}}, //20 left miss 1
+	{XmasBF_ArcMain_XmasBF4, { 94,   0,  93, 108}, { 52, 101}}, //21 left miss 2
 	
-	{XmasBF_ArcMain_XmasBF3, {  0,   0, 128, 128}, { 53,  92}}, //16 sweat 1
-	{XmasBF_ArcMain_XmasBF3, {128,   0, 128, 128}, { 53,  93}}, //17 sweat 2
-	{XmasBF_ArcMain_XmasBF3, {  0, 128, 128, 128}, { 53,  98}}, //18 sweat 3
-	{XmasBF_ArcMain_XmasBF3, {128, 128, 128, 128}, { 53,  98}}, //19 sweat 4
+	{XmasBF_ArcMain_XmasBF4, {  0, 110,  96, 100}, { 50,  90}}, //22 down miss 1
+	{XmasBF_ArcMain_XmasBF4, { 97, 110,  97,  99}, { 50,  89}}, //23 down miss 2
 	
-	{XmasBF_ArcMain_XmasBF3, {  0,   0,  93, 108}, { 52, 101}}, //20 left miss 1
-	{XmasBF_ArcMain_XmasBF3, { 94,   0,  93, 108}, { 52, 101}}, //21 left miss 2
+	{XmasBF_ArcMain_XmasBF5, {  0,   0,  90, 107}, { 44,  99}}, //24 up miss 1
+	{XmasBF_ArcMain_XmasBF5, { 91,   0,  89, 108}, { 44, 100}}, //25 up miss 2
 	
-	{XmasBF_ArcMain_XmasBF3, {  0, 109,  95,  98}, { 50,  90}}, //22 down miss 1
-	{XmasBF_ArcMain_XmasBF3, { 96, 109,  95,  97}, { 50,  89}}, //23 down miss 2
+	{XmasBF_ArcMain_XmasBF5, {  0, 108, 100, 109}, { 42, 101}}, //26 right miss 1
+	{XmasBF_ArcMain_XmasBF5, {101, 110, 101, 109}, { 43, 101}}, //27 right miss 2
+
+	{XmasBF_ArcMain_Dead0, {  0,   0, 128, 128}, { 53,  98}}, //23 dead0 0
+	{XmasBF_ArcMain_Dead0, {128,   0, 128, 128}, { 53,  98}}, //24 dead0 1
+	{XmasBF_ArcMain_Dead0, {  0, 128, 128, 128}, { 53,  98}}, //25 dead0 2
+	{XmasBF_ArcMain_Dead0, {128, 128, 128, 128}, { 53,  98}}, //26 dead0 3
 	
-	{XmasBF_ArcMain_XmasBF3, {  0,   0,  90, 107}, { 44,  99}}, //24 up miss 1
-	{XmasBF_ArcMain_XmasBF3, { 91,   0,  89, 108}, { 44, 100}}, //25 up miss 2
+	{XmasBF_ArcDead_Dead1, {  0,   0, 128, 128}, { 53,  98}}, //27 dead1 0
+	{XmasBF_ArcDead_Dead1, {128,   0, 128, 128}, { 53,  98}}, //28 dead1 1
+	{XmasBF_ArcDead_Dead1, {  0, 128, 128, 128}, { 53,  98}}, //29 dead1 2
+	{XmasBF_ArcDead_Dead1, {128, 128, 128, 128}, { 53,  98}}, //30 dead1 3
 	
-	{XmasBF_ArcMain_XmasBF3, {  0, 108,  99, 108}, { 42, 101}}, //26 right miss 1
-	{XmasBF_ArcMain_XmasBF3, {100, 109, 101, 108}, { 43, 101}}, //27 right miss 2
+	{XmasBF_ArcDead_Dead2, {  0,   0, 128, 128}, { 53,  98}}, //31 dead2 body twitch 0
+	{XmasBF_ArcDead_Dead2, {128,   0, 128, 128}, { 53,  98}}, //32 dead2 body twitch 1
+	{XmasBF_ArcDead_Dead2, {  0, 128, 128, 128}, { 53,  98}}, //33 dead2 balls twitch 0
+	{XmasBF_ArcDead_Dead2, {128, 128, 128, 128}, { 53,  98}}, //34 dead2 balls twitch 1
 };
 
 static const Animation char_xmasbf_anim[PlayerAnim_Max] = {
@@ -129,23 +138,23 @@ static const Animation char_xmasbf_anim[PlayerAnim_Max] = {
 	{2, (const u8[]){11, 12, ASCR_BACK, 1}},             //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_RightAlt
 	
-	{1, (const u8[]){ 5, 20, 20, 21, ASCR_BACK, 1}},     //PlayerAnim_LeftMiss
-	{1, (const u8[]){ 7, 22, 22, 23, ASCR_BACK, 1}},     //PlayerAnim_DownMiss
-	{1, (const u8[]){ 9, 24, 24, 25, ASCR_BACK, 1}},     //PlayerAnim_UpMiss
-	{1, (const u8[]){11, 26, 26, 27, ASCR_BACK, 1}},     //PlayerAnim_RightMiss
+	{1, (const u8[]){ 5, 13, 13, 14, ASCR_BACK, 1}},     //PlayerAnim_LeftMiss
+	{1, (const u8[]){ 7, 15, 15, 16, ASCR_BACK, 1}},     //PlayerAnim_DownMiss
+	{1, (const u8[]){ 9, 17, 17, 18, ASCR_BACK, 1}},     //PlayerAnim_UpMiss
+	{1, (const u8[]){11, 19, 19, 20, ASCR_BACK, 1}},     //PlayerAnim_RightMiss
 	
 	{2, (const u8[]){13, 14, 15, ASCR_BACK, 1}},         //PlayerAnim_Peace
 	{2, (const u8[]){16, 17, 18, 19, ASCR_REPEAT}},      //PlayerAnim_Sweat
 	
-	{5, (const u8[]){23, 24, 25, 26, 26, 26, 26, 26, 26, 26, ASCR_CHGANI, PlayerAnim_Dead1}}, //PlayerAnim_Dead0
-	{5, (const u8[]){26, ASCR_REPEAT}},                                                       //PlayerAnim_Dead1
-	{3, (const u8[]){27, 28, 29, 30, 30, 30, 30, 30, 30, 30, ASCR_CHGANI, PlayerAnim_Dead3}}, //PlayerAnim_Dead2
-	{3, (const u8[]){30, ASCR_REPEAT}},                                                       //PlayerAnim_Dead3
-	{3, (const u8[]){31, 32, 30, 30, 30, 30, 30, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead4
-	{3, (const u8[]){33, 34, 30, 30, 30, 30, 30, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead5
+	{3, (const u8[]){21, 22, 23, 24, 24, 24, 24, 24, 24, 24, ASCR_CHGANI, PlayerAnim_Dead1}}, //PlayerAnim_Dead0
+	{3, (const u8[]){24, ASCR_REPEAT}},                                                       //PlayerAnim_Dead1
+	{4, (const u8[]){25, 26, 27, 28, 28, 28, 28, 28, 28, 28, ASCR_CHGANI, PlayerAnim_Dead3}}, //PlayerAnim_Dead2
+	{3, (const u8[]){28, ASCR_REPEAT}},                                                       //PlayerAnim_Dead3
+	{3, (const u8[]){29, 30, 28, 28, 28, 28, 28, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead4
+	{3, (const u8[]){31, 32, 28, 28, 28, 28, 28, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead5
 	
-	{10, (const u8[]){30, 30, 30, ASCR_BACK, 1}}, //PlayerAnim_Dead4
-	{ 3, (const u8[]){33, 34, 30, ASCR_REPEAT}},  //PlayerAnim_Dead5
+	{10, (const u8[]){28, 28, 28, ASCR_CHGANI, PlayerAnim_Dead7}}, //PlayerAnim_Dead4
+	{ 3, (const u8[]){31, 32, 28, ASCR_REPEAT}},  //PlayerAnim_Dead5
 };
 
 //Boyfriend player functions
@@ -197,24 +206,6 @@ void Char_XmasBF_Tick(Character *character)
 		     character->animatable.anim != PlayerAnim_RightMiss) &&
 			(stage.song_step & 0x7) == 0)
 			character->set_anim(character, CharAnim_Idle);
-		
-		//Stage specific animations
-		if (stage.note_scroll >= 0)
-		{
-			switch (stage.stage_id)
-			{
-				case StageId_1_4: //Tutorial peace
-					if (stage.song_step > 64 && stage.song_step < 192 && (stage.song_step & 0x3F) == 60)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				case StageId_1_1: //Bopeebo peace
-					if ((stage.song_step & 0x1F) == 28)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				default:
-					break;
-			}
-		}
 	}
 	
 	//Retry screen
@@ -410,6 +401,8 @@ Character *Char_XmasBF_New(fixed_t x, fixed_t y)
 		"xmasbf1.tim",   //XmasBF_ArcMain_XmasBF1
 		"xmasbf2.tim",   //XmasBF_ArcMain_XmasBF2
 		"xmasbf3.tim",   //XmasBF_ArcMain_XmasBF3
+		"xmasbf4.tim",   //XmasBF_ArcMain_XmasBF4
+		"xmasbf5.tim",   //XmasBF_ArcMain_XmasBF5
 		"dead0.tim", //XmasBF_ArcMain_Dead0
 		NULL
 	};

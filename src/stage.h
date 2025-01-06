@@ -41,7 +41,7 @@ typedef struct {
 } Achievement;
 
 //add new ones here
-#define NUM_ACHIEVEMENTS 13
+#define NUM_ACHIEVEMENTS 14
 
 typedef enum {
     Full_Combo_Week_1,
@@ -54,6 +54,7 @@ typedef enum {
     Full_Combo_Senbonzakura,
     Perfect_Any_Song_In_Nightmare_Difficulty,
     ds_User_Turn_On_Low_Quality_Mode,
+    Beat_Any_Song_With_No_Hud,
     Play_Swapped_Mode,
     Play_With_A_Friend,
     Debugger_Enter_The_Debug_Menu
@@ -95,6 +96,7 @@ typedef enum
     
     StageId_8_1, //Still Alive
     StageId_8_2, //Senbonzakura
+    StageId_8_3, //Silly billy
     
     StageId_2_4, //Clucked
     
@@ -225,7 +227,8 @@ typedef struct
     {
         //Stage settings
         boolean ghost, downscroll, botplay, lowquality, flashing, expsync;
-        boolean hell;
+        boolean hell, onlyarrows;
+        const char *nohudsong;
         int menumusic;
         
         s32 mode;
@@ -240,29 +243,27 @@ typedef struct
     char Results_text1[20];
     char Results_text2[20];
     char Results_text3[30];
+    char nohudsong_text[20];
+    
+    boolean bluenotes;
     
     boolean loadsaveonce;
     
     u32 offset;
     
-    u16 grmisses;
-    
     const char *storyname;
     
     int pixelmode;
-    
-    u16 ssmisses;
-    
-    u16 brmisses;
     
     u16 sickk, goodd, badd, shitt;
     
     u8 hud1shit;
     u8 hud1shit2;
+    int hud1shit3;
     u8 iconshit;
     
     //HUD textures
-    Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_results, tex_sprites, tex_saving;
+    Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_blue, tex_results, tex_sprites, tex_saving;
     
     //Stage data
     const StageDef *stage_def;
@@ -318,7 +319,7 @@ typedef struct
     
     boolean song_completed;
     
-    s16 song_step;
+    s32 song_step;
     
     u8 gf_speed; //Typically 4 steps, changes in Fresh
     

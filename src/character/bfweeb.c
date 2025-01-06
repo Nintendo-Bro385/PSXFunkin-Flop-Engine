@@ -21,7 +21,7 @@ enum
 	BFWeeb_ArcMain_Weeb3,
 	BFWeeb_ArcMain_Weeb4,
 	BFWeeb_ArcMain_Weeb5,
-	
+
 	BFWeeb_ArcMain_Max,
 };
 
@@ -29,14 +29,14 @@ typedef struct
 {
 	//Character base structure
 	Character character;
-	
+
 	//Render data and state
 	IO_Data arc_main;
 	IO_Data arc_ptr[BFWeeb_ArcMain_Max];
-	
+
 	Gfx_Tex tex;
 	u8 frame, tex_id;
-	
+
 	u8 skull_scale;
 } Char_BFWeeb;
 
@@ -47,28 +47,28 @@ static const CharFrame char_bfweeb_frame[] = {
 	{BFWeeb_ArcMain_Weeb0, {123,   0,  59,  58}, { 33,  55}}, //2 idle 3
 	{BFWeeb_ArcMain_Weeb0, {183,   0,  58,  59}, { 31,  56}}, //3 idle 4
 	{BFWeeb_ArcMain_Weeb0, {  0,  56,  58,  58}, { 32,  55}}, //4 idle 5
-	
+
 	{BFWeeb_ArcMain_Weeb0, { 59,  57,  54,  57}, { 34,  53}}, //5 left 1
 	{BFWeeb_ArcMain_Weeb0, {114,  59,  55,  57}, { 33,  53}}, //6 left 2
-	
+
 	{BFWeeb_ArcMain_Weeb0, {170,  60,  55,  52}, { 31,  48}}, //7 down 1
 	{BFWeeb_ArcMain_Weeb0, {  0, 115,  54,  53}, { 31,  49}}, //8 down 2
-	
+
 	{BFWeeb_ArcMain_Weeb0, { 55, 116,  57,  64}, { 26,  60}}, //9 up 1
 	{BFWeeb_ArcMain_Weeb0, {113, 117,  58,  63}, { 27,  59}}, //10 up 2
-	
+
 	{BFWeeb_ArcMain_Weeb0, {172, 113,  57,  56}, { 22,  52}}, //11 right 1
 	{BFWeeb_ArcMain_Weeb0, {  0, 169,  55,  56}, { 22,  52}}, //12 right 2
-	
+
 	{BFWeeb_ArcMain_Weeb0, { 56, 181,  54,  57}, { 33,  53}}, //13 left miss 1
 	{BFWeeb_ArcMain_Weeb0, {113, 181,  55,  57}, { 33,  53}}, //14 left miss 2
-	
+
 	{BFWeeb_ArcMain_Weeb0, {169, 170,  53,  56}, { 31,  52}}, //15 down miss 1
 	{BFWeeb_ArcMain_Weeb1, {  0,   0,  54,  53}, { 31,  49}}, //16 down miss 2
-	
+
 	{BFWeeb_ArcMain_Weeb1, { 55,   0,  60,  61}, { 28,  57}}, //17 up miss 1
 	{BFWeeb_ArcMain_Weeb1, {116,   0,  58,  63}, { 27,  59}}, //18 up miss 2
-	
+
 	{BFWeeb_ArcMain_Weeb1, {175,   0,  54,  56}, { 22,  52}}, //19 right miss 1
 	{BFWeeb_ArcMain_Weeb1, {  0,  54,  55,  56}, { 22,  52}}, //20 right miss 2
 
@@ -141,21 +141,24 @@ static const Animation char_bfweeb_anim[PlayerAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //CharAnim_UpAlt
 	{2, (const u8[]){11, 12, ASCR_BACK, 1}},            //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //CharAnim_RightAlt
-	
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_UnGrow
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_UnShrink
+	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},       //CharAnim_Sing
+
 	{2, (const u8[]){13, 14, ASCR_BACK, 1}},            //CharAnim_Left
 	{2, (const u8[]){15, 16, ASCR_BACK, 1}},            //CharAnim_Down
 	{2, (const u8[]){17, 18, ASCR_BACK, 1}},            //CharAnim_Up
 	{2, (const u8[]){19, 20, ASCR_BACK, 1}},            //CharAnim_Right
-	
+
 	{2, (const u8[]){20, 21, 22, ASCR_BACK, 1}},        //PlayerAnim_Peace
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //PlayerAnim_Sweat
-	
+
 	{5, (const u8[]){21, 21, 22, 22, 23, 23, 24, 25, 26, ASCR_CHGANI, PlayerAnim_Dead1}}, //CharAnim_Idle
 	{1, (const u8[]){26, 26, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58,  ASCR_CHGANI, PlayerAnim_Dead3}}, //CharAnim_Idle
 	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead4
-	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}}, 
+	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}},
 
 	{2, (const u8[]){66, 67, 68, 69, 70, 71, 71, 71, 71, 72, 72, 72, 72, 73, 73, 73, 58, 58, 58, 58, 58, 58, ASCR_CHGANI, PlayerAnim_Dead7}},
 	{3, (const u8[]){58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, ASCR_BACK, 1}},
@@ -172,21 +175,21 @@ static const Animation char_bfweebreverse_anim[PlayerAnim_Max] = {
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //CharAnim_UpAlt
 	{2, (const u8[]){ 5,  6, ASCR_BACK, 1}},            //CharAnim_Right
 	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //CharAnim_RightAlt
-	
+
 	{2, (const u8[]){19, 20, ASCR_BACK, 1}},            //CharAnim_Left
 	{2, (const u8[]){15, 16, ASCR_BACK, 1}},            //CharAnim_Down
 	{2, (const u8[]){17, 18, ASCR_BACK, 1}},            //CharAnim_Up
 	{2, (const u8[]){13, 14, ASCR_BACK, 1}},            //CharAnim_Right
-	
+
 	{2, (const u8[]){20, 21, 22, ASCR_BACK, 1}},        //PlayerAnim_Peace
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //PlayerAnim_Sweat
-	
+
 	{5, (const u8[]){21, 21, 22, 22, 23, 23, 24, 25, 26, ASCR_CHGANI, PlayerAnim_Dead1}}, //CharAnim_Idle
 	{1, (const u8[]){26, 26, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58,  ASCR_CHGANI, PlayerAnim_Dead3}}, //CharAnim_Idle
 	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}},             //PlayerAnim_Dead4
-	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}}, 
+	{2, (const u8[]){59, 60, 61, 62, 63, 64, 65, ASCR_CHGANI, PlayerAnim_Dead3}},
 
 	{2, (const u8[]){66, 67, 68, 69, 70, 71, 71, 71, 71, 72, 72, 72, 72, 73, 73, 73, 58, 58, 58, 58, 58, 58, ASCR_CHGANI, PlayerAnim_Dead7}},
 	{3, (const u8[]){58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, ASCR_BACK, 1}},
@@ -197,7 +200,7 @@ void BFWeeb_ReverseDraw(Character *this, Gfx_Tex *tex, const CharFrame *cframe)
 	//Draw character
 	fixed_t x = this->x - FIXED_MUL(stage.camera.x, FIXED_UNIT) - FIXED_DEC(-cframe->off[0]*2,1);
 	fixed_t y = this->y - FIXED_MUL(stage.camera.y, FIXED_UNIT) - FIXED_DEC(cframe->off[1]*2,1);
-	
+
 	RECT src = {cframe->src[0], cframe->src[1], cframe->src[2], cframe->src[3]};
 	RECT_FIXED dst = {x, y, (-src.w*2+12) << FIXED_SHIFT, (src.h*2-12) << FIXED_SHIFT};
 	Stage_DrawTex(tex, &src, &dst, stage.camera.bzoom);
@@ -207,7 +210,7 @@ void BFWeeb_ReverseDraw(Character *this, Gfx_Tex *tex, const CharFrame *cframe)
 void Char_BFWeeb_SetFrame(void *user, u8 frame)
 {
 	Char_BFWeeb *this = (Char_BFWeeb*)user;
-	
+
 	//Check if this is a new frame
 	if (frame != this->frame)
 	{
@@ -221,7 +224,7 @@ void Char_BFWeeb_SetFrame(void *user, u8 frame)
 void Char_BFWeeb_Tick(Character *character)
 {
 	Char_BFWeeb *this = (Char_BFWeeb*)character;
-	
+
 	//Handle animation updates
 	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0 ||
 	    (character->animatable.anim != CharAnim_Left &&
@@ -233,7 +236,7 @@ void Char_BFWeeb_Tick(Character *character)
 	     character->animatable.anim != CharAnim_Right &&
 	     character->animatable.anim != CharAnim_RightAlt))
 		Character_CheckEndSing(character);
-	
+
 	if (stage.flag & STAGE_FLAG_JUST_STEP)
 	{
 		//Perform idle dance
@@ -253,7 +256,7 @@ void Char_BFWeeb_Tick(Character *character)
 			(stage.song_step & 0x7) == 0)
 			character->set_anim(character, CharAnim_Idle);
 	}
-	
+
 	//Animate and draw character
 	Animatable_Animate(&character->animatable, (void*)this, Char_BFWeeb_SetFrame);
 	if (stage.stage_id == StageId_4_4)
@@ -264,7 +267,7 @@ void Char_BFWeeb_Tick(Character *character)
 
 void Char_BFWeeb_SetAnim(Character *character, u8 anim)
 {
-	
+
 	//Perform animation checks
 	switch (anim)
 	{
@@ -273,7 +276,7 @@ void Char_BFWeeb_SetAnim(Character *character, u8 anim)
 			character->focus_x = FIXED_DEC(0,1);
 			break;
 	}
-	
+
 	//Set animation
 	Animatable_SetAnim(&character->animatable, anim);
 	Character_CheckStartSing(character);
@@ -282,7 +285,7 @@ void Char_BFWeeb_SetAnim(Character *character, u8 anim)
 void Char_BFWeeb_Free(Character *character)
 {
 	Char_BFWeeb *this = (Char_BFWeeb*)character;
-	
+
 	//Free art
 	Mem_Free(this->arc_main);
 }
@@ -297,12 +300,12 @@ Character *Char_BFWeeb_New(fixed_t x, fixed_t y)
 		ErrorLock();
 		return NULL;
 	}
-	
+
 	//Initialize character
 	this->character.tick = Char_BFWeeb_Tick;
 	this->character.set_anim = Char_BFWeeb_SetAnim;
 	this->character.free = Char_BFWeeb_Free;
-	
+
 	if (stage.stage_id == StageId_4_4)
 	Animatable_Init(&this->character.animatable, char_bfweebreverse_anim);
 	else
@@ -311,17 +314,17 @@ Character *Char_BFWeeb_New(fixed_t x, fixed_t y)
 	Character_Init((Character*)this, x, y);
 	//Set character information
 	this->character.spec = CHAR_SPEC_MISSANIM;
-	
+
 	this->character.health_i = 0;
-	
+
 	//use different x,y and zoom for test song
 	this->character.focus_x = (stage.stage_id == StageId_4_4) ? FIXED_DEC(70,1) : FIXED_DEC(-34,1);
 	this->character.focus_y = (stage.stage_id == StageId_4_4) ? FIXED_DEC(-75,1) : FIXED_DEC(-40,1);
 	this->character.focus_zoom = (stage.stage_id == StageId_4_4) ? FIXED_DEC(1,1) : FIXED_DEC(2,1);
-	
+
 	//Load art
 	this->arc_main = IO_Read("\\CHAR\\BFWEEB.ARC;1");
-	
+
 	//Load art
 	const char **pathp = (const char *[]){
 		"weeb0.tim",   //BF_ArcMain_BF0
@@ -335,9 +338,9 @@ Character *Char_BFWeeb_New(fixed_t x, fixed_t y)
 	IO_Data *arc_ptr = this->arc_ptr;
 	for (; *pathp != NULL; pathp++)
 		*arc_ptr++ = Archive_Find(this->arc_main, *pathp);
-	
+
 	//Initialize render state
 	this->tex_id = this->frame = 0xFF;
-	
+
 	return (Character*)this;
 }

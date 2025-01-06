@@ -34,6 +34,7 @@
 				<file name = "boldfont.tim" type = "data" source = "iso/font/boldfont.tim"/>
 				<file name = "arial.tim" type = "data" source = "iso/font/arial.tim"/>
 				<file name = "cdr.tim" type = "data" source = "iso/font/cdr.tim"/>
+				<file name = "kata.tim" type = "data" source = "iso/font/kata.tim"/>
 			</dir>
 			
 			<!-- Stage assets -->
@@ -49,6 +50,9 @@
 				<file name = "hud4.tim" type = "data" source = "iso/stage/hud4.tim"/>
 				<file name = "phud.tim" type = "data" source = "iso/stage/phud.tim"/>
 				<file name = "phud1.tim" type = "data" source = "iso/stage/phud1.tim"/>
+				<file name = "silyhud0.tim" type = "data" source = "iso/stage/sillyhud0.tim"/>
+				<file name = "bluehud.tim" type = "data" source = "iso/stage/bluehud.tim"/>
+				<file name = "silyhud1.tim" type = "data" source = "iso/stage/sillyhud1.tim"/>
 				<file name = "results.tim" type = "data" source = "iso/stage/results/results.tim"/>
 				<file name = "sprites.tim" type = "data" source = "iso/stage/results/sprites.tim"/>
 			</dir>
@@ -200,13 +204,17 @@
 			
 			<!-- Kapi assets -->
 			<dir name = "week8">
+				<!-- Background art -->
 				<!-- Wocky charts -->
 				<file name = "8.1e.cht" type = "data" source = "iso/chart/still-alive-easy.json.cht"/>
 				<file name = "8.1n.cht" type = "data" source = "iso/chart/still-alive.json.cht"/>
 				<file name = "8.1h.cht" type = "data" source = "iso/chart/still-alive-hard.json.cht"/>
 				
 				<file name = "8.2h.cht" type = "data" source = "iso/chart/senbonzakura-hard.json.cht"/>
+				
+				<file name = "8.3h.cht" type = "data" source = "iso/chart/silly-billy-hard.json.cht"/>
 			</dir>
+			
 			
 			<!-- Character Portrait assets -->
 			<dir name = "portrait">
@@ -231,6 +239,10 @@
 				<!-- Spook assets -->
 				<file name = "spook.arc" type = "data" source = "iso/spook/main.arc"/>
 				
+				<!-- Monster assets -->
+				<file name = "monster.arc" type = "data" source = "iso/monster/main.arc"/>
+				<file name = "monsterx.arc" type = "data" source = "iso/monsterx/main.arc"/>
+				
 				<!-- Pico assets -->
 				<file name = "pico.arc" type = "data" source = "iso/pico/main.arc"/>
 				
@@ -240,6 +252,8 @@
 				
 				<!-- Christmas assets -->
 				<file name = "xmasbf.arc" type = "data" source = "iso/bf/xmas.arc"/>
+				<file name = "xmasgf.arc" type = "data" source = "iso/gf/xmas.arc"/>
+				<file name = "light.arc" type = "data" source = "iso/gf/light.arc"/>
 				<file name = "xmasp.arc" type = "data" source = "iso/xmasp/main.arc"/>
 				
 				<!-- Senpai assets -->
@@ -305,14 +319,15 @@
 				<dummy sectors="128"/>
 				<file name = "portala.xa" type = "xa" source = "iso/music/portala.xa"/>
 				<dummy sectors="128"/>
+				<file name = "billy.xa" type = "xa" source = "iso/music/billy.xa"/>
+				<dummy sectors="128"/>
 			</dir>
 			
 			<!-- Chungus -->
 			<dir name = "str">
-			    <file name = "ughc.str" type = "str" source = "iso/movie/ughCutscene.str"/>
-			    <file name = "gunsc.str" type = "str" source = "iso/movie/gunsCutscene.str"/>
-			    <file name = "stressc.str" type = "str" source = "iso/movie/ughCutscene.str"/>
-			</dir>
+			    <file name = "ugh.str" type = "str" source = "iso/movie/ughcutscene.str"/>
+			    <file name = "guns.str" type = "str" source = "iso/movie/gunscutscene.str"/>
+			</dir>-->
 			
 			<!-- Dummy sectors -->
 			<dummy sectors="1024"/>

@@ -1,7 +1,6 @@
 all: \
-	iso/movie/ughCutscene.str \
-	iso/movie/gunsCutscene.str \
-	iso/movie/stressCutscene.str \
+	iso/movie/ughcutscene.str \
+	iso/movie/gunscutscene.str \
 
 # STR converts
 iso/movie/%.str: iso/movie/%.mp4

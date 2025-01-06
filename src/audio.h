@@ -29,6 +29,7 @@ typedef enum
 	XA_Week7A, //WEEK7A.XA
 	XA_Week7B, //WEEK7B.XA
 	XA_PortalA,  //PortalA.XA
+	XA_Billy,  //Billy.XA
 	
 	XA_Max,
 } XA_File;
@@ -86,6 +87,8 @@ typedef enum
 	//PortalA.XA
 	XA_Stillalive,//Still alive
 	XA_Senbonzakura, //Beathoven
+	//Billy.XA
+	XA_Sillybilly, //Beathoven
 
 	
 	XA_TrackMax,
