@@ -2746,6 +2746,8 @@ void Stage_Tick(void)
 		{
 		    stage.trans = StageTrans_Reload;
 		    Trans_Start();
+		    for (int i = 0; i < 7; i++)
+		  			storeresults[i] =0;
 		}
 	    if (pad_state.press & PAD_CROSS)
 		{

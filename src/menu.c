@@ -936,7 +936,7 @@ void Menu_Tick(void)
 
             //Draw version identification
             menu.font_arial.draw(&menu.font_arial,
-                "Flop Engine v1",
+                "Flop Engine v1.2",
                 8,
                 SCREEN_HEIGHT - 32,
                 FontAlign_Left
