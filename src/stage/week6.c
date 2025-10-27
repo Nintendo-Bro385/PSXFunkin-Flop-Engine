@@ -215,8 +215,11 @@ void Back_Week6_DrawBG(StageBack *back)
 	};
 	if(stage.prefs.lowquality ==false)
 		Stage_DrawTex(&this->tex_back0, &sky_src, &sky_dst, stage.camera.bzoom);
-	else
-		Gfx_SetClear(213, 241, 246);
+
+	stage.bgcolor[0]=213;
+	stage.bgcolor[1]=241;
+	stage.bgcolor[2]=246;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 static fixed_t week6_back_paraly[] = {
@@ -284,8 +287,10 @@ void Back_Week6_DrawBG3(StageBack *back)
 				back_src.w--;
 		}
 	}
-	if(stage.prefs.lowquality ==true)
-		Gfx_SetClear(48, 6, 107);
+	stage.bgcolor[0]=48;
+	stage.bgcolor[1]=6;
+	stage.bgcolor[2]=107;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week6_Free(StageBack *back)

@@ -1,0 +1,28 @@
+miku sprite sizes
+
+//idle
+idle frame 1: 116, 164;
+idle frame 2: 114, 166;
+idle frame 3: 114, 166;
+idle frame 4: 116, 166;
+idle frame 5: 116, 166;
+idle frame 6: 116, 164;
+idle frame 7: 114, 166;
+idle frame 8: 115, 166;
+idle frame 9: 116, 166;
+
+//left
+left frame 1: 114, 167;
+left frame 2: 112, 166;
+
+//down
+down frame 1: 120, 158;
+down frame 2: 120, 161;
+
+//up
+up frame 1: 108, 174;
+up frame 2: 114, 172;
+
+//right
+right frame 1: 113, 166;
+right frame 2: 112, 167;

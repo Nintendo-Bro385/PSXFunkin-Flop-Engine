@@ -12,7 +12,7 @@
 #include "stage.h"
 				  
 	        //HAS to be BASCUS-scusid,somename
-#define savetitle "bu00:BASCUS-21385FLOP"
+#define savetitle "bu00:BASCUS-12385FLOP"
 #define savename  "FLOPENGINE"
 
 static const u8 saveIconPalette[32] = 

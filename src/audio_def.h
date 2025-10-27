@@ -60,6 +60,12 @@ static const XA_TrackDef xa_tracks[] = {
 	{XA_PortalA, XA_LENGTH(24400)}, //XA_Senbonzakura
 	//Billy.xa
 	{XA_Billy, XA_LENGTH(37500)}, //XA_Sillybilly
+	{XA_Billy, XA_LENGTH(14200)}, //Disappearance
+	//WEEK39A
+	{XA_Week39A, XA_LENGTH(16200)}, //Loid
+	{XA_Week39A, XA_LENGTH(12700)}, //Endurance
+	//WEEK39B
+	{XA_Week39B, XA_LENGTH(14700)}, //Voca
 
 };
 
@@ -82,6 +88,8 @@ static const char *xa_paths[] = {
 	"\\MUSIC\\WEEK7B.XA;1", //XA_Week7B
 	"\\MUSIC\\PORTALA.XA;1",  //XA_PortalA
 	"\\MUSIC\\BILLY.XA;1",  //XA_Billy
+	"\\MUSIC\\WEEK39A.XA;1",  //XA_Week39A
+	"\\MUSIC\\WEEK39B.XA;1",  //XA_Week39B
 	NULL,
 };
 
@@ -145,6 +153,12 @@ static const XA_Mp3 xa_mp3s[] = {
 	{"senbonzakura", false}, //XA_Beathoven
 	//Billy.xa
 	{"sillybilly", true}, //XA_Beathoven
-	
+	{"disappearance", true}, //XA_Beathoven
+	//WEEK39A.XA
+	{"loid", true}, //XA_Loid
+	{"endurance", true}, //XA_Endurance
+	//WEEK39B.XA
+	{"voca", true}, //XA_Voca
+
 	{NULL, false}
 };

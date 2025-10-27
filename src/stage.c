@@ -5,7 +5,6 @@
 */
 
 #include "stage.h"
-
 #include "mem.h"
 #include "timer.h"
 #include "audio.h"
@@ -44,6 +43,8 @@ int shitmove =448;
 int bffall = -144;
 int highcombo;
 int ddrmode;
+int deadmiku;
+int starcountdone;
 
 static const RECT thescreen = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
@@ -100,6 +101,18 @@ static const fixed_t note_x[8] = {
 	 FIXED_DEC(-60,1) - FIXED_DEC(SCREEN_WIDEADD,4),
 	 FIXED_DEC(-26,1) - FIXED_DEC(SCREEN_WIDEADD,4),
 };
+static const fixed_t note_xmiddle[8] = {
+	//bf
+        FIXED_DEC(26 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4),
+        FIXED_DEC(60 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4), //+34
+        FIXED_DEC(94 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4),
+        FIXED_DEC(128 - 78,1) + FIXED_DEC(SCREEN_WIDEADD,4),
+        //opponent
+        FIXED_DEC(320,1) - FIXED_DEC(SCREEN_WIDEADD,4),
+        FIXED_DEC(320,1) - FIXED_DEC(SCREEN_WIDEADD,4), //+34
+        FIXED_DEC(320,1) - FIXED_DEC(SCREEN_WIDEADD,4),
+        FIXED_DEC(320,1) - FIXED_DEC(SCREEN_WIDEADD,4),
+};
 static const fixed_t note_y = FIXED_DEC(32 - SCREEN_HEIGHT2, 1);
 
 static const u16 note_key[] = {INPUT_LEFT, INPUT_DOWN, INPUT_UP, INPUT_RIGHT};
@@ -117,6 +130,7 @@ static const u8 note_anims[4][3] = {
 #include "character/bf.h"
 #include "character/bfcar.h"
 #include "character/bfweeb.h"
+#include "character/asciibf.h"
 #include "character/dad.h"
 #include "character/spook.h"
 #include "character/monster.h"
@@ -133,6 +147,9 @@ static const u8 note_anims[4][3] = {
 #include "character/xmasgf.h"
 #include "character/gfweeb.h"
 #include "character/clucky.h"
+#include "character/sillybilly.h"
+#include "character/bfy.h"
+#include "character/miku.h"
 #include "character/mbf.h"
 #include "character/mgf.h"
 
@@ -144,6 +161,8 @@ static const u8 note_anims[4][3] = {
 #include "stage/week5.h"
 #include "stage/week6.h"
 #include "stage/week7.h"
+#include "stage/sillybg.h"
+#include "stage/concert.h"
 
 
 static const StageDef stage_defs[StageId_Max] = {
@@ -154,20 +173,27 @@ static const StageDef stage_defs[StageId_Max] = {
 Stage stage;
 //sick 0 good 1 bad 2 shit 3 misses 4 score 5 highcombo 6
 static int storeresults[7];
-
 //noteskins
 static const char *const noteskinPaths[] = {
 	    "\\STAGE\\HUD0.TIM;1",
+        "\\STAGE\\HUD0CIR.TIM;1",
 	    "\\STAGE\\HUD2.TIM;1",
+        "\\STAGE\\PHUD.TIM;1",
 	    "\\STAGE\\HUD3.TIM;1",
+        "\\STAGE\\HUD0M.TIM;1",
 	    "\\STAGE\\HUD4.TIM;1",
+        "\\STAGE\\HUD0S.TIM;1",
 };
 //noteskins huds
 static const char *const skinshudPaths[] = {
 	    "\\STAGE\\HUD1.TIM;1",
 	    "\\STAGE\\HUD1.TIM;1",
+        "\\STAGE\\HUD1.TIM;1",
+        "\\STAGE\\HUD1.TIM;1",
 	    "\\STAGE\\HUDC.TIM;1",
+        "\\STAGE\\HUD1.TIM;1",
 	    "\\STAGE\\HUD1DDR.TIM;1",
+        "\\STAGE\\HUD1.TIM;1",
 };
 
 //Stage music functions
@@ -417,15 +443,29 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
         {
             for (int i = 0; i < 3; i++)
             {
-                //Create splash object
-                Obj_Splash *splash = Obj_Splash_New(
+                if(stage.stage_id == StageId_8_1)
+                {
+                    //Create splash object
+                    Obj_Splash *splash = Obj_Splash_New(
+                        
+                        note_xmiddle[type ^ stage.note_swap],
+                        note_y * (stage.prefs.downscroll ? -1 : 1),
+                        type & 0x3
+                    );
+                    if (splash != NULL)
+                        ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+                }else{
+                    //Create splash object
+                    Obj_Splash *splash = Obj_Splash_New(
+                        
+                        note_x[type ^ stage.note_swap],
+                        note_y * (stage.prefs.downscroll ? -1 : 1),
+                        type & 0x3
+                    );
+                    if (splash != NULL)
+                        ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+                }
 
-                    note_x[type ^ stage.note_swap],
-                    note_y * (stage.prefs.downscroll ? -1 : 1),
-                    type & 0x3
-                );
-                if (splash != NULL)
-                    ObjectList_Add(&stage.objlist_splash, (Object*)splash);
             }
         }
     }
@@ -435,15 +475,29 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
         {
             for (int i = 0; i < 3; i++)
             {
-                //Create splash object
-                Obj_Splash *splash = Obj_Splash_New(
+                if(stage.stage_id == StageId_8_1)
+                {
+                    //Create splash object
+                    Obj_Splash *splash = Obj_Splash_New(
 
-                    note_x[type ^ stage.note_swap],
-                    note_y * (stage.prefs.downscroll ? -1 : 1),
-                    type & 0x3
-                );
-                if (splash != NULL)
-                    ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+                            note_xmiddle[type ^ stage.note_swap],
+                            note_y * (stage.prefs.downscroll ? -1 : 1),
+                            type & 0x3
+                    );
+                    if (splash != NULL)
+                        ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+                }else{
+                    //Create splash object
+                    Obj_Splash *splash = Obj_Splash_New(
+
+                            note_x[type ^ stage.note_swap],
+                            note_y * (stage.prefs.downscroll ? -1 : 1),
+                            type & 0x3
+                    );
+                    if (splash != NULL)
+                        ObjectList_Add(&stage.objlist_splash, (Object*)splash);
+                }
+
             }
         }
     }
@@ -672,24 +726,45 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 
 			this->pad_held = this->character->pad_held = pad->held;
 			this->pad_press = pad->press;
+            if(stage.prefs.guitar == 1)
+            {
+                if (this->pad_held & INPUTGH_LEFT)
+                    Stage_SustainCheck(this, 0 | i);
+                if (this->pad_held & INPUTGH_DOWN)
+                    Stage_SustainCheck(this, 1 | i);
+                if (this->pad_held & INPUTGH_UP)
+                    Stage_SustainCheck(this, 2 | i);
+                if (this->pad_held & INPUTGH_RIGHT)
+                    Stage_SustainCheck(this, 3 | i);
 
-			if (this->pad_held & INPUT_LEFT)
-				Stage_SustainCheck(this, 0 | i);
-			if (this->pad_held & INPUT_DOWN)
-				Stage_SustainCheck(this, 1 | i);
-			if (this->pad_held & INPUT_UP)
-				Stage_SustainCheck(this, 2 | i);
-			if (this->pad_held & INPUT_RIGHT)
-				Stage_SustainCheck(this, 3 | i);
+                if ((this->pad_held | this->pad_press) & INPUTGH_LEFT && this->pad_press & (PAD_UP | PAD_DOWN))
+                    Stage_NoteCheck(this, 0 | i);
+                if ((this->pad_held | this->pad_press) & INPUTGH_DOWN && this->pad_press & (PAD_UP | PAD_DOWN))
+                    Stage_NoteCheck(this, 1 | i);
+                if ((this->pad_held | this->pad_press) & INPUTGH_UP && this->pad_press & (PAD_UP | PAD_DOWN))
+                    Stage_NoteCheck(this, 2 | i);
+                if ((this->pad_held | this->pad_press) & INPUTGH_RIGHT && this->pad_press & (PAD_UP | PAD_DOWN))
+                    Stage_NoteCheck(this, 3 | i);
+            }
+            else{
+                if (this->pad_held & INPUT_LEFT)
+                    Stage_SustainCheck(this, 0 | i);
+                if (this->pad_held & INPUT_DOWN)
+                    Stage_SustainCheck(this, 1 | i);
+                if (this->pad_held & INPUT_UP)
+                    Stage_SustainCheck(this, 2 | i);
+                if (this->pad_held & INPUT_RIGHT)
+                    Stage_SustainCheck(this, 3 | i);
 
-			if (this->pad_press & INPUT_LEFT)
-				Stage_NoteCheck(this, 0 | i);
-			if (this->pad_press & INPUT_DOWN)
-				Stage_NoteCheck(this, 1 | i);
-			if (this->pad_press & INPUT_UP)
-				Stage_NoteCheck(this, 2 | i);
-			if (this->pad_press & INPUT_RIGHT)
-				Stage_NoteCheck(this, 3 | i);
+                if (this->pad_held & INPUT_LEFT)
+                    Stage_NoteCheck(this, 0 | i);
+                if (this->pad_press & INPUT_DOWN)
+                    Stage_NoteCheck(this, 1 | i);
+                if (this->pad_press & INPUT_UP)
+                    Stage_NoteCheck(this, 2 | i);
+                if (this->pad_press & INPUT_RIGHT)
+                    Stage_NoteCheck(this, 3 | i);
+            }
 		}
 		else
 		{
@@ -1116,10 +1191,19 @@ static void Stage_DrawNotes(void)
 						note_src.w = 32;
 						note_src.h = 28 - (clip >> FIXED_SHIFT);
 
-						note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
-						note_dst.y = y + clip;
-						note_dst.w = note_src.w << FIXED_SHIFT;
-						note_dst.h = (note_src.h << FIXED_SHIFT);
+                        if(stage.stage_id == StageId_8_1)
+                        {
+                            note_dst.x = note_xmiddle[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                            note_dst.y = y + clip;
+                            note_dst.w = note_src.w << FIXED_SHIFT;
+                            note_dst.h = (note_src.h << FIXED_SHIFT);
+                        }
+                        else{
+                            note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                            note_dst.y = y + clip;
+                            note_dst.w = note_src.w << FIXED_SHIFT;
+                            note_dst.h = (note_src.h << FIXED_SHIFT);
+                        }
 
 						if (stage.prefs.downscroll)
 						{
@@ -1146,10 +1230,19 @@ static void Stage_DrawNotes(void)
 						note_src.w = 32;
 						note_src.h = 16;
 
-						note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
-						note_dst.y = y + clip;
-						note_dst.w = note_src.w << FIXED_SHIFT;
-						note_dst.h = (next_y - y) - clip;
+                        if(stage.stage_id == StageId_8_1)
+                        {
+                            note_dst.x = note_xmiddle[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                            note_dst.y = y + clip;
+                            note_dst.w = note_src.w << FIXED_SHIFT;
+                            note_dst.h = (next_y - y) - clip;
+                        }
+                        else{
+                            note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                            note_dst.y = y + clip;
+                            note_dst.w = note_src.w << FIXED_SHIFT;
+                            note_dst.h = (next_y - y) - clip;
+                        }
 
 						if (stage.prefs.downscroll)
 							note_dst.y = -note_dst.y - note_dst.h;
@@ -1173,10 +1266,19 @@ static void Stage_DrawNotes(void)
 				note_src.w = 32;
 				note_src.h = 32;
 
-				note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
-				note_dst.y = y - FIXED_DEC(16,1);
-				note_dst.w = note_src.w << FIXED_SHIFT;
-				note_dst.h = note_src.h << FIXED_SHIFT;
+                if(stage.stage_id == StageId_8_1)
+                {
+                    note_dst.x = note_xmiddle[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
+                else{
+                    note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
 
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
@@ -1192,10 +1294,19 @@ static void Stage_DrawNotes(void)
 				note_src.w = 32;
 				note_src.h = 32;
 
-				note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
-				note_dst.y = y - FIXED_DEC(16,1);
-				note_dst.w = note_src.w << FIXED_SHIFT;
-				note_dst.h = note_src.h << FIXED_SHIFT;
+                if(stage.stage_id == StageId_8_1)
+                {
+                    note_dst.x = note_xmiddle[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
+                else{
+                    note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
 
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
@@ -1216,10 +1327,20 @@ static void Stage_DrawNotes(void)
 				note_src.w = 32;
 				note_src.h = 32;
 
-				note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
-				note_dst.y = y - FIXED_DEC(16,1);
-				note_dst.w = note_src.w << FIXED_SHIFT;
-				note_dst.h = note_src.h << FIXED_SHIFT;
+                if(stage.stage_id == StageId_8_1)
+                {
+                    note_dst.x = note_xmiddle[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
+                else
+                {
+                    note_dst.x = note_x[(note->type & 0x7) ^ stage.note_swap] - FIXED_DEC(16,1);
+                    note_dst.y = y - FIXED_DEC(16,1);
+                    note_dst.w = note_src.w << FIXED_SHIFT;
+                    note_dst.h = note_src.h << FIXED_SHIFT;
+                }
 
 				if (stage.prefs.downscroll)
 					note_dst.y = -note_dst.y - note_dst.h;
@@ -1281,7 +1402,7 @@ static void Stage_LoadChart(void)
 	char chart_path[64];
 
 		//Use standard path convention
-		sprintf(chart_path, "\\WEEK%d\\%d.%d%c.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song, "ENH"[stage.stage_diff]);
+		sprintf(chart_path, "\\WEEK%d\\%d.%d%c.CHT;1", stage.stage_def->week, stage.stage_def->week, stage.stage_def->week_song, "ENHG"[stage.stage_diff]);
 
 	if (stage.chart_data != NULL)
 		Mem_Free(stage.chart_data);
@@ -1481,6 +1602,7 @@ static void Stage_LoadState(void)
     stage.goodd=0;
     stage.badd=0;
     stage.shitt=0;
+    starcountdone = 0;
 
     if(!stage.story)
     {
@@ -1501,6 +1623,7 @@ static void Stage_LoadState(void)
 	if(stage.stage_diff == StageDiff_Easy){pausediff = "EASY";}
 	if(stage.stage_diff == StageDiff_Normal){pausediff = "NORMAL";}
 	if(stage.stage_diff == StageDiff_Hard){pausediff = "HARD";}
+    if(stage.stage_diff == StageDiff_Guitar){pausediff = "GUITAR";}
 
 	switch(stage.stage_diff)
 	    {
@@ -1522,6 +1645,13 @@ static void Stage_LoadState(void)
 	    	{
 	    		stage.stage_diff = StageDiff_Hard;
 	    		anotherfuckingvarible = "HARD";
+	    		pausediff2=2;
+	    		break;
+	    	}
+            case StageDiff_Guitar:
+	    	{
+	    		stage.stage_diff = StageDiff_Guitar;
+	    		anotherfuckingvarible = "GUITAR";
 	    		pausediff2=2;
 	    		break;
 	    	}
@@ -1612,7 +1742,7 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     stage.story = story;
     stage.song_completed = false;
     //Load HUD textures
-    if(stage.stage_id == StageId_8_3)
+    if(stage.stage_id == StageId_8_2)
     {
     	Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\SILYHUD0.TIM;1"), GFX_LOADTEX_FREE);
     	Gfx_LoadTex(&stage.tex_blue, IO_Read("\\STAGE\\BLUEHUD.TIM;1"), GFX_LOADTEX_FREE);
@@ -1627,54 +1757,75 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
     }
     else
     {
-	    if(stage.stage_id == StageId_8_1)
-	    {
-		Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\PHUD.TIM;1"), GFX_LOADTEX_FREE);
-		Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PHUD1.TIM;1"), GFX_LOADTEX_FREE);
-		stage.hud1shit =8;
-		stage.hud1shit2 =0;
-		stage.hud1shit3 =256;
-		stage.iconshit =16;
-		stage.pixelmode =0;
-		ddrmode=0;
-	    }
-	    else
-	    {
-		if (id >= StageId_6_1 && id <= StageId_6_3)
-		{
-			Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
-			Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PIXELHUD.TIM;1"), GFX_LOADTEX_FREE);
-			stage.hud1shit =8;
-			stage.hud1shit2 =0;
-			stage.hud1shit3 =256;
-			stage.iconshit =16;
-			stage.pixelmode =1;
-			ddrmode=0;
-		}
-		else
-		{
-			stage.pixelmode =0;
-			if(!(stage.prefs.noteskin ==3))
-			{
-				ddrmode=0;
-				stage.hud1shit =8;
-				stage.hud1shit2 =0;
-				stage.hud1shit3 =256;
-				stage.iconshit =16;
-			}
-			else
-			{
-                ddr = Char_DDR_New(FIXED_DEC(500,1), FIXED_DEC(500,1));
-				stage.hud1shit =20;
-				stage.hud1shit2 =6;
-				stage.hud1shit3 =256;
-				stage.iconshit =48;
-				ddrmode=1;
-			}
-			Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
-			Gfx_LoadTex(&stage.tex_hud1, IO_Read(skinshudPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
-		}
-	    }
+        if(id >= StageId_39_1 && id <= StageId_39_5)
+        {
+            Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\HUD1M.TIM;1"), GFX_LOADTEX_FREE);
+            Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
+            stage.hud1shit =8;
+            stage.hud1shit2 =0;
+            stage.hud1shit3 =256;
+            stage.iconshit =16;
+            stage.pixelmode =0;
+            if(!(stage.prefs.noteskin ==6))
+                {
+                    ddrmode=0;
+                }
+                else
+                {
+                    ddr = Char_DDR_New(FIXED_DEC(500,1), FIXED_DEC(500,1));
+                    ddrmode=1;
+                }
+        }
+        else{
+            if(stage.stage_id == StageId_8_1)
+            {
+            Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\PHUD.TIM;1"), GFX_LOADTEX_FREE);
+            Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PHUD1.TIM;1"), GFX_LOADTEX_FREE);
+            stage.hud1shit =8;
+            stage.hud1shit2 =0;
+            stage.hud1shit3 =256;
+            stage.iconshit =16;
+            stage.pixelmode =0;
+            ddrmode=0;
+            }
+            else
+            {
+            if (id >= StageId_6_1 && id <= StageId_6_3)
+            {
+                Gfx_LoadTex(&stage.tex_hud0, IO_Read("\\STAGE\\HUD0WEEB.TIM;1"), GFX_LOADTEX_FREE);
+                Gfx_LoadTex(&stage.tex_hud1, IO_Read("\\STAGE\\PIXELHUD.TIM;1"), GFX_LOADTEX_FREE);
+                stage.hud1shit =8;
+                stage.hud1shit2 =0;
+                stage.hud1shit3 =256;
+                stage.iconshit =16;
+                stage.pixelmode =1;
+                ddrmode=0;
+            }
+            else
+            {
+                stage.pixelmode =0;
+                if(!(stage.prefs.noteskin ==6))
+                {
+                    ddrmode=0;
+                    stage.hud1shit =8;
+                    stage.hud1shit2 =0;
+                    stage.hud1shit3 =256;
+                    stage.iconshit =16;
+                }
+                else
+                {
+                    ddr = Char_DDR_New(FIXED_DEC(500,1), FIXED_DEC(500,1));
+                    stage.hud1shit =20;
+                    stage.hud1shit2 =6;
+                    stage.hud1shit3 =256;
+                    stage.iconshit =48;
+                    ddrmode=1;
+                }
+                Gfx_LoadTex(&stage.tex_hud0, IO_Read(noteskinPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
+                Gfx_LoadTex(&stage.tex_hud1, IO_Read(skinshudPaths[stage.prefs.noteskin]), GFX_LOADTEX_FREE);
+            }
+            }
+        }
     }
 
     // Dont play str if song has been reloaded
@@ -2295,8 +2446,17 @@ void Stage_Tick(void)
 
 			    if(!stage.story)
 			    {
-				    Stage_LoadResults();
-				    stage.state = StageState_Results;
+			        if(stage.stage_id == StageId_8_2)
+                    {
+                        stage.song_completed = true;
+				        stage.trans = StageTrans_Menu;
+				        Trans_Start();
+                    }
+                    else
+                    {
+                        Stage_LoadResults();
+                        stage.state = StageState_Results;
+                    }
 			    }
 		            //Transition to menu or next song
 		            if (stage.story && stage.stage_def->next_stage != stage.stage_id)
@@ -2307,11 +2467,17 @@ void Stage_Tick(void)
 		            }
 		            else
 		            {
-					Stage_LoadResults();
-					stage.state = StageState_Results;
-				        //stage.song_completed = true;
-				        //stage.trans = StageTrans_Menu;
-				        //Trans_Start();
+                        if(stage.stage_id == StageId_8_2)
+                        {
+                            stage.song_completed = true;
+                            stage.trans = StageTrans_Menu;
+                            Trans_Start();
+                        }
+                        else
+                        {
+                            Stage_LoadResults();
+                            stage.state = StageState_Results;
+                        }
 		            }
                     }
                 }
@@ -2478,8 +2644,8 @@ void Stage_Tick(void)
             //Tick note splashes
             ObjectList_Tick(&stage.objlist_splash);
 
-            //Draw stage notes
-		Stage_DrawNotes();
+        //Draw stage notes
+        Stage_DrawNotes();
 
 		//Draw note HUD
 		RECT note_src = {0, 0, 32, 32};
@@ -2489,21 +2655,33 @@ void Stage_Tick(void)
 
 		for (u8 i = 0; i < 4; i++)
 		{
-			//BF
-			note_dst.x = note_x[i ^ stage.note_swap] - FIXED_DEC(16,1);
-			Stage_DrawStrum(i, &note_src, &note_dst);
-			if(stage.bluenotes)
-				Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
-			else
-				Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+            if(stage.stage_id == StageId_8_1)
+            {
+                //BF
+                note_dst.x = note_xmiddle[i ^ stage.note_swap] - FIXED_DEC(16,1);
+                Stage_DrawStrum(i, &note_src, &note_dst);
+                if(stage.bluenotes)
+                    Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+                else
+                    Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+            }
+            else{
+                //BF
+                note_dst.x = note_x[i ^ stage.note_swap] - FIXED_DEC(16,1);
+                Stage_DrawStrum(i, &note_src, &note_dst);
+                if(stage.bluenotes)
+                    Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+                else
+                    Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
 
-			//Opponent
-			note_dst.x = note_x[(i | 0x4) ^ stage.note_swap] - FIXED_DEC(16,1);
-			Stage_DrawStrum(i | 4, &note_src, &note_dst);
-			if(stage.bluenotes)
-					Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
-				else
-					Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+                //Opponent
+                note_dst.x = note_x[(i | 0x4) ^ stage.note_swap] - FIXED_DEC(16,1);
+                Stage_DrawStrum(i | 4, &note_src, &note_dst);
+                if(stage.bluenotes)
+                        Stage_DrawTex(&stage.tex_blue, &note_src, &note_dst, stage.bump);
+                    else
+                        Stage_DrawTex(&stage.tex_hud0, &note_src, &note_dst, stage.bump);
+            }
 		}
 
             //Draw score
@@ -2573,7 +2751,25 @@ void Stage_Tick(void)
 				{
 					//Player has died
 					stage.player_state[0].health = 0;
-					stage.state = StageState_Dead;
+					if(stage.stage_id == StageId_39_5)
+                    {
+                        deadmiku =1;
+                        storeresults[0] += stage.sickk;
+                        storeresults[1] += stage.goodd;
+                        storeresults[2] += stage.badd;
+                        storeresults[3] += stage.shitt;
+                        storeresults[4] += stage.misses;
+                        for (int i = 0; i < ((stage.prefs.mode >= StageMode_2P) ? 2 : 1); i++)
+                        {
+                            PlayerState *this = &stage.player_state[i];
+                            storeresults[5] += (this->score * stage.max_score / this->max_score);
+                        }
+                        storeresults[6] += highcombo;
+                        Stage_LoadResults();
+                        stage.state = StageState_Results;
+                    }
+                    else
+                        stage.state = StageState_Dead;
 				}
 				if (stage.player_state[0].health > 20000)
 					stage.player_state[0].health = 20000;
@@ -2599,8 +2795,7 @@ void Stage_Tick(void)
 				if(!stage.prefs.onlyarrows)
 					Stage_DrawTex(&stage.tex_hud1, &health_back, &health_dst, stage.bump);
 			}
-
-            //Draw stage foreground
+			//Draw stage foreground
             if (stage.back->draw_fg != NULL)
                 stage.back->draw_fg(stage.back);
 
@@ -2742,7 +2937,7 @@ void Stage_Tick(void)
 				FontAlign_Center
 			    );
 
-            if (pad_state.press & (PAD_START | PAD_CIRCLE))
+        if (pad_state.press & (PAD_START | PAD_CIRCLE))
 		{
 		    stage.trans = StageTrans_Reload;
 		    Trans_Start();
@@ -2934,6 +3129,15 @@ void Stage_Tick(void)
         }
         case StageState_Results:
         {
+            if(stage.stage_id == StageId_39_5 && deadmiku ==1)
+            {
+                stage.font_bold.draw(&stage.font_bold,
+                "NOT CLEAR",
+                160,
+                8,
+                FontAlign_Center
+                );
+            }
         	if (stage.prefs.botplay)
 	    	{
     			Menu_DrawBot(126, 2);
@@ -3025,7 +3229,7 @@ void Stage_Tick(void)
 				    );
 			}
 			int maxcombo = storeresults[0] + storeresults[1] + storeresults[2] + storeresults[3] + storeresults[4];
-
+            
 			sprintf(stage.Results_text1, "%d / %d", storeresults[6], maxcombo);
 			//Draw mind games port version identification
 			    stage.font_cdr.draw(&stage.font_cdr,
@@ -3067,6 +3271,191 @@ void Stage_Tick(void)
 				218,
 				FontAlign_Center
 		        );
+
+            int stylepoints = storeresults[0] + storeresults[1];
+
+            //        Cash shit        //
+            if(stage.prefs.botplay && stage.story)
+            {
+                if(stage.prefs.WeekPlayed[0] == 1 && stage.prefs.WeekPlayed[1] == 1 && stage.prefs.WeekPlayed[2] == 1 && stage.prefs.WeekPlayed[3] == 1 && stage.prefs.WeekPlayed[4] == 1 && stage.prefs.WeekPlayed[5] == 1 && stage.prefs.WeekPlayed[6] == 1 && stage.prefs.WeekPlayed[7] == 1)
+                    stage.prefs.BonusUnlocked[16] = 1;
+                switch(stage.stage_id)
+                {
+                    case StageId_1_4:
+                    {
+                        stage.whichweek = 0;
+                    }
+                        break;
+                    case StageId_1_3:
+                    {
+                        stage.whichweek = 1;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $231",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_2_3:
+                    {
+                        stage.whichweek = 2;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $269",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_3_3:
+                    {
+                        stage.whichweek = 3;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $359",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_4_3:
+                    {
+                        stage.whichweek = 4;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $541",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_5_3:
+                    {
+                        stage.whichweek = 5;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $672",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_6_3:
+                    {
+                        stage.whichweek = 6;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $804",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    case StageId_7_3:
+                    {
+                        stage.whichweek = 7;
+                        if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                        {
+                            //Display Earnings
+                            stage.font_cdr.draw(&stage.font_cdr,
+                            "You did great\nYou Earned $924\nYou have unlocked guitar difficulty\nand the golden notes skin",
+                            120,
+                            8,
+                            FontAlign_Left
+                            );
+                        }
+                    }
+                        break;
+                    default:
+                        break;
+                }
+                
+                int fivestar = (int)(maxcombo * 9 + 9) / 10;
+                int fourstar = (int)(maxcombo * 8 + 9) / 10;
+                int threestar = (int)(maxcombo * 7 + 9) / 10;
+                int twostar = (int)(maxcombo * 6 + 9)  / 10;
+                int onestar = (int)(maxcombo * 5 + 9) / 10;
+
+                if(starcountdone ==0)
+                {
+                    //90% calculation 5 style
+                    if(stylepoints >= fivestar)
+                    {
+                        // makes sure to not override highest style points count
+                        if(stage.prefs.stylepoint[stage.whichweek] < 5)
+                            stage.prefs.stylepoint[stage.whichweek] = 5;
+                    }//80% calculation 4 style
+                    else if (stylepoints >= fourstar)
+                    {
+                        // makes sure to not override highest style points count
+                        if(stage.prefs.stylepoint[stage.whichweek] < 4)
+                            stage.prefs.stylepoint[stage.whichweek] = 4;
+                    }//70% calculation 3 style
+                    else if (stylepoints >= threestar)
+                    {
+                        // makes sure to not override highest style points count
+                        if(stage.prefs.stylepoint[stage.whichweek] < 3)
+                            stage.prefs.stylepoint[stage.whichweek] = 3;
+                    }//60% calculation 2 style
+                    else if (stylepoints >= twostar)
+                    {
+                        // makes sure to not override highest style points count
+                        if(stage.prefs.stylepoint[stage.whichweek] < 2)
+                            stage.prefs.stylepoint[stage.whichweek] = 2;
+                    }//50% calculation 1 style
+                    else if (stylepoints >= onestar)
+                    {
+                        // makes sure to not override highest style points count
+                        if(stage.prefs.stylepoint[stage.whichweek] < 1)
+                            stage.prefs.stylepoint[stage.whichweek] = 1;
+                    }
+                    starcountdone = 1;
+                }
+                if (stylepoints < onestar)
+                {
+                    //Display No Earnings
+                    stage.font_cdr.draw(&stage.font_cdr,
+                    "You were so bad out there!\nEveryone was booing you off the stage\nSo you ain't gettin paid",
+                    112,
+                    18,
+                    FontAlign_Left
+                    );
+                }
+                /*char stylebuffer[80];
+                sprintf(stylebuffer, "Stylepoints: %d\n5 star%d\n4 star%d\n3 star%d\n2 star%d\n1 star%d\nMaxcombo: %d",  stage.prefs.stylepoint[0], fivestar,fourstar,threestar,twostar,onestar,maxcombo);
+                //Draw Cost
+                stage.font_cdr.draw(&stage.font_cdr,
+                    stylebuffer,
+                    240,
+                    40,
+                    FontAlign_Left
+                );*/
+            }
 
 			//     achievement shit    //
 
@@ -3119,6 +3508,74 @@ void Stage_Tick(void)
 			//inputs to make it not a softlock
 			if (pad_state.press & PAD_CROSS)
 		  	{
+                if(stage.prefs.botplay)
+                {
+                    switch(stage.stage_id)
+                    {
+                        case StageId_1_4:
+                        {
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                        }
+                            break;
+                        case StageId_1_3:
+                        {
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 231; //use an array to store info that the week has been played and how much money to give
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                        }
+                            break;
+                        case StageId_2_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 269;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        case StageId_3_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 359;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        case StageId_4_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 541;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        case StageId_5_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 672;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        case StageId_6_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 804;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        case StageId_7_3:
+                            if(stage.prefs.WeekPlayed[stage.whichweek] == 0 && stage.prefs.stylepoint[stage.whichweek] > 0)
+                            {
+                                stage.prefs.Cash += 924;
+                                stage.prefs.WeekPlayed[stage.whichweek] = 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+		  	    deadmiku =0;
 		  		WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
 				stage.trans = StageTrans_Menu;
 				Trans_Start();
@@ -3129,6 +3586,7 @@ void Stage_Tick(void)
 			{
 				if (pad_state.press & PAD_SQUARE)
 			  	{
+			  	    deadmiku =0;
 					stage.trans = StageTrans_Reload;
 					Trans_Start();
 					for (int i = 0; i < 7; i++)
@@ -3264,8 +3722,8 @@ void Stage_Tick(void)
 			240
 		};
 		Gfx_DrawTex(&stage.tex_results, &sider_src, &sider_dst);
-
-        	Gfx_SetClear(254, 200, 92);
+        
+        Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
         }
         default:
             break;

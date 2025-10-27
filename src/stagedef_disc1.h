@@ -9,7 +9,7 @@
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(13,10)},
+		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		1, 1,
 		XA_Bopeebo, 0,
 		0, //dialogue check
@@ -29,7 +29,7 @@
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(18,10)},
+		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(18,10),FIXED_DEC(15,10)},
 		1, 2,
 		XA_Fresh, 2,
 		0, //dialogue check
@@ -49,7 +49,7 @@
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(15,10),FIXED_DEC(23,10)},
+		{FIXED_DEC(13,10),FIXED_DEC(15,10),FIXED_DEC(23,10),FIXED_DEC(15,10)},
 		1, 3,
 		XA_Dadbattle, 0,
 		0, //dialogue check
@@ -69,7 +69,7 @@
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(1,1)},
+		{FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(1,1),FIXED_DEC(15,10)},
 		1, 4,
 		XA_Tutorial, 2,
 		0, //dialogue check
@@ -90,7 +90,7 @@
 		Back_Week2_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(17,10),FIXED_DEC(24,10)},
+		{FIXED_DEC(1,1),FIXED_DEC(17,10),FIXED_DEC(24,10),FIXED_DEC(15,10)},
 		2, 1,
 		XA_Spookeez, 0,
 		0, //dialogue check
@@ -110,7 +110,7 @@
 		Back_Week2_New,
 
 		//Song info
-		{FIXED_DEC(11,10),FIXED_DEC(15,10),FIXED_DEC(22,10)},
+		{FIXED_DEC(11,10),FIXED_DEC(15,10),FIXED_DEC(22,10),FIXED_DEC(15,10)},
 		2, 2,
 		XA_South, 2,
 		0, //dialogue check
@@ -130,7 +130,7 @@
 		Back_Week2_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(16,10)},
+		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(16,10),FIXED_DEC(15,10)},
 		2, 3,
 		XA_Monster, 0,
 		0, //dialogue check
@@ -151,7 +151,7 @@
 		Back_Week3_New,
 
 		//Song info
-		{FIXED_DEC(12,10),FIXED_DEC(14,10),FIXED_DEC(16,10)},
+		{FIXED_DEC(12,10),FIXED_DEC(14,10),FIXED_DEC(16,10),FIXED_DEC(15,10)},
 		3, 1,
 		XA_Pico, 0,
 		0, //dialogue check
@@ -171,7 +171,7 @@
 		Back_Week3_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(2,1)},
+		{FIXED_DEC(1,1),FIXED_DEC(13,10),FIXED_DEC(2,1),FIXED_DEC(15,10)},
 		3, 2,
 		XA_Philly, 2,
 		0, //dialogue check
@@ -191,7 +191,7 @@
 		Back_Week3_New,
 
 		//Song info
-		{FIXED_DEC(12,10),FIXED_DEC(15,10),FIXED_DEC(23,10)},
+		{FIXED_DEC(12,10),FIXED_DEC(15,10),FIXED_DEC(23,10),FIXED_DEC(15,10)},
 		3, 3,
 		XA_Blammed, 0,
 		0, //dialogue check
@@ -212,7 +212,7 @@
 		Back_Week4_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(16,10),FIXED_DEC(18,10)},
+		{FIXED_DEC(13,10),FIXED_DEC(16,10),FIXED_DEC(18,10),FIXED_DEC(15,10)},
 		4, 1,
 		XA_SatinPanties, 0,
 		0, //dialogue check
@@ -232,7 +232,7 @@
 		Back_Week4_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(18,10),FIXED_DEC(2,1)},
+		{FIXED_DEC(13,10),FIXED_DEC(18,10),FIXED_DEC(2,1),FIXED_DEC(15,10)},
 		4, 2,
 		XA_High, 2,
 		0, //dialogue check
@@ -252,7 +252,7 @@
 		Back_Week4_New,
 
 		//Song info
-		{FIXED_DEC(14,10),FIXED_DEC(17,10),FIXED_DEC(26,10)},
+		{FIXED_DEC(14,10),FIXED_DEC(17,10),FIXED_DEC(26,10),FIXED_DEC(15,10)},
 		4, 3,
 		XA_MILF, 0,
 		0, //dialogue check
@@ -265,14 +265,14 @@
 		"TEST",
 		//Characters
 		{Char_BF_New,     FIXED_DEC(105,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_Miku_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,       FIXED_DEC(0,1),  FIXED_DEC(-15,1)},
 
 		//Stage background
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(16,10),FIXED_DEC(16,10),FIXED_DEC(16,10)},
+		{FIXED_DEC(16,10),FIXED_DEC(16,10),FIXED_DEC(16,10),FIXED_DEC(15,10)},
 		4, 4,
 		XA_Test, 2,
 		0, //dialogue check
@@ -293,7 +293,7 @@
 		Back_Week5_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(13,10)},
+		{FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		5, 1,
 		XA_Cocoa, 0,
 		0, //dialogue check
@@ -313,7 +313,7 @@
 		Back_Week5_New,
 
 		//Song info
-		{FIXED_DEC(14,10),FIXED_DEC(16,10),FIXED_DEC(19,10)},
+		{FIXED_DEC(14,10),FIXED_DEC(16,10),FIXED_DEC(19,10),FIXED_DEC(15,10)},
 		5, 2,
 		XA_Eggnog, 2,
 		0, //dialogue check
@@ -333,7 +333,7 @@
 		Back_Dummy_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(11,10),FIXED_DEC(13,10)},
+		{FIXED_DEC(1,1),FIXED_DEC(11,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		5, 3,
 		XA_WinterHorrorland, 0,
 		0, //dialogue check
@@ -354,7 +354,7 @@
 		Back_Week6_New,
 
 		//Song info
-		{FIXED_DEC(1,1),FIXED_DEC(12,10),FIXED_DEC(13,10)},
+		{FIXED_DEC(1,1),FIXED_DEC(12,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
 		6, 1,
 		XA_Senpai, 0,
 		1, //dialogue check
@@ -374,7 +374,7 @@
 		Back_Week6_New,
 
 		//Song info
-		{FIXED_DEC(12,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
+		{FIXED_DEC(12,10),FIXED_DEC(13,10),FIXED_DEC(15,10),FIXED_DEC(15,10)},
 		6, 2,
 		XA_Roses, 2,
 		1, //dialogue check
@@ -394,7 +394,7 @@
 		Back_Week6_New,
 
 		//Song info
-		{FIXED_DEC(11,10),FIXED_DEC(13,10),FIXED_DEC(15,10)},
+		{FIXED_DEC(11,10),FIXED_DEC(13,10),FIXED_DEC(15,10),FIXED_DEC(15,10)},
 		6, 3,
 		XA_Thorns, 0,
 		1, //dialogue check
@@ -415,7 +415,7 @@
 		Back_Week7_New,
 
 		//Song info
-		{FIXED_DEC(125,100),FIXED_DEC(18,10),FIXED_DEC(23,10)},
+		{FIXED_DEC(125,100),FIXED_DEC(18,10),FIXED_DEC(23,10),FIXED_DEC(15,10)},
 		7, 1,
 		XA_Ugh, 0,
 		0, //dialogue check
@@ -435,7 +435,7 @@
 		Back_Week7_New,
 
 		//Song info
-		{FIXED_DEC(14,10),FIXED_DEC(2,1),FIXED_DEC(25,10)},
+		{FIXED_DEC(14,10),FIXED_DEC(2,1),FIXED_DEC(25,10),FIXED_DEC(15,10)},
 		7, 2,
 		XA_Guns, 2,
 		0, //dialogue check
@@ -455,7 +455,7 @@
 		Back_Week7_New,
 
 		//Song info
-		{FIXED_DEC(175,100),FIXED_DEC(22,10),FIXED_DEC(26,10)},
+		{FIXED_DEC(175,100),FIXED_DEC(22,10),FIXED_DEC(26,10),FIXED_DEC(15,10)},
 		7, 3,
 		XA_Stress, 0,
 		0, //dialogue check
@@ -467,7 +467,7 @@
 	{ //StageId_8_1 (Still Alive)
 		"STILL ALIVE",
 		//Characters
-		{Char_BF_New,   FIXED_DEC(105,1),  FIXED_DEC(100,1)},
+		{Char_AsciiBF_New,   FIXED_DEC(105,1),  FIXED_DEC(20,1)},
 		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0,1),    FIXED_DEC(0,1)},
 
@@ -475,7 +475,7 @@
 		Back_Dummy_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(17,10)},
+		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(17,10),FIXED_DEC(15,10)},
 		8, 1,
 		XA_Stillalive, 0,
 		0, //dialogue check
@@ -484,45 +484,125 @@
 
 		StageId_8_1, 0
 	},
-	{ //StageId_8_2 (Senbonzakura)
-		"SENBONZAKURA",
+	{ //StageId_8_2 (silly billy)
+		"SILLY BILLY",
 		//Characters
-		{Char_BF_New,       FIXED_DEC(60,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
+		{Char_BFY_New,       FIXED_DEC(125,1),  FIXED_DEC(110,1)},
+		{Char_SillyBilly_New, FIXED_DEC(-25,1),  FIXED_DEC(83,1)},
 		{NULL},
 
 		//Stage background
-		Back_Week1_New,
+		Back_Sillybg_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1)},
+		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1),FIXED_DEC(15,10)},
 		8, 2,
-		XA_Senbonzakura, 2,
+		XA_Sillybilly, 0,
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
 
 		StageId_8_2, 0
 	},
-	{ //StageId_8_3 (silly billy)
-		"SILLY BILLY",
+	{ //StageId_39_1 (Loid)
+		"LOID",
 		//Characters
-		{Char_BF_New,       FIXED_DEC(125,1),  FIXED_DEC(110,1)},
-		{Char_Clucky_New, FIXED_DEC(-25,1),  FIXED_DEC(83,1)},
-		{NULL},
+        {Char_BF_New,       FIXED_DEC(75,1),  FIXED_DEC(67,1)},
+		{Char_Miku_New, FIXED_DEC(-85,1),  FIXED_DEC(73,1)},
+		{Char_GF_New,        FIXED_DEC(20,1),    FIXED_DEC(-35,1)},
 
 		//Stage background
-		Back_Week1_New,
+		Back_Concert_New,
 
 		//Song info
-		{FIXED_DEC(13,10),FIXED_DEC(17,10),FIXED_DEC(3,1)},
-		8, 3,
-		XA_Sillybilly, 0,
+		{FIXED_DEC(12,10),FIXED_DEC(17,10),FIXED_DEC(23,10),FIXED_DEC(15,10)},
+		39, 1,
+		XA_Loid, 0,
 		0, //dialogue check
 		XA_Clucked, 1, //dialogue song and it's channel
 		{NULL, NULL},
 
-		StageId_8_3, 0
+		StageId_39_2, STAGE_LOAD_FLAG
+	},
+	{ //StageId_39_2 (Endurance)
+		"ENDURANCE",
+		//Characters
+        {Char_BF_New,       FIXED_DEC(75,1),  FIXED_DEC(67,1)},
+		{Char_Miku_New, FIXED_DEC(-85,1),  FIXED_DEC(73,1)},
+		{Char_GF_New,        FIXED_DEC(20,1),    FIXED_DEC(-35,1)},
+
+		//Stage background
+		Back_Concert_New,
+
+		//Song info
+		{FIXED_DEC(16,10),FIXED_DEC(24,10),FIXED_DEC(31,10),FIXED_DEC(15,10)},
+		39, 2,
+		XA_Endurance, 2,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+
+		StageId_39_3, STAGE_LOAD_FLAG | STAGE_LOAD_OPPONENT
+	},
+	{ //StageId_39_3 (Voca)
+		"VOCA",
+		//Characters
+        {Char_BF_New,       FIXED_DEC(75,1),  FIXED_DEC(67,1)},
+		{Char_Miku_New, FIXED_DEC(-85,1),  FIXED_DEC(73,1)},
+		{Char_GF_New,        FIXED_DEC(20,1),    FIXED_DEC(-35,1)},
+
+		//Stage background
+		Back_Concert_New,
+
+		//Song info
+		{FIXED_DEC(2,1),FIXED_DEC(25,10),FIXED_DEC(31,10),FIXED_DEC(15,10)},
+		39, 3,
+		XA_Voca, 0,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+
+		StageId_39_3, 0
+	},
+	{ //StageId_39_4 (Senbonzakura)
+		"SENBONZAKURA",
+		//Characters
+        {Char_BF_New,       FIXED_DEC(75,1),  FIXED_DEC(67,1)},
+		{Char_Miku_New, FIXED_DEC(-85,1),  FIXED_DEC(73,1)},
+		{Char_GF_New,        FIXED_DEC(20,1),    FIXED_DEC(-35,1)},
+
+		//Stage background
+		Back_Concert_New,
+
+		//Song info
+		{FIXED_DEC(3,1),FIXED_DEC(3,1),FIXED_DEC(3,1),FIXED_DEC(15,10)},
+		39, 4,
+		XA_Senbonzakura, 2,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+
+		StageId_39_4, 0
+	},
+	{ //StageId_39_5 (Disappearance)
+		"DISAPPEARANCE",
+		//Characters
+        {Char_Miku_New, FIXED_DEC(-85,1),  FIXED_DEC(73,1)},
+		{Char_BF_New,       FIXED_DEC(75,1),  FIXED_DEC(67,1)},
+		{Char_GF_New,        FIXED_DEC(20,1),    FIXED_DEC(-35,1)},
+
+		//Stage background
+		Back_Concert_New,
+
+		//Song info
+		{FIXED_DEC(4,1),FIXED_DEC(4,1),FIXED_DEC(4,1),FIXED_DEC(15,10)},
+		39, 5,
+		XA_Disappearance, 2,
+		0, //dialogue check
+		XA_Clucked, 1, //dialogue song and it's channel
+		{NULL, NULL},
+
+		StageId_39_5, 0
 	},
 	{ //StageId_2_4 (Clucked)
 		"CLUCKED",
@@ -535,7 +615,7 @@
 		Back_Week1_New,
 
 		//Song info
-		{FIXED_DEC(25,10),FIXED_DEC(25,10),FIXED_DEC(25,10)},
+		{FIXED_DEC(25,10),FIXED_DEC(25,10),FIXED_DEC(25,10),FIXED_DEC(15,10)},
 		2, 4,
 		XA_Clucked, 2,
 		0, //dialogue check

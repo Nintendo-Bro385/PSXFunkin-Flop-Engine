@@ -1,0 +1,172 @@
+Sprite Frame Locations
+
+//idle
+idle0.png: idle frame 1, idle frame 2;
+idle1.png: idle frame 3, idle frame 4;
+idle2.png: idle frame 5, idle frame 6;
+idle3.png: idle frame 7, left frame 1;
+
+//left and right
+left0.png: left frame 2, right frame 1;
+left1.png: left frame 3, right frame 2;
+left2.png: left frame 4, right frame 3;
+left3.png: left frame 5, right frame 4;
+right0.png: right frame 5 (up: small idle frame 1) (down: small idle frame 2);
+
+//down and up
+down0.png: small right frame 1, down frame 1, up frame 1;
+down1.png: small right frame 2, down frame 2, up frame 2;
+down2.png: small right frame 3, down frame 3, up frame 3;
+down3.png: small right frame 4, down frame 4, up frame 4;
+down4.png: small right frame 5, down frame 5, up frame 5;
+
+//small idle
+sidle0.png: (up: small idle frame 3, small idle frame 4, small idle frame 5) 
+(middle: small idle frame 6, small left frame 1, small left frame 3) 
+(down: small down frame 1, small down frame 2, small down frame 5);
+
+//small left
+sleft0.png: (up: small left frame 2, small left frame 4) 
+(middle: small left frame 5, small down frame 3) 
+(down: small down frame 4);
+
+//small up
+sup0.png: (up: small up frame 1, small up frame 2, small up frame 3) 
+(down: small up frame 4, small up frame 5);
+
+sing4: (Down small up frame 1, 2, 3 Up 4)
+
+//ungrow (big billy to small billy)
+ungrow0.png: ungrow frame 1, ungrow frame 2;
+ungrow1.png: ungrow frame 3, ungrow frame 4;
+ungrow2.png: ungrow frame 5, ungrow frame 6;
+ungrow3.png: (up: ungrow frame 7, ungrow frame 8) (down: ungrow frame 9);
+
+//unshrink (small billy to big billy)
+unsh0.png: (up: unshrink frame 2, unshrink frame 1)
+(down: unshrink frame 6, unshrink frame 3);
+unsh1.png: (up: unshrink frame 4, unshrink frame 5)
+(down: unshrink frame 10, unshrink frame 11);
+unsh2.png: (up: unshrink frame 7)
+(down: unshrink frame 8);
+unsh3.png: unshrink frame 9, unshrink frame 14;
+unsh4.png: unshrink frame 12, unshrink frame 13;
+unsh5.png: unshrink frame 15, unshrink frame 16;
+unsh6.png: unshrink frame 17, unshrink frame 18;
+unsh7.png: unshrink frame 19, unshrink frame 20;
+sing37.png: unshrink frame 21;
+
+//sizes
+
+Big silly billy
+
+//idle
+idle frame 1: 105 by 174
+idle frame 2: 106 by 172
+idle frame 3: 105 by 173
+idle frame 4: 103 by 175
+idle frame 5: 102 by 177
+idle frame 6: 103 by 177
+idle frame 7: 104 by 177
+
+//left
+left frame 1: 123 by 181
+left frame 2: 122 by 181
+left frame 3: 117 by 183
+left frame 4: 116 by 182
+left frame 5: 116 by 182
+
+//down
+down frame 1: 117 by 147
+down frame 2: 116 by 148
+down frame 3: 114 by 151
+down frame 4: 115 by 153
+down frame 5: 115 by 152
+
+//up
+up frame 1: 129 by 230
+up frame 2: 128 by 228
+up frame 3: 135 by 223
+up frame 4: 135 by 220
+up frame 5: 135 by 221
+
+//right
+right frame 1: 132 by 182
+right frame 2: 135 by 177
+right frame 3: 130 by 177
+right frame 4: 128 by 179
+right frame 5: 129 by 179
+
+Small silly billy
+
+//idle
+small idle frame 1: 82 by 83
+small idle frame 2: 83 by 83
+small idle frame 3: 83 by 87
+small idle frame 4: 82 by 86
+small idle frame 5: 81 by 85
+small idle frame 6: 81 by 86
+
+//left
+small left frame 1: 88 by 91
+small left frame 2: 89 by 91
+small left frame 3: 86 by 89
+small left frame 4: 85 by 88
+small left frame 5: 84 by 89
+
+//down
+small down frame 1: 87 by 75
+small down frame 2: 86 by 76
+small down frame 3: 84 by 77
+small down frame 4: 84 by 77
+small down frame 5: 83 by 78
+
+//up
+small up frame 1: 81 by 97
+small up frame 2: 81 by 96
+small up frame 3: 82 by 96
+small up frame 4: 82 by 95
+small up frame 5: 83 by 95
+
+//right
+small right frame 1: 95 by 88
+small right frame 2: 96 by 87
+small right frame 3: 92 by 86
+small right frame 4: 91 by 85
+small right frame 5: 91 by 86
+
+Special animations
+
+//Ungrow (big billy to small billy)
+ungrow frame 1: 103 by 176
+ungrow frame 2: 106 by 171
+ungrow frame 3: 105 by 174
+ungrow frame 4: 102 by 159
+ungrow frame 5: 116 by 160
+ungrow frame 6: 117 by 132
+ungrow frame 7: 110 by 107
+ungrow frame 8: 86 by 93
+ungrow frame 9: 85 by 82
+
+//Unshrink (small billy to big billy)
+unshrink frame 1: 82 by 79
+unshrink frame 2: 109 by 138
+unshrink frame 3: 116 by 131
+unshrink frame 4: 124 by 136
+unshrink frame 5: 127 by 134
+unshrink frame 6: 130 by 111
+unshrink frame 7: 146 by 107
+unshrink frame 8: 146 by 107
+unshrink frame 9: 142 by 107
+unshrink frame 10: 138 by 106
+unshrink frame 11: 117 by 122
+unshrink frame 12: 116 by 146
+unshrink frame 13: 117 by 204
+unshrink frame 14: 113 by 203
+unshrink frame 15: 118 by 199
+unshrink frame 16: 125 by 167
+unshrink frame 17: 127 by 147
+unshrink frame 18: 126 by 152
+unshrink frame 19: 123 by 152
+unshrink frame 20: 119 by 150 
+unshrink frame 21: 118 by 151

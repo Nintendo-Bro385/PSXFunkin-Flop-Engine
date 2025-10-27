@@ -108,8 +108,10 @@ void Back_Week1_DrawBG(StageBack *back)
 		Stage_DrawTex(&this->tex_back0, &backr_src, &backr_dst, stage.camera.bzoom);
 		Gfx_DrawTex(&this->tex_back0, &backf_src, &backf_dst);
 	}
-	else
-		Gfx_SetClear(63, 47, 65);
+	stage.bgcolor[0]=63;
+	stage.bgcolor[1]=47;
+	stage.bgcolor[2]=65;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week1_Free(StageBack *back)

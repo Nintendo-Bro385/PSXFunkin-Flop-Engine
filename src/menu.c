@@ -35,6 +35,9 @@ boolean up;
 boolean down;
 boolean nomem;
 boolean switchscreen;
+int shopoption;
+//to hold the arrow selection
+int iconscroll[8];
 
 const Achievement achievements[NUM_ACHIEVEMENTS] = {
     {"Full Combo'd Week 1", 36},
@@ -318,11 +321,11 @@ static void Menu_DifficultySelector(s32 x, s32 y)
             if (menu.page_param.stage.diff > StageDiff_Easy)
                 menu.page_param.stage.diff--;
             else
-                menu.page_param.stage.diff = StageDiff_Hard;
+                menu.page_param.stage.diff = StageDiff_Guitar;
         }
         if (pad_state.press & PAD_RIGHT)
         {
-            if (menu.page_param.stage.diff < StageDiff_Hard)
+            if (menu.page_param.stage.diff < StageDiff_Guitar)
                 menu.page_param.stage.diff++;
             else
                 menu.page_param.stage.diff = StageDiff_Easy;
@@ -343,6 +346,7 @@ static void Menu_DifficultySelector(s32 x, s32 y)
         {  0, 96, 64, 18},
         { 64, 96, 80, 18},
         {144, 96, 64, 18},
+        {  0,144, 80, 19},
     };
 
     const RECT *diff_src = &diff_srcs[menu.page_param.stage.diff];
@@ -363,13 +367,13 @@ static void Menu_Options(s32 x, s32 y)
             }
             else
             {
-                menu.page_param.stage.setselect = 1;
+                menu.page_param.stage.setselect = 2;
                 menu.select = 0;
             }
         }
         if (pad_state.press & PAD_R1)
         {
-            if (menu.page_param.stage.setselect <1)
+            if (menu.page_param.stage.setselect <2)
             {
                 menu.page_param.stage.setselect++;
                 menu.select = 0;
@@ -413,17 +417,18 @@ static void Menu_DrawWeek(const char *week, s32 x, s32 y)
     {
         //Week
         RECT label_src = {0, 32, 80, 32};
-        Gfx_BlitTex(&menu.tex_story, &label_src, x+24, y);
-
+        Gfx_BlitTex(&menu.tex_story, &label_src, x, y);
+        
         //Number
+        x += 80;
         for (; *week != '\0'; week++)
         {
             //Draw number
             u8 i = *week - '0';
-
+            
             RECT num_src = {128 + ((i & 3) << 5), ((i >> 2) << 5), 32, 32};
             Gfx_BlitTex(&menu.tex_story, &num_src, x, y);
-            x = 80;
+            x += 32;
         }
     }
 }
@@ -469,11 +474,13 @@ static void Menu_DrawBigCredits(u8 i, s16 x, s16 y)
     //Draw health icon
     Gfx_DrawTex(&stage.tex_hud2, &src, &dst);
 }
-static void Menu_DrawOptions(u8 i, s16 x, s16 y, boolean is_bool)
+static void Menu_DrawOptions(u8 i, s16 x, s16 y, boolean is_bool, boolean is_selected)
 {
     //Icon Size
     u8 iconx_size = (is_bool) ? 32 : 64;
     u8 icony_size = 32;
+
+    u8 col = (is_selected) ? 128 : 64;
 
     //Get src and dst
     RECT src = {
@@ -490,7 +497,7 @@ static void Menu_DrawOptions(u8 i, s16 x, s16 y, boolean is_bool)
     };
 
     //Draw health icon
-    Gfx_DrawTex(&menu.tex_options, &src, &dst);
+    Gfx_DrawTexCol(&menu.tex_options, &src, &dst, col, col, col);
 }
 static void Menu_DrawHealth(u8 i, s16 x, s16 y, boolean is_selected)
 {
@@ -515,6 +522,29 @@ static void Menu_DrawHealth(u8 i, s16 x, s16 y, boolean is_selected)
 
     //Draw health icon
     Gfx_DrawTexCol(&stage.tex_hud1, &src, &dst, col, col, col);
+}
+static void Menu_DrawStylePoints(u8 i, s16 x, s16 y)
+{
+    //Icon Size
+    u8 iconx_size = 32;
+    u8 icony_size = 8;
+
+    //Get src and dst
+    RECT src = {
+        (i % 8) * iconx_size,
+        (i / 8) * icony_size,
+        iconx_size,
+        icony_size
+    };
+    RECT dst = {
+        x,
+        y,
+        iconx_size,
+        icony_size
+    };
+
+    //Draw health icon
+    Gfx_DrawTex(&menu.tex_story, &src, &dst);
 }
 
 //Menu functions
@@ -910,13 +940,13 @@ void Menu_Tick(void)
         case MenuPage_Main:
         {
             static const char *menu_options[] = {
-                "mt-M-H-(",
-                "AM-6Ob",
-                "H9!",
-                "aQ-(",
-                "hOZ9t",
-                "e6l2S",
-                "n-+",
+                "STORY MODE",
+                "FREEPLAY",
+                "BONUS",
+                "AWARDS",
+                "CREDITS",
+                "OPTIONS",
+                "SHOP",
                 #ifdef PSXF_NETWORK
                     "JOIN SERVER",
                     "HOST SERVER",
@@ -936,7 +966,7 @@ void Menu_Tick(void)
 
             //Draw version identification
             menu.font_arial.draw(&menu.font_arial,
-                "Flop Engine v1.2",
+                "Flop Engine v2",
                 8,
                 SCREEN_HEIGHT - 32,
                 FontAlign_Left
@@ -1007,12 +1037,18 @@ void Menu_Tick(void)
                             break;
                         case 5: //Options
                             menu.next_page = MenuPage_Options;
+                            for (int i = 0; i < 8; i++)
+        	                    iconscroll[i] =0;
                             menu.next_select = 0;
                             menu.page_param.stage.setselect = 0;
                             break;
-                        case 6: //save game
-                            Menu_DrawSavingicon( 284, 204);
-                            WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
+                        case 6: //Mods
+                            menu.next_page = MenuPage_Shop;
+                            shopoption=0;
+                            for (int i = 0; i < 7; i++)
+        	                    iconscroll[i] =0;
+                            menu.next_select = 0;
+                            break;
                         break;
                     #ifdef PSXF_NETWORK
                         case 6: //Join Server
@@ -1023,11 +1059,9 @@ void Menu_Tick(void)
                             break;
                     #endif
                     }
-                    if (menu.select !=6)
-                    {
-                        menu.next_select = 0;
-                        menu.trans_time = FIXED_UNIT;
-                    }
+                    
+                    menu.next_select = 0;
+                    menu.trans_time = FIXED_UNIT;
                 }
 
                 //Return to title screen if circle is pressed
@@ -1059,7 +1093,7 @@ void Menu_Tick(void)
                 for (u8 i = 0; i < COUNT_OF(menu_options); i++)
                 {
                     //Draw text
-                    menu.font_kata.draw_col(&menu.font_kata,
+                    menu.font_bold.draw_col(&menu.font_bold,
                         menu_options[i],
                         SCREEN_WIDTH2,
                         SCREEN_HEIGHT2 + (i << 5) - 48 - (menu.scroll >> FIXED_SHIFT),
@@ -1073,7 +1107,7 @@ void Menu_Tick(void)
             else if (animf_count & 2)
             {
                 //Draw selected option
-                menu.font_kata.draw(&menu.font_kata,
+                menu.font_bold.draw(&menu.font_bold,
                     menu_options[menu.select],
                     SCREEN_WIDTH2,
                     SCREEN_HEIGHT2 + (menu.select << 5) - 48 - (menu.scroll >> FIXED_SHIFT),
@@ -1118,21 +1152,25 @@ void Menu_Tick(void)
             StageId stage;
             const char *name;
             const char *tracks[3];
+            int starsunlock;
         } menu_options[] = {
-                {NULL, StageId_1_4, "TUTORIAL", {"TUTORIAL", NULL, NULL}},
-                {"1", StageId_1_1, "DADDY DEAREST", {"BOPEEBO", "FRESH", "DADBATTLE"}},
-                {"2", StageId_2_1, "SPOOKY MONTH", {"SPOOKEEZ", "SOUTH", "MONSTER"}},
-                {"3", StageId_3_1, "PICO", {"PICO", "PHILLY NICE", "BLAMMED"}},
-                {"4", StageId_4_1, "MOMMY MUST MURDER", {"SATIN PANTIES", "HIGH", "MILF"}},
-                {"5", StageId_5_1, "RED SNOW", {"COCOA", "EGGNOG", "WINTER HORRORLAND"}},
-                {"6", StageId_6_1, "HATING SIMULATOR", {"SENPAI", "ROSES", "THORNS"}},
-                {"7", StageId_7_1, "TANKMAN", {"UGH", "GUNS", "STRESS"}},
+                {NULL, StageId_1_4, "TUTORIAL", {"TUTORIAL", NULL, NULL}, 0},
+                {"1", StageId_1_1, "DADDY DEAREST", {"BOPEEBO", "FRESH", "DADBATTLE"}, 4},//231  stars to unlock 4
+                {"2", StageId_2_1, "SPOOKY MONTH", {"SPOOKEEZ", "SOUTH", "MONSTER"}, 5},//269 stars to unlock 5
+                {"3", StageId_3_1, "PICO", {"PICO", "PHILLY NICE", "BLAMMED"}, 10},//359 stars to unlock 10
+                {"4", StageId_4_1, "MOMMY MUST MURDER", {"SATIN PANTIES", "HIGH", "MILF"}, 15},//541 stars to unlock 15
+                {"5", StageId_5_1, "RED SNOW", {"COCOA", "EGGNOG", "WINTER HORRORLAND"}, 20},//672 stars to unlock 20
+                {"6", StageId_6_1, "HATING SIMULATOR", {"SENPAI", "ROSES", "THORNS"}, 25},//804 stars to unlock 25
+                {"7", StageId_7_1, "TANKMAN", {"UGH", "GUNS", "STRESS"}, 34},//924 stars to unlock 34
+                //{"1", StageId_8_1, "DUE DEBTS", {"DARNELL", "LIT UP", "2HOT"}},
+                //{"8", StageId_39_1, "MIKU", {"LOID", "ENDURANCE", "VOCA"}},
         };
 
             //Initialize page
             if (menu.page_swap)
             {
                 menu.scroll = 0;
+                menu.select = 0;
                 menu.page_param.stage.diff = StageDiff_Normal;
                 menu.page_state.title.fade = FIXED_DEC(0,1);
                 menu.page_state.title.fadespd = FIXED_DEC(0,1);
@@ -1149,6 +1187,8 @@ void Menu_Tick(void)
                 menu.page_state.title.fade -= FIXED_MUL(menu.page_state.title.fadespd, timer_dt);
                 }
             }
+
+            int totalstars = stage.prefs.stylepoint[0] + stage.prefs.stylepoint[1] + stage.prefs.stylepoint[2] + stage.prefs.stylepoint[3] + stage.prefs.stylepoint[4] + stage.prefs.stylepoint[5] + stage.prefs.stylepoint[6] + stage.prefs.stylepoint[7];
 
             stage.storyname = menu_options[menu.select].name;
 
@@ -1178,17 +1218,33 @@ void Menu_Tick(void)
                         menu.select = 0;
                     CheckAndLoadWeek(menu.select);
                 }
-            //Select option if cross is pressed
-            if (pad_state.press & (PAD_START | PAD_CIRCLE))
-            {
-                menu.next_page = MenuPage_Stage;
-                menu.page_param.stage.id = menu_options[menu.select].stage;
-                menu.page_param.stage.story = true;
-                menu.trans_time = FIXED_UNIT;
-                menu.page_state.title.fade = FIXED_DEC(255,1);
-                menu.page_state.title.fadespd = FIXED_DEC(510,1);
-                menu.mbf->set_anim(menu.mbf, CharAnim_Up);
-            }
+
+                if(totalstars >= menu_options[menu.select].starsunlock)
+                {
+                    //Select option if cross is pressed
+                    if (pad_state.press & (PAD_START | PAD_CIRCLE))
+                    {
+                        menu.next_page = MenuPage_Stage;
+                        menu.page_param.stage.id = menu_options[menu.select].stage;
+                        menu.page_param.stage.story = true;
+                        menu.trans_time = FIXED_UNIT;
+                        menu.page_state.title.fade = FIXED_DEC(255,1);
+                        menu.page_state.title.fadespd = FIXED_DEC(510,1);
+                        menu.mbf->set_anim(menu.mbf, CharAnim_Up);
+                    }
+                }
+                else
+                {
+                    char starbuffer[32];
+                    sprintf(starbuffer, "%d Stars Needed to unlock",  menu_options[menu.select].starsunlock);
+                    //Display you need more stars
+                    menu.font_arial.draw(&menu.font_arial,
+                        starbuffer,
+                        2,
+                        8,
+                        FontAlign_Left
+                    );
+                }
 
                 //Return to main menu if circle is pressed
                 if (pad_state.press & PAD_CROSS)
@@ -1199,10 +1255,11 @@ void Menu_Tick(void)
                 }
             }
 
+            Menu_DrawStylePoints(stage.prefs.stylepoint[menu.select]+128, 286, 8);
             //Draw week name and tracks
             menu.font_arial.draw(&menu.font_arial,
                 menu_options[menu.select].name,
-                SCREEN_WIDTH - 6,
+                282,
                 6,
                 FontAlign_Right
             );
@@ -1262,7 +1319,13 @@ void Menu_Tick(void)
                         continue;
                     if (y >= SCREEN_HEIGHT)
                         break;
-                    Menu_DrawWeek(menu_options[i].week, SCREEN_WIDTH - 230, y);
+                    if(totalstars >= menu_options[i].starsunlock)
+                    {
+                        Menu_DrawWeek(menu_options[i].week, SCREEN_WIDTH - 230, y);
+                    }
+                    else{
+                        Menu_DrawWeek("9", SCREEN_WIDTH - 230, y);
+                    }
                 }
             }
             else if (animf_count & 2)
@@ -1283,29 +1346,28 @@ void Menu_Tick(void)
                 u8 icon;
                 int music;
             } menu_options[] = {
-                {StageId_4_4, 0xFFFC96D7, "smt", 1, 22},
-                {StageId_1_4, 0xFF9271FD, "q1-tMaN", 0, 0},
-                {StageId_1_1, 0xFF9271FD, "35-3", 2, 1},
-                {StageId_1_2, 0xFF9271FD, "AO9l1", 2, 2},
-                {StageId_1_3, 0xFF9271FD, "$()tN", 2, 3},
-                {StageId_2_1, 0xFF223344, "m6-g-!", 3, 4},
-                {StageId_2_2, 0xFF223344, "kcm", 3, 5},
-                {StageId_2_3, 0xFF223344, "HSmp-", 7, 6},
-                {StageId_3_1, 0xFF941653, "5j", 4, 7},
-                {StageId_3_2, 0xFF941653, "A:M.v-m", 4, 8},
-                {StageId_3_3, 0xFF941653, "+OF(", 4, 9},
-                {StageId_4_1, 0xFFFC96D7, "ksS.4Ss:-", 5, 10},
-                {StageId_4_2, 0xFFFC96D7, "zb", 5, 11},
-                {StageId_4_3, 0xFFFC96D7, "ENA", 5, 12},
-                {StageId_5_1, 0xFFA0D1FF, "jja", 6, 13},
-                {StageId_5_2, 0xFFA0D1FF, "d9Vy9V", 6, 14},
-                {StageId_5_3, 0xFFA0D1FF, "c:Sp-CL-LS(", 7, 15},
-                {StageId_6_1, 0xFFFF78BF, "^_", 9, 16},
-                {StageId_6_2, 0xFFFF78BF, ")L", 9, 17},
-                {StageId_6_3, 0xFFFF78BF, "b)L", 10, 18},
-                {StageId_7_1, 0xFFF6B604, "[]", 11, 19},
-                {StageId_7_2, 0xFFF6B604, "TS!", 11, 20},
-                {StageId_7_3, 0xFFF6B604, "mtOm", 11, 21},
+                {StageId_1_4, 0xFF9271FD, "TUTORIAL", 0, 0},
+                {StageId_1_1, 0xFF9271FD, "BOPEEBO", 2, 1},
+                {StageId_1_2, 0xFF9271FD, "FRESH", 2, 2},
+                {StageId_1_3, 0xFF9271FD, "DADBATTLE", 2, 3},
+                {StageId_2_1, 0xFF223344, "SPOOKEEZ", 3, 4},
+                {StageId_2_2, 0xFF223344, "SOUTH", 3, 5},
+                {StageId_2_3, 0xFF223344, "MONSTER", 7, 6},
+                {StageId_3_1, 0xFF941653, "PICO", 4, 7},
+                {StageId_3_2, 0xFF941653, "PHILLY", 4, 8},
+                {StageId_3_3, 0xFF941653, "BLAMMED", 4, 9},
+                {StageId_4_1, 0xFFFC96D7, "SATIN PANTIES", 5, 10},
+                {StageId_4_2, 0xFFFC96D7, "HIGH", 5, 11},
+                {StageId_4_3, 0xFFFC96D7, "MILF", 5, 12},
+                {StageId_5_1, 0xFFA0D1FF, "COCOA", 6, 13},
+                {StageId_5_2, 0xFFA0D1FF, "EGGNOG", 6, 14},
+                {StageId_5_3, 0xFFA0D1FF, "WINTER HORRORLAND", 7, 15},
+                {StageId_6_1, 0xFFFF78BF, "SENPAI", 9, 16},
+                {StageId_6_2, 0xFFFF78BF, "ROSES", 9, 17},
+                {StageId_6_3, 0xFFFF78BF, "THORNS", 10, 18},
+                {StageId_7_1, 0xFFF6B604, "UGH", 11, 19},
+                {StageId_7_2, 0xFFF6B604, "GUNS", 11, 20},
+                {StageId_7_3, 0xFFF6B604, "STRESS", 11, 21},
             };
             //Audio_SeekXA_Track(stage.stage_def[menu_options[menu.select].stage].music_track);
             if (pad_state.press & PAD_R1)
@@ -1401,10 +1463,6 @@ void Menu_Tick(void)
 			    //Play Tutorial Music
 			    Audio_PlayXA_Track(XA_Stress, 0x40, 0, 1);
 			    break;
-			case 22:
-			    //Play Test Music
-			    Audio_PlayXA_Track(XA_Test, 0x40, 2, 1);
-			    break;
 		    }
 		    Audio_WaitPlayXA();
 	    }
@@ -1428,7 +1486,7 @@ void Menu_Tick(void)
             //Draw page label
             menu.font_arial.draw(&menu.font_arial,
                 "Press R1 to listen to song/Press L1 to stop song",
-                16,
+                5,
                 217,
                 FontAlign_Left
             );
@@ -1470,14 +1528,14 @@ void Menu_Tick(void)
                     Trans_Start();
                     switchscreen = false;
                 }
-                //Select option if cross is pressed
+                /*//Select option if cross is pressed
                 if (pad_state.press & PAD_TRIANGLE)
                 {
                     menu.next_page = MenuPage_Stage;
                     menu.page_param.stage.id = menu_options[menu.select].stage;
                     menu.page_param.stage.story = true;
                     Trans_Start();
-                }
+                }*/
 
                 //Return to main menu if circle is pressed
                 if (pad_state.press & PAD_CROSS)
@@ -1493,8 +1551,8 @@ void Menu_Tick(void)
             Gfx_DrawRect(&song_box, 0, 0, 0);
 
             //Draw page label
-            menu.font_kata.draw(&menu.font_kata,
-                "AM-6Ob",
+            menu.font_bold.draw(&menu.font_bold,
+                "FREEPLAY",
                 8,
                 7,
                 FontAlign_Left
@@ -1519,7 +1577,7 @@ void Menu_Tick(void)
                 Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, menu.select == i);
 
                 //Draw text
-                menu.font_kata.draw_col(&menu.font_kata,
+                menu.font_bold.draw_col(&menu.font_bold,
                     menu_options[i].text,
                     15,
                     SCREEN_HEIGHT2 + y - 10,
@@ -1564,9 +1622,15 @@ void Menu_Tick(void)
                 boolean difficulty;
                 u8 icon;
             } menu_options[] = {
+                {StageId_4_4, "TEST", false, 1},
                 {StageId_8_1, "STILL ALIVE", true, 12},
-                {StageId_8_2, "|}~", false, 1},
-                {StageId_2_4,    "jij9j-", false, 26},
+                {StageId_39_1, "LOID", true, 14},
+                {StageId_39_2, "ENDURANCE", true, 14},
+                {StageId_39_3, "VOCA", true, 14},
+                {StageId_2_4,  "CLUCKED", false, 26},
+                {StageId_39_4, "SENBONZAKURA", false, 14},
+                {StageId_39_5, "DISAPPEARANCE", false, 14},
+                {StageId_8_2, "SILLY BILLY", false, 1},
             };
 
             //Initialize page
@@ -1575,14 +1639,33 @@ void Menu_Tick(void)
                 menu.scroll = COUNT_OF(menu_options) * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
                 menu.page_param.stage.diff = StageDiff_Normal;
             }
+            if(stage.prefs.BonusUnlocked[menu.select]== 1)
+            {
+                //Draw page label
+                menu.font_arial.draw(&menu.font_arial,
+                    "Press R1 to listen to song/Press L1 to stop song",
+                    5,
+                    217,
+                    FontAlign_Left
+                );
+            }
+            else{
+                //Draw page label
+                menu.font_arial.draw(&menu.font_arial,
+                    "This song is currently locked",
+                    5,
+                    217,
+                    FontAlign_Left
+                );
+            }
 
             //Draw box at the bottom
             RECT song_box = {0, 210, 320, 30};
             Gfx_DrawRect(&song_box, 0, 0, 0);
 
             //Draw page label
-            menu.font_kata.draw(&menu.font_kata,
-                "H9!",
+            menu.font_bold.draw(&menu.font_bold,
+                "BONUS",
                 8,
                 7,
                 FontAlign_Left
@@ -1593,7 +1676,7 @@ void Menu_Tick(void)
             Gfx_DrawRect(&top_box, 0, 0, 0);
 
             //Draw difficulty selector
-            if (menu_options[menu.select].difficulty)
+            if (menu_options[menu.select].difficulty && stage.prefs.BonusUnlocked[menu.select]== 1)
                 Menu_DifficultySelector(SCREEN_WIDTH - 62, 74);
 
             //Handle option and selection
@@ -1616,10 +1699,13 @@ void Menu_Tick(void)
                 }
 
                 //Select option if cross is pressed
-                if (pad_state.press & (PAD_START | PAD_CIRCLE) && !switchscreen)
+                if(stage.prefs.BonusUnlocked[menu.select] == 1)
                 {
-                    menu.djbf->set_anim(menu.djbf, CharAnim_Up);
-                    switchscreen = true;
+                    if (pad_state.press & (PAD_START | PAD_CIRCLE) && !switchscreen)
+                    {
+                        menu.djbf->set_anim(menu.djbf, CharAnim_Up);
+                        switchscreen = true;
+                    }
                 }
 
                 if (switchscreen && Animatable_Ended(&menu.djbf->animatable))
@@ -1641,6 +1727,57 @@ void Menu_Tick(void)
                     menu.select = 0;
                     Trans_Start();
                 }
+                if (pad_state.press & PAD_R1 && stage.prefs.BonusUnlocked[menu.select]== 1)
+                    {
+                        Audio_StopXA();
+                        switch (menu.select)
+                        {
+                        case 0:
+                            //Play Test Music
+                            Audio_PlayXA_Track(XA_Test, 0x40, 2, 1);
+                            break;
+                        case 1:
+                            //Play Still Alive Music
+                            Audio_PlayXA_Track(XA_Stillalive, 0x40, 0, 1);
+                            break;
+                        case 2:
+                            //Play Loid Music
+                            Audio_PlayXA_Track(XA_Loid, 0x40, 0, 1);
+                            break;
+                        case 3:
+                            //Play Endurance Music
+                            Audio_PlayXA_Track(XA_Endurance, 0x40, 2, 1);
+                            break;
+                        case 4:
+                            //Play Voca Music
+                            Audio_PlayXA_Track(XA_Voca, 0x40, 0, 1);
+                            break;
+                        case 5:
+                            //Play Clucked Music
+                            Audio_PlayXA_Track(XA_Clucked, 0x40, 2, 1);
+                            break;
+                        case 6:
+                            //Play Senbonzakura Music
+                            Audio_PlayXA_Track(XA_Senbonzakura, 0x40, 2, 1);
+                            break;
+                        case 7:
+                            //Play Disappearance Music
+                            Audio_PlayXA_Track(XA_Disappearance, 0x40, 2, 1);
+                            break;
+                        case 8:
+                            //Play Silly Billy Music
+                            Audio_PlayXA_Track(XA_Sillybilly, 0x40, 0, 1);
+                            break;
+                    }
+                    Audio_WaitPlayXA();
+                }
+                if (pad_state.press & PAD_L1 && stage.prefs.BonusUnlocked[menu.select]== 1)
+                {
+                    //Play Tutorial Music
+                    Audio_StopXA();
+                    Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+                    Audio_WaitPlayXA();
+                }
             }
 
             //Draw dj bf
@@ -1659,19 +1796,38 @@ void Menu_Tick(void)
                 if (y >= SCREEN_HEIGHT2 + 8)
                     break;
 
-                //Draw Icon
-                Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, menu.select == i);
+                if(stage.prefs.BonusUnlocked[i]== 0)
+                {
+                    //Draw Icon
+                    Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, 0);
 
-                //Draw text
-                menu.font_kata.draw_col(&menu.font_kata,
-                    menu_options[i].text,
-                    15,
-                    SCREEN_HEIGHT2 + y - 10,
-                    FontAlign_Left,
-                    (menu.select == i) ? 128 : 64,
-                    (menu.select == i) ? 128 : 64,
-                    (menu.select == i) ? 128 : 64
-                );
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                        menu_options[i].text,
+                        15,
+                        SCREEN_HEIGHT2 + y - 10,
+                        FontAlign_Left,
+                        64,
+                        64,
+                        64
+                    );
+                }
+                else
+                {
+                    //Draw Icon
+                    Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, menu.select == i);
+
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                        menu_options[i].text,
+                        15,
+                        SCREEN_HEIGHT2 + y - 10,
+                        FontAlign_Left,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64
+                    );
+                }
             }
 
             //Draw background
@@ -1725,8 +1881,8 @@ void Menu_Tick(void)
         Gfx_DrawRect(&song_box, 0, 0, 0);
 
         //Draw page label
-        menu.font_kata.draw(&menu.font_kata,
-            "aQ-(",
+        menu.font_bold.draw(&menu.font_bold,
+            "AWARDS",
             8,
             7,
             FontAlign_Left
@@ -1955,8 +2111,8 @@ void Menu_Tick(void)
             Gfx_DrawRect(&song_box, 0, 0, 0);
 
             //Draw page label
-            menu.font_kata.draw(&menu.font_kata,
-                "hOZ9t",
+            menu.font_bold.draw(&menu.font_bold,
+                "CREDITS",
                 8,
                 7,
                 FontAlign_Left
@@ -2070,7 +2226,7 @@ void Menu_Tick(void)
             case 0:
             {
             static const char *gamemode_strs[] = {"NORMAL", "SWAP", "TWO PLAYER"};
-            static const char *notes_strs[] = {"NORMAL", "PIXEL", "CLUCKY", "DDR"};
+            //static const char *notes_strs[] = {"NORMAL", "PIXEL", "CLUCKY", "DDR"};
             static const struct
             {
                 enum
@@ -2095,7 +2251,7 @@ void Menu_Tick(void)
                 int optionsicon;
             } menu_options[] = {
                 {OptType_Enum,    "GAMEMODE", &stage.prefs.mode, {.spec_enum = {COUNT_OF(gamemode_strs), gamemode_strs}}, 0},
-                {OptType_Enum,    "NOTE SKIN", &stage.prefs.noteskin, {.spec_enum = {COUNT_OF(notes_strs), notes_strs}}, 32},
+                //{OptType_Enum,    "NOTE SKIN", &stage.prefs.noteskin, {.spec_enum = {COUNT_OF(notes_strs), notes_strs}}, 32},
                 //{OptType_Boolean, "INTERPOLATION", &stage.prefs.expsync, 15},
                 //{OptType_Boolean, "GHOST TAP ", &stage.prefs.ghost, {.spec_boolean = {0}}, 13},
                 {OptType_Boolean, "DOWNSCROLL", &stage.prefs.downscroll, {.spec_boolean = {0}}, 6},
@@ -2103,7 +2259,8 @@ void Menu_Tick(void)
                 {OptType_Boolean, "LOW QUALITY", &stage.prefs.lowquality, {.spec_boolean = {0}}, 10},
                 {OptType_Boolean, "NO FLASHING", &stage.prefs.flashing, {.spec_boolean = {0}}, 16},
                 {OptType_Boolean, "HELL", &stage.prefs.hell, {.spec_boolean = {0}}, 18},
-                {OptType_Boolean, "ONLY ARROWS", &stage.prefs.onlyarrows, {.spec_boolean = {0}}, 18},
+                {OptType_Boolean, "ONLY ARROWS", &stage.prefs.onlyarrows, {.spec_boolean = {0}}, 20},
+                {OptType_Boolean, "GUITAR INPUT", &stage.prefs.guitar, {.spec_boolean = {0}}, 20},
             };
 
             //Initialize page
@@ -2175,15 +2332,30 @@ void Menu_Tick(void)
                     menu.next_select = 5; //Options
                     Trans_Start();
                 }
+                if(nomem == false)
+                {
+                    if (pad_state.press & PAD_SELECT)
+                    {
+                        Menu_DrawSavingicon( 284, 204);
+                        WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
+                    }
+                }
             }
+            //Draw page label
+            menu.font_arial.draw(&menu.font_arial,
+                "Press SELECT to save",
+                5,
+                217,
+                FontAlign_Left
+            );
              //Draw box at the bottom
                 //Draw box at the bottom
                 RECT song_box = {0, 210, 320, 30};
                 Gfx_DrawRect(&song_box, 0, 0, 0);
 
                 //Draw page label
-                menu.font_kata.draw(&menu.font_kata,
-                    "e6l2S",
+                menu.font_bold.draw(&menu.font_bold,
+                    "OPTIONS",
                     8,
                     7,
                     FontAlign_Left
@@ -2212,13 +2384,13 @@ void Menu_Tick(void)
                 {
                     case OptType_Boolean:
                     {
-                        Menu_DrawOptions(*((boolean*)menu_options[i].value) + menu_options[i].optionsicon, 18, SCREEN_HEIGHT2 + y - 15 - 28, true);
+                        Menu_DrawOptions(*((boolean*)menu_options[i].value) + menu_options[i].optionsicon, 18, SCREEN_HEIGHT2 + y - 15 - 28, true, true);
                     sprintf(text, "%s %s", menu_options[i].text, *((boolean*)menu_options[i].value) ? "ON" : "OFF");
                 }
                         break;
                     case OptType_Enum:
                     {
-                            Menu_DrawOptions(*((s32*)menu_options[i].value) + menu_options[i].optionsicon, 2, SCREEN_HEIGHT2 + y - 15 - 28, false);
+                            Menu_DrawOptions(*((s32*)menu_options[i].value) + menu_options[i].optionsicon, 2, SCREEN_HEIGHT2 + y - 15 - 28, false, true);
                             sprintf(text, "%s %s", menu_options[i].text, menu_options[i].spec.spec_enum.strs[*((s32*)menu_options[i].value)]);
                         }
                         break;
@@ -2245,7 +2417,7 @@ void Menu_Tick(void)
             Menu_DrawBack(
                 true,
                 8,
-                253 >> 1, 113 >> 1, 155 >> 1,
+                255 >> 1, 255 >> 1, 133 >> 1,
                 0, 0, 0
             );
             break;
@@ -2255,62 +2427,17 @@ void Menu_Tick(void)
                     static const struct
             {
             const char *text;
-            int music;
             int icons;
             } menu_options[] = {
-                {"GETTIN FREAKY", 0, 13},
-                {"OG GETTIN FREAKY", 1, 14},
-                {"LUDUM", 2, 15},
+                {"NORMAL", 32},
+                {"CIRCLE", 36},
+                {"PIXEL", 40},
+                {"ASCII", 44},
+                {"CLUCKY", 48},
+                {"PROJECT FUNKIN", 52},
+                {"DDR", 56},
+                {"GOLDEN", 60},
             };
-            switch (menu_options[menu.select].music)
-                {
-                case 0:
-                {
-                    if (pad_state.press & (PAD_START | PAD_CIRCLE))
-                    {
-                        //Play Tutorial Music
-                        Audio_StopXA();
-                        Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
-                        Audio_WaitPlayXA();
-                        stage.prefs.menumusic=0;
-                        /*menu.next_page = MenuPage_Opening;
-                        menu.next_select = 0; //Mods
-                        Trans_Start();*/
-                    }
-                    break;
-                }
-                case 1:
-                {
-                    if (pad_state.press & (PAD_START | PAD_CIRCLE))
-                    {
-                        //Play Tutorial Music
-                        Audio_StopXA();
-                        Audio_PlayXA_Track(XA_Freeky, 0x40, 2, 1);
-                        Audio_WaitPlayXA();
-                        stage.prefs.menumusic=1;
-                        /*menu.next_page = MenuPage_Opening;
-                        menu.next_select = 0; //Mods
-
-                        Trans_Start();*/
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    if (pad_state.press & (PAD_START | PAD_CIRCLE))
-                    {
-                        //Play Tutorial Music
-                        Audio_StopXA();
-                        Audio_PlayXA_Track(XA_Ludum, 0x40, 3, 1);
-                        Audio_WaitPlayXA();
-                        stage.prefs.menumusic=2;
-                        /*menu.next_page = MenuPage_Opening;
-                        menu.next_select = 0; //Mods
-                        Trans_Start();*/
-                    }
-                    break;
-                }
-                }
             //Initialize page
             if (menu.page_swap)
             {
@@ -2319,7 +2446,7 @@ void Menu_Tick(void)
             }
             //Draw page label
             menu.font_bold.draw(&menu.font_bold,
-                "music",
+                "noteskins",
                 312,
                 217,
                 FontAlign_Right
@@ -2352,28 +2479,87 @@ void Menu_Tick(void)
                     else
                         menu.select = 0;
                 }
-
-
-                //Return to main menu if circle is pressed
-                if (pad_state.press & PAD_CROSS)
+                if(pad_state.press & PAD_RIGHT)
+                    {
+                        if (iconscroll[menu.select] < 3)
+                        iconscroll[menu.select]++;
+                        else
+                            iconscroll[menu.select]=0;
+                    }
+                    if(pad_state.press & PAD_LEFT)
+                    {
+                        if (iconscroll[menu.select] > 0)
+                        iconscroll[menu.select]--;
+                        else
+                            iconscroll[menu.select]=3;
+                    }
+                if(iconscroll[0]==2 && iconscroll[1]==2 && iconscroll[2]==1 && iconscroll[3]==1 && iconscroll[4]==0 && iconscroll[5]==3 && iconscroll[6]==0 && iconscroll[7]==3 && pad_state.press & PAD_CROSS && pad_state.press & PAD_CIRCLE && pad_state.press & PAD_START)
+                {
+                    Audio_StopXA();
+                    Audio_PlayXA_Track(XA_Ludum, 0x40, 3, 1);
+                    Audio_WaitPlayXA();
+                }
+                else if (pad_state.press & PAD_CIRCLE)
+                {
+                    if(menu.select ==0)
+                        stage.prefs.noteskin = menu.select;
+                    else if (stage.prefs.BonusUnlocked[menu.select+9] == 1)
+                        stage.prefs.noteskin = menu.select;
+                }//Return to main menu if circle is pressed
+                else if (pad_state.press & PAD_CROSS)
                 {
                     menu.next_page = MenuPage_Main;
                     menu.next_select = 5; //Options
                     Trans_Start();
                 }
+                if(nomem == false)
+                {
+                    if (pad_state.press & PAD_SELECT)
+                    {
+                        Menu_DrawSavingicon( 284, 204);
+                        WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
+                    }
+                }
             }
+            //if(iconscroll[0]=2 && iconscroll[1]=2 && iconscroll[2]=1 && iconscroll[3]=1 && iconscroll[4]=0 && iconscroll[5]=3 && iconscroll[6]=0 && iconscroll[7]=3 && pad_state.press & PAD_CROSS && pad_state.press & PAD_CIRCLE && pad_state.press & PAD_START)
+            //Draw page label
+            menu.font_arial.draw(&menu.font_arial,
+                "Press SELECT to save",
+                5,
+                217,
+                FontAlign_Left
+            );
             //Draw box at the bottom
                 //Draw box at the bottom
                 RECT song_box = {0, 210, 320, 30};
                 Gfx_DrawRect(&song_box, 0, 0, 0);
 
                 //Draw page label
-                menu.font_kata.draw(&menu.font_kata,
-                    "e6l2S",
+                menu.font_bold.draw(&menu.font_bold,
+                    "OPTIONS",
                     8,
                     7,
                     FontAlign_Left
                 );
+                
+                if(menu.select == 0 || stage.prefs.BonusUnlocked[menu.select+9]== 1)
+                {
+                    menu.font_arial.draw(&menu.font_arial,
+                    "Press Left/Right To View Notes",
+                    312,
+                    11,
+                    FontAlign_Right
+                );
+                }
+                else{
+                    //Draw page label
+                    menu.font_arial.draw(&menu.font_arial,
+                        "This skin is currently locked",
+                        312,
+                        11,
+                        FontAlign_Right
+                    );
+                }
                 //Draw box at the bottom
                 RECT top_box = {0, 0, 320, 30};
                 Gfx_DrawRect(&top_box, 0, 0, 0);
@@ -2385,37 +2571,625 @@ void Menu_Tick(void)
 
             for (u8 i = 0; i < COUNT_OF(menu_options); i++)
             {
-                //Get position on screen
-                s32 y = (i * 24) - 8;
+                 //Get position on screen
+                s32 y = (i * 31) - 8 - (menu.scroll >> FIXED_SHIFT);
                 if (y <= -SCREEN_HEIGHT2 - 8)
                     continue;
                 if (y >= SCREEN_HEIGHT2 + 8)
                     break;
+                if(i == stage.prefs.noteskin)
+                    Menu_DrawHealth(1, strlen(menu_options[i].text) * 14 + 80 + 8 -18, SCREEN_HEIGHT2 + y - 15 - 28, menu.select == i);
 
-                Menu_DrawOptions(menu_options[i].icons, 18, SCREEN_HEIGHT2 + y - 15 - 28, true);
+                if(menu.select == 0 || stage.prefs.BonusUnlocked[i+9] ==1)
+                {
+                    Menu_DrawOptions(iconscroll[i] + menu_options[i].icons, 5, SCREEN_HEIGHT2 + y - 15 - 28, true, menu.select == i);
 
-                //Draw text
-            menu.font_bold.draw_col(&menu.font_bold,
-                Menu_LowerIf(menu_options[i].text, NULL),
-                70,
-                SCREEN_HEIGHT2 + y - 34,
-                FontAlign_Left,
-                (menu.select == i) ? 128 : 64,
-                (menu.select == i) ? 128 : 64,
-                (menu.select == i) ? 128 : 64
-            );
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                    Menu_LowerIf(menu_options[i].text, NULL),
+                    70,
+                    SCREEN_HEIGHT2 + y - 34,
+                    FontAlign_Left,
+                    (menu.select == i) ? 128 : 64,
+                    (menu.select == i) ? 128 : 64,
+                    (menu.select == i) ? 128 : 64
+                    );
+                }
+                else{
+                    Menu_DrawOptions(iconscroll[i] + menu_options[i].icons, 5, SCREEN_HEIGHT2 + y - 15 - 28, true, false);
+
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                    Menu_LowerIf(menu_options[i].text, NULL),
+                    70,
+                    SCREEN_HEIGHT2 + y - 34,
+                    FontAlign_Left,
+                    64,
+                    64,
+                    64
+                    );
+                }
             }
 
             //Draw background
             Menu_DrawBack(
                 true,
                 8,
-                253 >> 1, 113 >> 1, 155 >> 1,
+                255 >> 1, 255 >> 1, 255 >> 1,
                 0, 0, 0
             );
             break;
             }
+            case 2:
+            {
+                        static const struct
+                {
+                const char *text;
+                int music;
+                int icons;
+                } menu_options[] = {
+                    {"GETTIN FREAKY", 0, 13},
+                    {"OG GETTIN FREAKY", 1, 14},
+                    {"LUDUM", 2, 15},
+                };
+                switch (menu_options[menu.select].music)
+                    {
+                    case 0:
+                    {
+                        if (pad_state.press & (PAD_START | PAD_CIRCLE))
+                        {
+                            //Play Tutorial Music
+                            Audio_StopXA();
+                            Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+                            Audio_WaitPlayXA();
+                            stage.prefs.menumusic=0;
+                            /*menu.next_page = MenuPage_Opening;
+                            menu.next_select = 0; //Mods
+                            Trans_Start();*/
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        if (pad_state.press & (PAD_START | PAD_CIRCLE))
+                        {
+                            //Play Tutorial Music
+                            Audio_StopXA();
+                            Audio_PlayXA_Track(XA_Freeky, 0x40, 2, 1);
+                            Audio_WaitPlayXA();
+                            stage.prefs.menumusic=1;
+                            /*menu.next_page = MenuPage_Opening;
+                            menu.next_select = 0; //Mods
+
+                            Trans_Start();*/
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (pad_state.press & (PAD_START | PAD_CIRCLE))
+                        {
+                            //Play Tutorial Music
+                            Audio_StopXA();
+                            Audio_PlayXA_Track(XA_Ludum, 0x40, 3, 1);
+                            Audio_WaitPlayXA();
+                            stage.prefs.menumusic=2;
+                            /*menu.next_page = MenuPage_Opening;
+                            menu.next_select = 0; //Mods
+                            Trans_Start();*/
+                        }
+                        break;
+                    }
+                    }
+                //Initialize page
+                if (menu.page_swap)
+                {
+                    menu.scroll = COUNT_OF(menu_options) * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
+                    menu.page_param.stage.diff = StageDiff_Normal;
+                }
+                //Draw page label
+                menu.font_bold.draw(&menu.font_bold,
+                    "music",
+                    312,
+                    217,
+                    FontAlign_Right
+                );
+                if(nomem == true)
+                {
+                    //Draw mind games port version identification
+                    menu.font_arial.draw(&menu.font_arial,
+                    "No memorycard inserted",
+                    8,
+                    8,
+                    FontAlign_Left
+                    );
+                }
+                //Handle option and selection
+                if (menu.next_page == menu.page && Trans_Idle())
+                {
+                    //Change option
+                    if (pad_state.press & PAD_UP)
+                    {
+                        if (menu.select > 0)
+                            menu.select--;
+                        else
+                            menu.select = COUNT_OF(menu_options) - 1;
+                    }
+                    if (pad_state.press & PAD_DOWN)
+                    {
+                        if (menu.select < COUNT_OF(menu_options) - 1)
+                            menu.select++;
+                        else
+                            menu.select = 0;
+                    }
+
+
+                    //Return to main menu if circle is pressed
+                    if (pad_state.press & PAD_CROSS)
+                    {
+                        menu.next_page = MenuPage_Main;
+                        menu.next_select = 5; //Options
+                        Trans_Start();
+                    }
+                    if(nomem == false)
+                    {
+                        if (pad_state.press & PAD_SELECT)
+                        {
+                            Menu_DrawSavingicon( 284, 204);
+                            WriteSaveDataStructToBinaryAndSaveItOnTheFuckingMemoryCard();
+                        }
+                    }
+                }
+                //Draw page label
+                menu.font_arial.draw(&menu.font_arial,
+                    "Press SELECT to save",
+                    5,
+                    217,
+                    FontAlign_Left
+                );
+                //Draw box at the bottom
+                    //Draw box at the bottom
+                    RECT song_box = {0, 210, 320, 30};
+                    Gfx_DrawRect(&song_box, 0, 0, 0);
+
+                    //Draw page label
+                    menu.font_bold.draw(&menu.font_bold,
+                        "OPTIONS",
+                        8,
+                        7,
+                        FontAlign_Left
+                    );
+                    //Draw box at the bottom
+                    RECT top_box = {0, 0, 320, 30};
+                    Gfx_DrawRect(&top_box, 0, 0, 0);
+
+
+                //Draw options
+                s32 next_scroll = menu.select * FIXED_DEC(24,1);
+                menu.scroll += (next_scroll - menu.scroll) >> 4;
+
+                for (u8 i = 0; i < COUNT_OF(menu_options); i++)
+                {
+                     //Get position on screen
+                    s32 y = (i * 31) - 8 - (menu.scroll >> FIXED_SHIFT);
+                    if (y <= -SCREEN_HEIGHT2 - 8)
+                        continue;
+                    if (y >= SCREEN_HEIGHT2 + 8)
+                        break;
+
+                    Menu_DrawOptions(menu_options[i].icons, 18, SCREEN_HEIGHT2 + y - 15 - 28, true, true);
+
+                    //Draw text
+                menu.font_bold.draw_col(&menu.font_bold,
+                    Menu_LowerIf(menu_options[i].text, NULL),
+                    70,
+                    SCREEN_HEIGHT2 + y - 34,
+                    FontAlign_Left,
+                    (menu.select == i) ? 128 : 64,
+                    (menu.select == i) ? 128 : 64,
+                    (menu.select == i) ? 128 : 64
+                );
+                }
+
+                //Draw background
+                Menu_DrawBack(
+                    true,
+                    8,
+                    230 >> 1, 170 >> 1, 255 >> 1,
+                    0, 0, 0
+                );
+                break;
+                }
             }
+            break;
+        }
+        case MenuPage_Shop:
+        {
+            stage.prefs.Cash =5000;
+            sprintf(stage.cash, "Your Cash:\n$%d", stage.prefs.Cash);
+            struct
+            {
+                const char *text;
+                u8 icon;
+                int cost;
+                const char *desc;
+                boolean sold;
+            } menu_options[] = {
+                {"TEST", 1, 100, "The TEST song of FNF\nDifficulty: 4", stage.prefs.BonusUnlocked[0]},
+                {"STILL ALIVE", 12, 125, "Portal 1 credits song\nMod made by BigFloppa385\nDifficulty: 2", stage.prefs.BonusUnlocked[1]},
+                {"LOID", 14, 200, "Miku mod song\nDifficulty: 5", stage.prefs.BonusUnlocked[2]},
+                {"ENDURANCE", 14, 200, "Miku mod song\nDifficulty: 5", stage.prefs.BonusUnlocked[3]},
+                {"VOCA", 14, 200, "Miku mod song\nDifficulty: 5", stage.prefs.BonusUnlocked[4]},
+                {"CLUCKED", 26, 225, "Clucked CKDEVs own song,\nonly on psxfunkin\nDifficulty: 5", stage.prefs.BonusUnlocked[5]},
+                {"SENBONZAKURA", 14, 350, "Classic Miku song\nCharted by BigFloppa385\nDifficulty: 7", stage.prefs.BonusUnlocked[6]},
+                {"DISAPPEARANCE", 14, 500, "Classic Miku song\nHardest song in this engine\nCharted by BigFloppa385\nDifficulty: 10", stage.prefs.BonusUnlocked[7]},
+                {"SILLY BILLY", 1, 1000, "Easily The best FNF song\nDifficulty: 7", stage.prefs.BonusUnlocked[8]},
+            };
+            struct
+            {
+                const char *text;
+                u8 icon;
+                int cost;
+                const char *desc;
+                boolean sold;
+            } arrowskins_options[] = {
+                {"CIRCLE", 44, 50, "Circle Notes", stage.prefs.BonusUnlocked[10]},
+                {"PIXEL", 48, 50, "8 Bit Notes", stage.prefs.BonusUnlocked[11]},
+                {"ASCII", 52, 100, "Portal Mod Notes", stage.prefs.BonusUnlocked[12]},
+                {"CLUCKY", 56, 100, "Clucky Lookin Notes", stage.prefs.BonusUnlocked[13]},
+                {"PROJECT FUNKIN", 60, 200, "Project Funkin Notes", stage.prefs.BonusUnlocked[14]},
+                {"DDR", 64, 400, "Dance Dance Revolution Notes", stage.prefs.BonusUnlocked[15]},
+            };
+
+            //Initialize page
+            if (menu.page_swap)
+            {
+                menu.scroll = COUNT_OF(menu_options) * FIXED_DEC(24 + SCREEN_HEIGHT2,1);
+                menu.page_param.stage.diff = StageDiff_Normal;
+            }
+            if(shopoption ==0)
+            {
+                if(menu_options[menu.select].sold == 0)
+                {
+                    char costbuffer[32];
+                    sprintf(costbuffer, "Cost: $%d",  menu_options[menu.select].cost);
+                    //Draw Cost
+                    menu.font_arial.draw(&menu.font_arial,
+                        costbuffer,
+                        8,
+                        175,
+                        FontAlign_Left
+                    );
+                }
+                else
+                {
+                    //Draw Cost
+                    menu.font_arial.draw(&menu.font_arial,
+                        "Cost: $SOLD",
+                        8,
+                        175,
+                        FontAlign_Left
+                    );
+                }
+                //Draw Cost
+                menu.font_arial.draw(&menu.font_arial,
+                    menu_options[menu.select].desc,
+                    8,
+                    190,
+                    FontAlign_Left
+                );
+            }
+            else if(shopoption ==1)
+            {
+                if(arrowskins_options[menu.select].sold == 0)
+                {
+                    char costbuffer[32];
+                    sprintf(costbuffer, "Cost: $%d",  arrowskins_options[menu.select].cost);
+                    //Draw Cost
+                    menu.font_arial.draw(&menu.font_arial,
+                        costbuffer,
+                        8,
+                        175,
+                        FontAlign_Left
+                    );
+                }
+                else
+                {
+                    //Draw Cost
+                    menu.font_arial.draw(&menu.font_arial,
+                        "Cost: $SOLD",
+                        8,
+                        175,
+                        FontAlign_Left
+                    );
+                }
+                //Draw Cost
+                menu.font_arial.draw(&menu.font_arial,
+                    arrowskins_options[menu.select].desc,
+                    8,
+                    190,
+                    FontAlign_Left
+                );
+            }
+            menu.font_arial.draw(&menu.font_arial,
+                stage.cash,
+                266,
+                214,
+                FontAlign_Center
+            );
+
+            //Draw box at the bottom
+            RECT song_box = {0, 210, 320, 30};
+            Gfx_BlendRect(&song_box, 72, 72, 72, 0);
+            //Draw box at the bottom
+            RECT song2_box = {0, 170, 192, 40};
+            Gfx_BlendRect(&song2_box, 72, 72, 72, 0);
+
+            //Draw page label
+            menu.font_bold.draw(&menu.font_bold,
+                "SHOP",
+                8,
+                7,
+                FontAlign_Left
+            );
+
+            if (shopoption == 0)
+            {
+                //Draw Cost
+                menu.font_arial.draw(&menu.font_arial,
+                    "Press R2 to listen to Song",
+                    312,
+                    11,
+                    FontAlign_Right
+                );
+            }
+            else if (shopoption == 1)
+            {
+                //Draw Cost
+                menu.font_arial.draw(&menu.font_arial,
+                    "Press Left/Right To View Notes",
+                    312,
+                    11,
+                    FontAlign_Right
+                );
+            }
+
+            RECT top_box = {0, 0, 320, 30};
+            Gfx_DrawRect(&top_box, 0, 0, 0);
+
+            RECT top2_box = {192, 30, 128, 40};
+            Gfx_BlendRect(&top2_box, 72, 72, 72, 0);
+            if(shopoption ==0)
+            {
+                //Draw Cost
+                menu.font_bold.draw(&menu.font_bold,
+                    "SONGS",
+                    96,
+                    42,
+                    FontAlign_Center
+                );
+                //Draw Cost
+                menu.font_bold.draw(&menu.font_bold,
+                    "NOTESKINS",
+                    256,
+                    42,
+                    FontAlign_Center
+                );
+            }
+            if(shopoption ==1)
+            {
+                //Draw Cost
+                menu.font_bold.draw(&menu.font_bold,
+                    "NOTESKINS",
+                    96,
+                    42,
+                    FontAlign_Center
+                );
+                //Draw Cost
+                menu.font_bold.draw(&menu.font_bold,
+                    "SONGS",
+                    256,
+                    42,
+                    FontAlign_Center
+                );
+            }
+
+
+            //Handle option and selection
+            if (menu.next_page == menu.page && Trans_Idle())
+            {
+                //Change option
+                if (pad_state.press & PAD_UP && !switchscreen)
+                {
+                    if (menu.select > 0)
+                        menu.select--;
+                }
+
+                if(shopoption == 0)
+                {
+                    if (pad_state.press & PAD_DOWN && !switchscreen)
+                    {
+                        if (menu.select < COUNT_OF(menu_options) - 1)
+                            menu.select++;
+                    }
+                    if (pad_state.press & PAD_R1)
+                    {
+                        shopoption ++;
+                        menu.select=0;
+                    }
+                    //Purchase Item
+                    if (pad_state.press & PAD_CIRCLE)
+                    {
+                        if(stage.prefs.Cash >= menu_options[menu.select].cost)
+                        {
+                            if(stage.prefs.BonusUnlocked[menu.select] == 0)
+                                stage.prefs.Cash -= menu_options[menu.select].cost;
+                            stage.prefs.BonusUnlocked[menu.select] = 1;
+                        }
+                        
+                    }
+                    if (pad_state.press & PAD_R2)
+                    {
+                        Audio_StopXA();
+                        switch (menu.select)
+                        {
+                        case 0:
+                            //Play Test Music
+                            Audio_PlayXA_Track(XA_Test, 0x40, 2, 1);
+                            break;
+                        case 1:
+                            //Play Still Alive Music
+                            Audio_PlayXA_Track(XA_Stillalive, 0x40, 0, 1);
+                            break;
+                        case 2:
+                            //Play Loid Music
+                            Audio_PlayXA_Track(XA_Loid, 0x40, 0, 1);
+                            break;
+                        case 3:
+                            //Play Endurance Music
+                            Audio_PlayXA_Track(XA_Endurance, 0x40, 2, 1);
+                            break;
+                        case 4:
+                            //Play Voca Music
+                            Audio_PlayXA_Track(XA_Voca, 0x40, 0, 1);
+                            break;
+                        case 5:
+                            //Play Clucked Music
+                            Audio_PlayXA_Track(XA_Clucked, 0x40, 2, 1);
+                            break;
+                        case 6:
+                            //Play Senbonzakura Music
+                            Audio_PlayXA_Track(XA_Senbonzakura, 0x40, 2, 1);
+                            break;
+                        case 7:
+                            //Play Disappearance Music
+                            Audio_PlayXA_Track(XA_Disappearance, 0x40, 2, 1);
+                            break;
+                        case 8:
+                            //Play Silly Billy Music
+                            Audio_PlayXA_Track(XA_Sillybilly, 0x40, 0, 1);
+                            break;
+                    }
+                    Audio_WaitPlayXA();
+                }
+                }
+                else if(shopoption == 1)
+                {
+                    if (pad_state.press & PAD_DOWN && !switchscreen)
+                    {
+                        if (menu.select < COUNT_OF(arrowskins_options) - 1)
+                            menu.select++;
+                    }
+                    if (pad_state.press & PAD_L1)
+                    {
+                        shopoption --;
+                        menu.select=0;
+                    }
+                    if(pad_state.press & PAD_RIGHT)
+                    {
+                        if (iconscroll[menu.select] < 3)
+                           iconscroll[menu.select]++;
+                        else
+                            iconscroll[menu.select]=0;
+                    }
+                    if(pad_state.press & PAD_LEFT)
+                    {
+                        if (iconscroll[menu.select] > 0)
+                           iconscroll[menu.select]--;
+                        else
+                            iconscroll[menu.select]=3;
+                    }
+                    //Purchase Item
+                    if (pad_state.press & PAD_CIRCLE)
+                    {
+                        if(stage.prefs.Cash >= arrowskins_options[menu.select].cost)
+                        {
+                            if(stage.prefs.BonusUnlocked[menu.select + 10] == 0)
+                                stage.prefs.Cash -= arrowskins_options[menu.select].cost;
+                            stage.prefs.BonusUnlocked[menu.select + 10] = 1;
+                        }
+                        
+                    }
+                }
+                //Return to main menu if circle is pressed
+                if (pad_state.press & PAD_CROSS)
+                {
+                    Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
+                    menu.next_page = MenuPage_Main;
+                    menu.next_select = 6; //Shop
+                    menu.select = 0;
+                    Trans_Start();
+                }
+            }
+
+            //Draw dj bf
+            menu.djbf->tick(menu.djbf);
+
+            //Draw options
+            s32 next_scroll = menu.select * FIXED_DEC(24,1);
+            menu.scroll += (next_scroll - menu.scroll) >> 4;
+
+            if (shopoption == 0)
+            {
+                for (u8 i = 0; i < COUNT_OF(menu_options); i++)
+                {
+                    //Get position on screen
+                    s32 y = (i * 24) - 8 - (menu.scroll >> FIXED_SHIFT);
+                    if (y <= -SCREEN_HEIGHT2 - 8)
+                        continue;
+                    if (y >= SCREEN_HEIGHT2 + 8)
+                        break;
+
+                    //Draw Icon
+                    Menu_DrawHealth(menu_options[i].icon, strlen(menu_options[i].text) * 14 + 32 + 8 -18, SCREEN_HEIGHT2 + y - 17 -4, menu.select == i);
+
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                        menu_options[i].text,
+                        5,
+                        SCREEN_HEIGHT2 + y - 10,
+                        FontAlign_Left,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64
+                    );
+
+                }
+            }
+            else if (shopoption == 1)
+            {
+                for (u8 i = 0; i < COUNT_OF(arrowskins_options); i++)
+                {
+                    //Get position on screen
+                    s32 y = (i * 31) - 8 - (menu.scroll >> FIXED_SHIFT);
+                    if (y <= -SCREEN_HEIGHT2 - 8)
+                        continue;
+                    if (y >= SCREEN_HEIGHT2 + 8)
+                        break;
+
+                    //Draw Icon
+                    Menu_DrawOptions(iconscroll[i] + arrowskins_options[i].icon, 5, SCREEN_HEIGHT2 + y - 17, true, menu.select == i);
+
+                    //Draw text
+                    menu.font_bold.draw_col(&menu.font_bold,
+                        arrowskins_options[i].text,
+                        41,
+                        SCREEN_HEIGHT2 + y - 10,
+                        FontAlign_Left,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64,
+                        (menu.select == i) ? 128 : 64
+                    );
+                }
+            }
+
+            //Draw background
+            Menu_DrawBack(
+                true,
+                8,
+                150 >> 1, 150 >> 1, 150 >> 1,
+                0, 0, 0
+            );
             break;
         }
     #ifdef PSXF_NETWORK

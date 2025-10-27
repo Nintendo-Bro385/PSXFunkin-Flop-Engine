@@ -190,8 +190,10 @@ void Back_Week5_DrawBG(StageBack *back)
 			Stage_DrawTex(&this->tex_back0, &wall_p->src, &wall_dst, stage.camera.bzoom);
 		wall_dst.x += wall_dst.w;
 	}
-	if(stage.prefs.lowquality ==true)
-		Gfx_SetClear(149, 224, 255);
+	stage.bgcolor[0]=149;
+	stage.bgcolor[1]=224;
+	stage.bgcolor[2]=255;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week5_Free(StageBack *back)

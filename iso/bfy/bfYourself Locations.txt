@@ -1,0 +1,39 @@
+Sprite Frame Locations
+
+Sprite Frame Sizes
+
+//Idle
+idle frame 1: 129 x 147
+idle frame 2: 130 x 147
+idle frame 3: 131 x 148
+idle frame 4: 130 x 150
+idle frame 5: 128 x 150
+idle frame 6: 128 x 151
+
+//left
+left frame 1: 142 by 150
+left frame 2: 142 by 149
+left frame 3: 141 by 148
+left frame 4: 139 by 149
+left frame 5: 139 by 149
+
+//down
+down frame 1: 132 by 136
+down frame 2: 131 by 136
+down frame 3: 128 by 138
+down frame 4: 127 by 139
+down frame 5: 126 by 139
+
+//up
+up frame 1: 90 by 122
+up frame 2: 91 by 123
+up frame 3: 94 by 122
+up frame 4: 94 by 119
+up frame 5: 94 by 119
+
+//right
+right frame 1: 140 by 151
+right frame 2: 140 by 151
+right frame 3: 135 by 151
+right frame 4: 134 by 151
+right frame 5: 133 by 151

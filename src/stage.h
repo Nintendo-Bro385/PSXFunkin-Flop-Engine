@@ -25,6 +25,11 @@
 #define INPUT_UP    (PAD_UP    | PAD_TRIANGLE | PAD_R1)
 #define INPUT_RIGHT (PAD_RIGHT | PAD_CIRCLE | PAD_R2)
 
+#define INPUTGH_LEFT  (PAD_R2)
+#define INPUTGH_DOWN  (PAD_CIRCLE)
+#define INPUTGH_UP    (PAD_TRIANGLE)
+#define INPUTGH_RIGHT (PAD_CROSS)
+
 #define STAGE_FLAG_JUST_STEP     (1 << 0) //Song just stepped this frame
 #define STAGE_FLAG_VOCAL_ACTIVE  (1 << 1) //Song's vocal track is currently active
 #define STAGE_FLAG_SCORE_REFRESH (1 << 2) //Score text should be refreshed
@@ -67,39 +72,43 @@ typedef enum
     StageId_1_2, //Fresh
     StageId_1_3, //Dadbattle
     StageId_1_4, //Tutorial
-    
+
     StageId_2_1, //Spookeez
     StageId_2_2, //South
     StageId_2_3, //Monster
-    
+
     StageId_3_1, //Pico
     StageId_3_2, //Philly
     StageId_3_3, //Blammed
-    
+
     StageId_4_1, //Satin Panties
     StageId_4_2, //High
     StageId_4_3, //MILF
-    
+
     StageId_4_4, //Test
-    
+
     StageId_5_1, //Cocoa
     StageId_5_2, //Eggnog
     StageId_5_3, //Winter Horrorland
-    
+
     StageId_6_1, //Senpai
     StageId_6_2, //Roses
     StageId_6_3, //Thorns
-    
+
     StageId_7_1, //Ugh
     StageId_7_2, //Guns
     StageId_7_3, //Stress
-    
+
     StageId_8_1, //Still Alive
-    StageId_8_2, //Senbonzakura
-    StageId_8_3, //Silly billy
-    
+    StageId_8_2, //Silly billy
+    StageId_39_1, //Loid
+    StageId_39_2, //Endurance
+    StageId_39_3, //Voca
+    StageId_39_4, //Senbonzakura
+    StageId_39_5, //Disappearance
+
     StageId_2_4, //Clucked
-    
+
     StageId_Max
 } StageId;
 
@@ -110,6 +119,7 @@ typedef enum
     StageDiff_Easy,
     StageDiff_Normal,
     StageDiff_Hard,
+    StageDiff_Guitar,
 } StageDiff;
 
 typedef enum
@@ -159,19 +169,19 @@ typedef struct
         Character* (*new)();
         fixed_t x, y;
     } pchar, ochar, gchar;
-    
+
     //Stage background
     StageBack* (*back)();
-    
+
     //Song info
-    fixed_t speed[3];
-    
+    fixed_t speed[4];
+
     u8 week, week_song;
     u8 music_track, music_channel;
     u8 dialogue;
     u8 diasong, dia_channel;
     const char* portrait_path[2];
-    
+
     StageId next_stage;
     u8 next_load;
 } StageDef;
@@ -203,12 +213,12 @@ typedef struct
 typedef struct
 {
     Character *character;
-    
+
     fixed_t arrow_hitan[4]; //Arrow hit animation for presses
-    
+
     s16 health;
     u16 combo;
-    
+
     boolean refresh_score;
     boolean refresh_misses;
     boolean refresh_pause;
@@ -217,7 +227,7 @@ typedef struct
     char score_text[33];
     char misses_text[20];
     char pause_text[50];
-    
+
     u16 pad_held, pad_press;
 } PlayerState;
 
@@ -227,63 +237,73 @@ typedef struct
     {
         //Stage settings
         boolean ghost, downscroll, botplay, lowquality, flashing, expsync;
-        boolean hell, onlyarrows;
+        boolean hell, onlyarrows, guitar;
         const char *nohudsong;
         int menumusic;
-        
+
         s32 mode;
         s32 noteskin;
-        
+
         //Achievements
-        u8 unlockedAchievements[NUM_ACHIEVEMENTS];            
+        u8 unlockedAchievements[NUM_ACHIEVEMENTS];
+
+        int Cash;
+        int BonusUnlocked[17];
+        int WeekPlayed[8];
+        int stylepoint[8];
     }prefs;
-    
+
     boolean nohud;
-    
+    char cash[10];
     char Results_text1[20];
     char Results_text2[20];
     char Results_text3[30];
     char nohudsong_text[20];
-    
+
+    int bgcolor[3];
+
+    //keeps track of which week you are playing
+    int whichweek;
+
     boolean bluenotes;
-    
+
     boolean loadsaveonce;
-    
+
     u32 offset;
-    
+
     const char *storyname;
-    
+
     int pixelmode;
-    
+
     u16 sickk, goodd, badd, shitt;
-    
+
     u8 hud1shit;
     u8 hud1shit2;
     int hud1shit3;
     u8 iconshit;
-    
+
     //HUD textures
     Gfx_Tex tex_hud0, tex_hud1, tex_hud2, tex_blue, tex_results, tex_sprites, tex_saving;
-    
+
     //Stage data
     const StageDef *stage_def;
     StageId stage_id;
     StageDiff stage_diff;
-    
+
     IO_Data chart_data;
     Section *sections;
     Note *notes;
     size_t num_notes;
-    
+
     fixed_t speed;
     fixed_t step_crochet, step_time;
     fixed_t early_safe, late_safe, early_sus_safe, late_sus_safe;
-    
+
     //Stage state
     boolean story;
     u8 flag;
     StageTrans trans;
-    
+
     struct
     {
         fixed_t x, y, zoom;
@@ -291,49 +311,49 @@ typedef struct
         fixed_t bzoom;
     } camera;
     fixed_t bump, sbump;
-    
+
     StageBack *back;
-    
+
     Character *player;
     Character *opponent;
     Character *gf;
-    
+
     Section *cur_section; //Current section
     Note *cur_note; //First visible and hittable note, used for drawing and hit detection
-    
+
     fixed_t note_scroll, song_time, interp_time, interp_ms, interp_speed;
-    
+
     u16 last_bpm;
-    
+
     fixed_t time_base;
     u16 step_base;
     Section *section_base;
-    
+
     u8 delect;
-    
+
     //u8 paused;
-    
+
     int cutdia;
-    
+
     boolean paused;
-    
+
     boolean song_completed;
-    
+
     s32 song_step;
-    
+
     u8 gf_speed; //Typically 4 steps, changes in Fresh
-    
+
     PlayerState player_state[2];
     s32 max_score;
-    
+
     u16 misses;
-    
+
     int ending;
-    
+
     int pause_select, pause_scroll;
-    
+
     FontData font_arial, font_cdr, font_bold;
-    
+
     enum
     {
         StageState_Play, //Game is playing as normal
@@ -345,12 +365,12 @@ typedef struct
         StageState_Dialogue,   //Dialogue
         StageState_Results,
     } state;
-    
+
     u8 note_swap;
-    
+
     //Object lists
     ObjectList objlist_splash, objlist_fg, objlist_bg;
-    
+
     //Portrait data
     struct
     {

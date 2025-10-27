@@ -397,7 +397,14 @@ Character *Char_BF_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = CHAR_SPEC_MISSANIM;
 
-	this->character.health_i = 1;
+    if(stage.stage_id == StageId_39_5)
+    {
+        this->character.health_i = 3;
+    }
+    else
+    {
+        this->character.health_i = 1;
+    }
 
 	this->character.focus_x = FIXED_DEC(-60,1);
 	this->character.focus_y = FIXED_DEC(-84,1);

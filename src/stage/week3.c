@@ -238,8 +238,11 @@ void Back_Week3_DrawBG(StageBack *back)
 	sky_src.y += sky_src.h;
 	if(stage.prefs.lowquality ==false)
 		Stage_DrawTex(&this->tex_back5, &sky_src, &sky_dst, stage.camera.bzoom);
-	else
-		Gfx_SetClear(157, 22, 84);
+
+	stage.bgcolor[0]=157;
+	stage.bgcolor[1]=22;
+	stage.bgcolor[2]=84;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week3_Free(StageBack *back)

@@ -1,0 +1,4 @@
+1 xa loidv.xa 1 0
+1 xa loidi.xa 1 1
+1 xa endurancev.xa 1 2
+1 xa endurancei.xa 1 3

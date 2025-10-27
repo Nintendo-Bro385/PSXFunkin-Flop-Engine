@@ -28,11 +28,14 @@ SRCS = src/main.c \
        src/stage/week5.c \
        src/stage/week6.c \
        src/stage/week7.c \
+       src/stage/sillybg.c \
+       src/stage/concert.c \
        src/animation.c \
        src/character.c \
        src/character/bf.c \
        src/character/bfcar.c \
        src/character/bfweeb.c \
+       src/character/asciibf.c \
        src/character/speaker.c \
        src/character/dad.c \
        src/character/spook.c \
@@ -50,6 +53,9 @@ SRCS = src/main.c \
        src/character/gf.c \
        src/character/gfweeb.c \
        src/character/clucky.c \
+       src/character/sillybilly.c \
+       src/character/bfy.c \
+       src/character/miku.c \
        src/character/mbf.c \
        src/character/mgf.c \
        src/character/djbf.c \
@@ -77,7 +83,7 @@ LDFLAGS += -lgpu
 #LDFLAGS += -lgte
 #LDFLAGS += -lgun
 #LDFLAGS += -lhmd
-#LDFLAGS += -lmath
+LDFLAGS += -lmath
 LDFLAGS += -lmcrd
 #LDFLAGS += -lmcx
 LDFLAGS += -lpad

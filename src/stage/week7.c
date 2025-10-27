@@ -191,8 +191,11 @@ void Back_Week7_DrawBG(StageBack *back)
 	mountain_src.y += 128;
 	if(stage.prefs.lowquality ==false)
 		Stage_DrawTex(&this->tex_back3, &mountain_src, &mountain_dst, stage.camera.bzoom);
-	else
-		Gfx_SetClear(239, 157, 3);
+	
+	stage.bgcolor[0]=239;
+	stage.bgcolor[1]=157;
+	stage.bgcolor[2]=3;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week7_Free(StageBack *back)

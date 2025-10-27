@@ -9,6 +9,9 @@ all: \
 	iso/font/cdr.tim \
 	iso/font/kata.tim \
 	iso/stage/hud0.tim \
+	iso/stage/hud0m.tim \
+	iso/stage/hud0s.tim \
+	iso/stage/hud0cir.tim \
 	iso/stage/hud0weeb.tim \
 	iso/stage/hud1.tim \
 	iso/stage/hud1ddr.tim \
@@ -22,6 +25,7 @@ all: \
 	iso/stage/sillyhud0.tim \
 	iso/stage/sillyhud1.tim \
 	iso/stage/bluehud.tim \
+        iso/stage/hud1m.tim \
 	iso/stage/portraits/bf.arc \
 	iso/stage/portraits/senpai.arc \
 	iso/stage/results/results.tim \
@@ -30,6 +34,7 @@ all: \
 	iso/bf/car.arc \
 	iso/bf/dead.arc \
 	iso/bf/weeb.arc \
+	iso/asciibf/main.arc \
 	iso/dad/main.arc \
 	iso/spook/main.arc \
 	iso/monster/main.arc \
@@ -52,6 +57,9 @@ all: \
 	iso/gf/weeb.arc \
 	iso/gf/speaker.tim \
 	iso/clucky/main.arc \
+	iso/sillybilly/main.arc \
+	iso/bfy/main.arc \
+	iso/miku/main.arc \
 	iso/menu/characters/mbf.arc \
 	iso/menu/characters/mgf.arc \
 	iso/menu/characters/djbf/djbf.arc \
@@ -65,6 +73,9 @@ all: \
 	iso/week6/back.arc \
 	iso/week6/back3.tim \
 	iso/week7/back.arc \
+	iso/sillybg/back.arc \
+	iso/sillybg/final.arc \
+	iso/concert/backc.arc \
 
 iso/%.tim: iso/%.png
 	tools/funkintimconv/funkintimconv $@ $<
@@ -79,7 +90,7 @@ iso/menu/menu.arc: iso/menu/back.tim iso/menu/ng.tim iso/menu/story.tim iso/menu
 iso/stage/portraits/bf.arc: iso/stage/portraits/bf.tim
 iso/stage/portraits/senpai.arc: iso/stage/portraits/senpai.tim
 
-iso/menu/backgrounds/week.arc: iso/menu/backgrounds/week0.tim iso/menu/backgrounds/week1.tim iso/menu/backgrounds/week2.tim iso/menu/backgrounds/week3.tim iso/menu/backgrounds/week4.tim iso/menu/backgrounds/week5.tim iso/menu/backgrounds/week6.tim iso/menu/backgrounds/week7.tim
+iso/menu/backgrounds/week.arc: iso/menu/backgrounds/week0.tim iso/menu/backgrounds/week1.tim iso/menu/backgrounds/week2.tim iso/menu/backgrounds/week3.tim iso/menu/backgrounds/week4.tim iso/menu/backgrounds/week5.tim iso/menu/backgrounds/week6.tim iso/menu/backgrounds/week7.tim iso/menu/backgrounds/week8.tim iso/menu/backgrounds/week9.tim
 
 # BF
 iso/bf/main.arc: iso/bf/bf0.tim iso/bf/bf1.tim iso/bf/bf2.tim iso/bf/bf3.tim iso/bf/bf4.tim iso/bf/bf5.tim iso/bf/bf6.tim iso/bf/dead0.tim
@@ -137,6 +148,18 @@ iso/gf/weeb.arc: iso/gf/weeb0.tim iso/gf/weeb1.tim
 # Clucky
 iso/clucky/main.arc: iso/clucky/idle0.tim iso/clucky/idle1.tim iso/clucky/left.tim iso/clucky/down.tim iso/clucky/up.tim iso/clucky/right.tim
 
+# Ascii BF
+iso/asciibf/main.arc: iso/asciibf/idle0.tim iso/asciibf/idle1.tim iso/asciibf/idle2.tim iso/asciibf/idle3.tim iso/asciibf/idle4.tim iso/asciibf/left0.tim iso/asciibf/left1.tim iso/asciibf/down0.tim iso/asciibf/down1.tim iso/asciibf/up0.tim iso/asciibf/up1.tim iso/asciibf/right0.tim iso/asciibf/right1.tim
+
+# Silly Billy
+iso/sillybilly/main.arc: iso/sillybilly/idle0.tim iso/sillybilly/idle1.tim iso/sillybilly/idle2.tim iso/sillybilly/idle3.tim iso/sillybilly/left0.tim iso/sillybilly/left1.tim iso/sillybilly/left2.tim iso/sillybilly/left3.tim iso/sillybilly/down0.tim iso/sillybilly/down1.tim iso/sillybilly/down2.tim iso/sillybilly/down3.tim iso/sillybilly/down4.tim iso/sillybilly/right0.tim iso/sillybilly/sidle0.tim iso/sillybilly/sleft0.tim iso/sillybilly/ungrow0.tim iso/sillybilly/ungrow1.tim iso/sillybilly/ungrow2.tim iso/sillybilly/ungrow3.tim iso/sillybilly/unsh0.tim iso/sillybilly/unsh1.tim iso/sillybilly/unsh2.tim iso/sillybilly/unsh3.tim iso/sillybilly/unsh4.tim iso/sillybilly/unsh5.tim iso/sillybilly/unsh6.tim iso/sillybilly/unsh7.tim iso/sillybilly/sing0.tim iso/sillybilly/sing1.tim iso/sillybilly/sing2.tim iso/sillybilly/sing3.tim iso/sillybilly/sing4.tim iso/sillybilly/sing5.tim iso/sillybilly/sing6.tim iso/sillybilly/sing7.tim iso/sillybilly/sing9.tim iso/sillybilly/sing10.tim iso/sillybilly/sing11.tim iso/sillybilly/sing13.tim iso/sillybilly/sing14.tim iso/sillybilly/sing15.tim iso/sillybilly/sing16.tim iso/sillybilly/sing18.tim iso/sillybilly/sing20.tim iso/sillybilly/sing21.tim iso/sillybilly/sing22.tim iso/sillybilly/sing23.tim iso/sillybilly/sing24.tim iso/sillybilly/sing26.tim iso/sillybilly/sing27.tim iso/sillybilly/sing28.tim iso/sillybilly/sing29.tim iso/sillybilly/sing30.tim iso/sillybilly/sing31.tim iso/sillybilly/sing32.tim iso/sillybilly/sing33.tim iso/sillybilly/sing35.tim iso/sillybilly/sing36.tim iso/sillybilly/sing37.tim iso/sillybilly/sing39.tim iso/sillybilly/sing41.tim iso/sillybilly/sing43.tim iso/sillybilly/sing44.tim 
+
+# BF Yourself
+iso/bfy/main.arc: iso/bfy/idle0.tim iso/bfy/idle1.tim iso/bfy/left0.tim iso/bfy/down0.tim iso/bfy/up0.tim iso/bfy/right0.tim iso/bfy/right1.tim iso/bfy/dead0.tim
+
+# Miku
+iso/miku/main.arc: iso/miku/idle0.tim iso/miku/idle1.tim iso/miku/idle2.tim iso/miku/idle3.tim iso/miku/idle4.tim iso/miku/left.tim iso/miku/down.tim iso/miku/up.tim iso/miku/right.tim
+
 # Menu BF
 iso/menu/characters/mbf.arc: iso/menu/characters/menubf.tim
 
@@ -170,6 +193,13 @@ iso/week6/back.arc: iso/week6/back0.tim iso/week6/back1.tim iso/week6/back2.tim
 
 # Week 7
 iso/week7/back.arc: iso/week7/back0.tim iso/week7/back1.tim iso/week7/back2.tim iso/week7/back3.tim
+
+# Silly bg
+iso/sillybg/back.arc: iso/sillybg/back0.tim iso/sillybg/back1.tim iso/sillybg/broke0.tim iso/sillybg/broke1.tim iso/sillybg/floor.tim iso/sillybg/frame0.tim iso/sillybg/frame1.tim
+iso/sillybg/final.arc: iso/sillybg/final0.tim iso/sillybg/final1.tim iso/sillybg/final2.tim iso/sillybg/final3.tim iso/sillybg/final4.tim iso/sillybg/final5.tim
+
+# Concert
+iso/concert/backc.arc: iso/concert/back0.tim iso/concert/back1.tim iso/concert/floor.tim
 
 # Rule to clean all .arc and .tim files
 clean:

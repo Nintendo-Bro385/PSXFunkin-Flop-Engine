@@ -16,7 +16,9 @@ all: \
   iso/music/week7a.xa \
   iso/music/week7b.xa \
   iso/music/portala.xa \
-  iso/music/billy.xa 
+  iso/music/billy.xa \
+  iso/music/week39a.xa \
+  iso/music/week39b.xa
 
 # XA converts
 iso/music/%.xa: iso/music/%.ogg
@@ -42,4 +44,6 @@ iso/music/week6c.xa: iso/music/gameoverpixel.xa iso/music/lunchbox1.xa iso/music
 iso/music/week7a.xa: iso/music/ughi.xa iso/music/ughv.xa iso/music/gunsi.xa iso/music/gunsv.xa
 iso/music/week7b.xa: iso/music/stressi.xa iso/music/stressv.xa
 iso/music/portala.xa: iso/music/stillalivei.xa iso/music/stillalivev.xa iso/music/senbonzakura.xa
-iso/music/billy.xa: iso/music/sillybillyi.xa iso/music/sillybillyv.xa
+iso/music/billy.xa: iso/music/sillybillyi.xa iso/music/sillybillyv.xa iso/music/disappearancei.xa iso/music/disappearancev.xa
+iso/music/week39a.xa: iso/music/loidi.xa iso/music/loidv.xa iso/music/endurancei.xa iso/music/endurancev.xa
+iso/music/week39b.xa: iso/music/vocai.xa iso/music/vocav.xa

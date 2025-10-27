@@ -211,8 +211,11 @@ void Back_Week4_DrawBG(StageBack *back)
 	};
 	if(stage.prefs.lowquality ==false)
 		Stage_DrawTex(&this->tex_back2, &sunset_src, &sunset_dst, stage.camera.bzoom);
-	else
-		Gfx_SetClear(252, 168, 240);
+
+	stage.bgcolor[0]=252;
+	stage.bgcolor[1]=168;
+	stage.bgcolor[2]=240;
+	Gfx_SetClear(stage.bgcolor[0], stage.bgcolor[1], stage.bgcolor[2]);
 }
 
 void Back_Week4_Free(StageBack *back)
